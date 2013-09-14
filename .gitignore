@@ -39,14 +39,20 @@ local.properties
 # User-specific files
 *.suo
 *.user
+*.sln
 *.sln.docstates
+*.vcxproj
+*.vcxproj.filters
 
 # Build results
 [Dd]ebug/
 [Rr]elease/
 *_i.c
 *_p.c
+*.exp
 *.ilk
+*.idb
+*.lib
 *.meta
 *.obj
 *.pch
@@ -119,10 +125,12 @@ UpgradeLog*.XML
 ############
 
 *.pbxuser
+*.pbxproj
 *.mode1v3
 *.mode2v3
 *.perspectivev3
 *.xcuserstate
+*.xcworkspacedata
 project.xcworkspace/
 xcuserdata/
  
