@@ -31,9 +31,9 @@ int main(int argc, const char * argv[])
 	delete renderer;
 
 #ifdef USE_MEMTRACK
-	MemTrack::TrackDumpBlocks();
+	Engine::TrackDumpBlocks();
 	
-	MemTrack::TrackListMemoryUsage();
+	Engine::TrackListMemoryUsage();
 #endif //USE_MEMTRACK
 
 	return 0;

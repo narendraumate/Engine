@@ -43,10 +43,10 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 #undef new    // IMPORTANT!
 
 /* ------------------------------------------------------------ */
-/* -------------------- namespace MemTrack -------------------- */
+/* --------------------- namespace Engine --------------------- */
 /* ------------------------------------------------------------ */
 
-namespace MemTrack
+namespace Engine
 {
 
     /* ------------------------------------------------------------ */
@@ -586,7 +586,7 @@ namespace MemTrack
         free(pMemDigestArray);
     }
 
-}    // namespace MemTrack
+}    // namespace Engine
 
 /* ------------------------------------------------------------ */
 /* ---------------------- new and delete ---------------------- */
@@ -596,7 +596,7 @@ namespace MemTrack
 
 void *operator new(size_t size) throw(std::bad_alloc)
 {
-    void *p = MemTrack::TrackMalloc(size);
+    void *p = Engine::TrackMalloc(size);
     if (p == NULL) throw std::bad_alloc();
     return p;
 }
@@ -605,14 +605,14 @@ void *operator new(size_t size) throw(std::bad_alloc)
 
 void operator delete(void *p) throw()
 {
-    MemTrack::TrackFree(p);
+    Engine::TrackFree(p);
 }
 
 /* ---------------------------------------- operator new[] */
 
 void *operator new[](size_t size) throw(std::bad_alloc)
 {
-    void *p = MemTrack::TrackMalloc(size);
+    void *p = Engine::TrackMalloc(size);
     if (p == NULL) throw std::bad_alloc();
     return p;
 }
@@ -621,5 +621,5 @@ void *operator new[](size_t size) throw(std::bad_alloc)
 
 void operator delete[](void *p) throw()
 {
-    MemTrack::TrackFree(p);
+    Engine::TrackFree(p);
 }

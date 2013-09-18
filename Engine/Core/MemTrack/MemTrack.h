@@ -36,7 +36,7 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <typeinfo>
 
-namespace MemTrack
+namespace Engine
 {
     /* ---------------------------------------- class MemStamp */
 
@@ -67,11 +67,11 @@ namespace MemTrack
         return p;
     }
 
-}    // namespace MemTrack
+}    // namespace Engine
 
 /* ---------------------------------------- new macro */
 
-#define MEMTRACK_NEW MemTrack::MemStamp(__FILE__, __LINE__) * new
+#define MEMTRACK_NEW Engine::MemStamp(__FILE__, __LINE__) * new
 #define new MEMTRACK_NEW
 
 #endif    // MemTrack_H_
