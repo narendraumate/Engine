@@ -4,9 +4,8 @@ solution "Application"
 
     -- A project defines one build target
     project "Application"
-        kind "ConsoleApp"
+        kind "WindowedApp"
         language "C++"
-        files { "**.h", "**.cpp" }
  
         configuration "Debug"
             defines { "DEBUG" }
@@ -18,6 +17,10 @@ solution "Application"
 
         configuration "windows"
             targetdir ( "build" )
+            files { "**.h", "**.cpp" }
+            excludes { "**/MacOSX/**" }
 
         configuration "macosx"
-            linkoptions { "-framework OpenGL", "-framework GLUT" }
+            linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
+            files { "**.h", "**.cpp", "**.m", "**.c" }
+            excludes { "**/Windows/**" }
