@@ -16,12 +16,14 @@ namespace Engine
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
 	{
-
+		m_openglFramework = new OpenGLFramework();
+		m_openglFramework->initializeWindow(width, height, applicationName);
 	}
 
 	GlRenderer::~GlRenderer()
 	{
-
+		m_openglFramework->deinitializeWindow();
+		delete m_openglFramework;
 	}
 
 	bool GlRenderer::initialize()
@@ -166,7 +168,7 @@ namespace Engine
 	{
 		
 	}
-	
+
 	void GlRenderer::drawPrimitive()
 	{
 		

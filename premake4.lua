@@ -17,10 +17,10 @@ solution "Application"
 
         configuration "windows"
             targetdir ( "build" )
-            files { "**.h", "**.cpp" }
+            files { "**.h", "**.hpp", "**.c", "**.cpp" }
             excludes { "**/MacOSX/**" }
 
         configuration "macosx"
             linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
-            files { "**.h", "**.cpp", "**.m", "**.c" }
+            files { "**.h", "**.hpp", "**.c", "**.cpp", "**.m", "**.mm" }
             excludes { "**/Windows/**" }

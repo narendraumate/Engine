@@ -15,6 +15,7 @@
 #include <OpenGL/gl.h>
 
 #include "../Renderer.h"
+#include "MacOSX/OpenGLFramework.h"
 
 namespace Engine
 {
@@ -57,6 +58,7 @@ namespace Engine
 	private:
 
 		virtual void drawPrimitive();
+		OpenGLFramework* m_openglFramework;
 
 	};
 
