@@ -1,9 +1,9 @@
 //
-//  Point.cpp
+//  GlShader.cpp
 //  Application
 //
-//  Created by Narendra Umate on 9/13/13.
+//  Created by Narendra Umate on 9/28/13.
 //  Copyright (c) 2013 Narendra Umate. All rights reserved.
 //
 
-#include "Point.h"
+#include "GlShader.h"

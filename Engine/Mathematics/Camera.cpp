@@ -3,7 +3,7 @@
 //  Application
 //
 //  Created by Narendra Umate on 9/12/13.
-//
+//  Copyright (c) 2013 Narendra Umate. All rights reserved.
 //
 
 #include "Camera.h"

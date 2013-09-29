@@ -3,7 +3,7 @@
 //  Application
 //
 //  Created by Narendra Umate on 9/15/13.
-//
+//  Copyright (c) 2013 Narendra Umate. All rights reserved.
 //
 
 #ifndef Application_Header_h
