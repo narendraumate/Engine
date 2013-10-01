@@ -12,20 +12,20 @@ int main(int argc, const char * argv[])
 {
 	char applicationName[9] = "Renderer";
 
-	// Create the system object
+	// Create the renderer object
 #ifdef __APPLE__
 	Engine::Renderer* renderer = new Engine::GlRenderer(800, 600, applicationName);
 #elif _WIN32
 	Engine::Renderer* renderer = new Engine::DxRenderer(800, 600, applicationName);
 #endif
 
-	// Initialize and run the system object
+	// Initialize and run the renderer object
 	if (renderer->initialize())
 	{
 		renderer->run();
 	}
 
-	// Shutdown and release the system object
+	// Shutdown and release the renderer object
 	renderer->shutdown();
 
 	delete renderer;
