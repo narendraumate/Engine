@@ -2,7 +2,8 @@
 #import <OpenGL/OpenGL.h>
 #import <QuartzCore/QuartzCore.h>
  
-@interface OpenGLView : NSOpenGLView {
+@interface OpenGLView : NSOpenGLView
+{
 @private
 	CVDisplayLinkRef displayLink;
 }

@@ -1,9 +1,6 @@
 #include "OpenGLFramework.h"
 #include "OpenGLView.h"
 
-#define NSPIXFMT	NSOpenGLPixelFormat
-#define NSCTX		NSOpenGLContext
-
 @implementation OpenGLView
 
 - (void)awakeFromNib
@@ -19,20 +16,20 @@
 		0
 	};
 
-	NSPIXFMT *pf = [[NSPIXFMT alloc] initWithAttributes:attrs];
+	NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
 
-	if (!pf)
+	if (!pixelFormat)
 	{
 		NSLog(@"No OpenGL pixel format");
 		[NSApp terminate:self];
 	}
 
-	NSCTX* context = [[NSCTX alloc] initWithFormat:pf shareContext:nil];
+	NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
 
-	[self setPixelFormat:pf];
+	[self setPixelFormat:pixelFormat];
 	[self setOpenGLContext:context];
 
-	[pf release];
+	[pixelFormat release];
 	[context release];
 }
 
@@ -61,7 +58,7 @@
 	return cglContext;
 }
 
-- (void)didFinishDrawing: (CGLContextObj) cglContext;
+- (void)didFinishDrawing:(CGLContextObj) cglContext;
 {
 	CGLUnlockContext(cglContext);
 }
@@ -71,8 +68,14 @@
 	CGLContextObj cglContext = [self willStartDrawing];
 	OpenGLFramework::render(cglContext);
 	[self didFinishDrawing:cglContext];
-
 	return kCVReturnSuccess;
+}
+
+- (void)update
+{
+	CGLContextObj cglContext = [self willStartDrawing];
+	[super update];
+	[self didFinishDrawing:cglContext];
 }
 
 - (void)reshape
@@ -80,13 +83,6 @@
 	CGLContextObj cglContext = [self willStartDrawing];
 	[super reshape];
 	OpenGLFramework::reshape(cglContext, [self bounds].size.width, [self bounds].size.height);
-	[self didFinishDrawing:cglContext];
-}
-
-- (void)update
-{
-	CGLContextObj cglContext = [self willStartDrawing];
-	[super update];
 	[self didFinishDrawing:cglContext];
 }
 

@@ -20,6 +20,12 @@
 	[self applyAttributesBasedOnState];
 }
 
+- (void)dealloc
+{
+	[self applyFullscreenAttribute:NO];
+	[super dealloc];
+}
+
 - (void)initAttributes
 {
 	self.fullscreen = NO;
@@ -27,9 +33,14 @@
 	self.windowedTitle = [self title];
 }
 
-- (void)applyAttributes:(BOOL)state
+- (void)applyAttributesBasedOnState
 {
-	if (state)
+	[self applyFullscreenAttribute:self.isFullscreen];
+}
+
+- (void)applyFullscreenAttribute:(BOOL)fullscreen
+{
+	if (fullscreen)
 	{
 		[NSApp setPresentationOptions: _HIDDEN_PRESENTATION];
 		[self setHasShadow: NO];
@@ -49,30 +60,20 @@
 	}
 }
 
-- (void)centerOnScreen
-{
-	NSRect winFrame = [self frame];
-	NSRect screenFrame = [[self screen] frame];
-	CGFloat x = NSWidth(screenFrame) /2 - NSWidth(winFrame) /2;
-	CGFloat y = NSHeight(screenFrame)/2 - NSHeight(winFrame)/2;
-	[self setFrame:NSMakeRect(x, y, NSWidth(winFrame), NSHeight(winFrame))
-		   display:YES];
-}
-
-- (void)applyAttributesBasedOnState
-{
-	[self applyAttributes:self.isFullscreen];
-}
-
 - (IBAction)toggleWindowFullscreen:(id)sender
 {
 	self.fullscreen = !self.isFullscreen;
 	[self applyAttributesBasedOnState];
 }
 
-- (void)dealloc
+- (void)centerOnScreen
 {
-	[self applyAttributes:NO];
-	[super dealloc];
+	NSRect windowFrame = [self frame];
+	NSRect screenFrame = [[self screen] frame];
+	CGFloat x = NSWidth(screenFrame) /2 - NSWidth(windowFrame) /2;
+	CGFloat y = NSHeight(screenFrame)/2 - NSHeight(windowFrame)/2;
+	[self setFrame:NSMakeRect(x, y, NSWidth(windowFrame), NSHeight(windowFrame))
+		   display:YES];
 }
+
 @end

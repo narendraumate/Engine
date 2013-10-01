@@ -36,6 +36,7 @@ void OpenGLFramework::initializeWindow(const int& width, const int& height, cons
 	[window centerOnScreen];
 	[window setTitle:nsApplicationName];
 	[window awakeFromNib];
+	[window toggleWindowFullscreen:nil];
 
 	id view = [[[OpenGLView alloc] init] autorelease];
 	[window setContentView:view];
