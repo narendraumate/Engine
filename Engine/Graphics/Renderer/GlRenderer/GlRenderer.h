@@ -14,6 +14,7 @@
 #include <GLUT/GLUT.h>
 #include <OpenGL/gl.h>
 
+#include "../../../Core/callback/callback.h"
 #include "../Renderer.h"
 #include "MacOSX/OpenGLFramework.h"
 
@@ -31,6 +32,9 @@ namespace Engine
 		virtual bool initialize();
 		virtual void run();
 		virtual void shutdown();
+
+		virtual void setContextObj(const ContextObj& contextObj);
+		virtual ContextObj getContextObj();
 
 		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h);
 		virtual void getViewport(int& xPos, int& yPos, int& w, int& h) const;
@@ -58,8 +62,9 @@ namespace Engine
 	private:
 
 		virtual void drawPrimitive();
-		OpenGLFramework* m_openglFramework;
 
+		// GlRenderer Members
+		OpenGLFramework* m_openglFramework;
 	};
 
 }

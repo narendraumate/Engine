@@ -41,6 +41,16 @@ namespace Engine
 		//
 	}
 
+	void Renderer::setContextObj(const ContextObj& contextObj)
+	{
+		m_contextObj = contextObj;
+	}
+
+	ContextObj Renderer::getContextObj()
+	{
+		return m_contextObj;
+	}
+
 	inline int Renderer::getWidth() const
 	{
 		return m_width;

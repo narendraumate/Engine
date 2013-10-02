@@ -16,7 +16,7 @@ namespace Engine
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
 	{
-		m_openglFramework = new OpenGLFramework();
+		m_openglFramework = new OpenGLFramework(makeFunctor((CBFunctor1<ContextObj>*)0, *this, &Renderer::setContextObj));
 		m_openglFramework->initializeWindow(width, height, applicationName);
 	}
 
@@ -39,6 +39,16 @@ namespace Engine
 	void GlRenderer::shutdown()
 	{
 
+	}
+
+	void GlRenderer::setContextObj(const ContextObj& contextObj)
+	{
+		m_contextObj = contextObj;
+	}
+
+	ContextObj GlRenderer::getContextObj()
+	{
+		return m_contextObj;
 	}
 
 	void GlRenderer::setViewport(const int& xPos, const int& yPos, const int& w, const int& h)
@@ -173,7 +183,7 @@ namespace Engine
 	{
 		
 	}
-	
+
 }
 
 #endif //__APPLE__

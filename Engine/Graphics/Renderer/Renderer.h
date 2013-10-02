@@ -16,6 +16,13 @@
 #include "../../Mathematics/Color.h"
 #include "../../Mathematics/Matrix.h"
 
+#if defined __APPLE__
+#include <OpenGL/OpenGL.h>
+#define ContextObj CGLContextObj
+#elif defined _WIN32
+#define ContextObj WGLContextObj
+#endif //_WIN32
+
 namespace Engine
 {
 
@@ -30,6 +37,9 @@ namespace Engine
 		virtual bool initialize() = 0;
 		virtual void run() = 0;
 		virtual void shutdown() = 0;
+
+		virtual void setContextObj(const ContextObj& contextObj) = 0;
+		virtual ContextObj getContextObj() = 0;
 
 		inline int getWidth() const;
 		inline int getHeight() const;
@@ -86,6 +96,7 @@ namespace Engine
 
 	protected:
 
+		ContextObj m_contextObj;
 		int m_width;
 		int m_height;
 		char* m_applicationName;

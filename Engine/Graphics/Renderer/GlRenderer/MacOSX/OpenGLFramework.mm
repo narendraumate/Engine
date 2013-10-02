@@ -9,6 +9,13 @@
 #include <iostream>
 #include <vector>
 
+OpenGLFramework::OpenGLFramework(const CBFunctor1<CGLContextObj> &uponInitDoThis)
+:	setContextObj(uponInitDoThis)
+{}
+
+OpenGLFramework::~OpenGLFramework()
+{}
+
 void OpenGLFramework::initializeWindow(const int& width, const int& height, const char* applicationName)
 {
 	@autoreleasepool
@@ -36,7 +43,7 @@ void OpenGLFramework::initializeWindow(const int& width, const int& height, cons
 	[window centerOnScreen];
 	[window setTitle:nsApplicationName];
 	[window awakeFromNib];
-	[window toggleWindowFullscreen:nil];
+	//[window toggleWindowFullscreen:nil];
 
 	id view = [[[OpenGLView alloc] init] autorelease];
 	[window setContentView:view];
@@ -45,6 +52,14 @@ void OpenGLFramework::initializeWindow(const int& width, const int& height, cons
 	[window makeKeyAndOrderFront:nil];
 	[NSApp activateIgnoringOtherApps:YES];
 	[NSApp run];
+	}
+}
+
+void OpenGLFramework::passbackContext(const CGLContextObj& contextObj)
+{
+	@autoreleasepool
+	{
+		setContextObj(contextObj);
 	}
 }
 
