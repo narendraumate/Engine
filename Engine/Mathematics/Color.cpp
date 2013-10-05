@@ -15,37 +15,37 @@ namespace Engine
 
 	Color4f::Color4f(const Color &color)
 #if defined __LITTLE_ENDIAN__	//  R8G8B8A8 Reverse
-	:	r((float)((color >>  0) & 0x000000FF) / 255.0f),
-		g((float)((color >>  8) & 0x000000FF) / 255.0f),
-		b((float)((color >> 16) & 0x000000FF) / 255.0f),
-		a((float)((color >> 24) & 0x000000FF) / 255.0f)
+	:	r((float)((color >>  0) & 0x000000FF) / 255.0f)
+	,	g((float)((color >>  8) & 0x000000FF) / 255.0f)
+	,	b((float)((color >> 16) & 0x000000FF) / 255.0f)
+	,	a((float)((color >> 24) & 0x000000FF) / 255.0f)
 #elif defined __BIG_ENDIAN__	//  A8B8G8R8 Straight
-	:	a((float)((color >>  0) & 0x000000FF) / 255.0f),
-		b((float)((color >>  8) & 0x000000FF) / 255.0f),
-		g((float)((color >> 16) & 0x000000FF) / 255.0f),
-		r((float)((color >> 24) & 0x000000FF) / 255.0f)
+	:	a((float)((color >>  0) & 0x000000FF) / 255.0f)
+	,	b((float)((color >>  8) & 0x000000FF) / 255.0f)
+	,	g((float)((color >> 16) & 0x000000FF) / 255.0f)
+	,	r((float)((color >> 24) & 0x000000FF) / 255.0f)
 #endif
 	{ }
 
 	Color4f::Color4f(const float &r, const float &g, const float &b, const float &a)
-	:	r(r),
-		g(g),
-		b(b),
-		a(a)
+	:	r(r)
+	,	g(g)
+	,	b(b)
+	,	a(a)
 	{ }
 
 	Color4f::Color4f(const Vec3 &v, const float &a)
-	:	r(v.x),
-		g(v.y),
-		b(v.z),
-		a(  a)
+	:	r(v.x)
+	,	g(v.y)
+	,	b(v.z)
+	,	a(  a)
 	{ }
 
 	Color4f::Color4f(const Vec4 &v)
-	:	r(v.x),
-		g(v.y),
-		b(v.z),
-		a(v.w)
+	:	r(v.x)
+	,	g(v.y)
+	,	b(v.z)
+	,	a(v.w)
 	{ }
 
 	Color4f& Color4f::operator=(const Color4f &u)

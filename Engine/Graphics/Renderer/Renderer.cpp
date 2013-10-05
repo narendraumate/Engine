@@ -12,8 +12,8 @@ namespace Engine
 {
 
 	Renderer::Renderer(const int& width, const int& height, const char* applicationName)
-	:	m_width(width),
-		m_height(height)
+	:	m_width(width)
+	,	m_height(height)
 	{
 		m_applicationName = new char[strlen(applicationName) + 1];
 		strcpy(m_applicationName, applicationName);

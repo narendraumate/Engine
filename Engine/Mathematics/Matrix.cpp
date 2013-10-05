@@ -24,14 +24,14 @@ namespace Engine
 	//  Mat2
 
 	Mat2::Mat2(void)
-	:	d00(1.0f), d01(0.0f),
-	d10(0.0f), d11(1.0f)
+	:	d00(1.0f), d01(0.0f)
+	,	d10(0.0f), d11(1.0f)
 	{ }
 
 	Mat2::Mat2(const float &m00, const float &m01,
 			   const float &m10, const float &m11)
-	:	d00(m00), d01(m01),
-	d10(m10), d11(m11)
+	:	d00(m00), d01(m01)
+	,	d10(m10), d11(m11)
 	{ }
 
 	Mat2 Mat2::identity()
@@ -95,17 +95,17 @@ namespace Engine
 	//  Mat3
 
 	Mat3::Mat3(void)
-	:	d00(1.0f), d01(0.0f), d02(0.0f),
-	d10(0.0f), d11(1.0f), d12(0.0f),
-	d20(0.0f), d21(0.0f), d22(1.0f)
+	:	d00(1.0f), d01(0.0f), d02(0.0f)
+	,	d10(0.0f), d11(1.0f), d12(0.0f)
+	,	d20(0.0f), d21(0.0f), d22(1.0f)
 	{ }
 
 	Mat3::Mat3(const float &m00, const float &m01, const float &m02,
 			   const float &m10, const float &m11, const float &m12,
 			   const float &m20, const float &m21, const float &m22)
-	:	d00(m00), d01(m01), d02(m02),
-	d10(m10), d11(m11), d12(m12),
-	d20(m20), d21(m21), d22(m22)
+	:	d00(m00), d01(m01), d02(m02)
+	,	d10(m10), d11(m11), d12(m12)
+	,	d20(m20), d21(m21), d22(m22)
 	{ }
 
 	Mat3 Mat3::identity()
@@ -224,20 +224,20 @@ namespace Engine
 	//  Mat4
 
 	Mat4::Mat4(void)
-	:	d00(1.0f), d01(0.0f), d02(0.0f), d03(0.0f),
-	d10(0.0f), d11(1.0f), d12(0.0f), d13(0.0f),
-	d20(0.0f), d21(0.0f), d22(1.0f), d23(0.0f),
-	d30(0.0f), d31(0.0f), d32(0.0f), d33(1.0f)
+	:	d00(1.0f), d01(0.0f), d02(0.0f), d03(0.0f)
+	,	d10(0.0f), d11(1.0f), d12(0.0f), d13(0.0f)
+	,	d20(0.0f), d21(0.0f), d22(1.0f), d23(0.0f)
+	,	d30(0.0f), d31(0.0f), d32(0.0f), d33(1.0f)
 	{ }
 
 	Mat4::Mat4(const float &m00,const float &m01,const float &m02,const float &m03,
 			   const float &m10,const float &m11,const float &m12,const float &m13,
 			   const float &m20,const float &m21,const float &m22,const float &m23,
 			   const float &m30,const float &m31,const float &m32,const float &m33)
-	:	d00(m00), d01(m01), d02(m02), d03(m03),
-	d10(m10), d11(m11), d12(m12), d13(m13),
-	d20(m20), d21(m21), d22(m22), d23(m23),
-	d30(m30), d31(m31), d32(m32), d33(m33)
+	:	d00(m00), d01(m01), d02(m02), d03(m03)
+	,	d10(m10), d11(m11), d12(m12), d13(m13)
+	,	d20(m20), d21(m21), d22(m22), d23(m23)
+	,	d30(m30), d31(m31), d32(m32), d33(m33)
 	{ }
 
 	Mat4 Mat4::identity()

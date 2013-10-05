@@ -149,13 +149,13 @@ namespace Engine
 	//  Vec2
 
 	Vec2::Vec2(void)
-	:	x(0.0f),
-		y(0.0f)
+	:	x(0.0f)
+	,	y(0.0f)
 	{ }
 
 	Vec2::Vec2(const float &x, const float &y)
-	:	x(x),
-		y(y)
+	:	x(x)
+	,	y(y)
 	{ }
 
 	void Vec2::set(const float &x, const float &y)
@@ -293,15 +293,15 @@ namespace Engine
 	//  Vec3
 
 	Vec3::Vec3(void)
-	:	x(0.0f),
-		y(0.0f),
-		z(0.0f)
+	:	x(0.0f)
+	,	y(0.0f)
+	,	z(0.0f)
 	{ }
 
 	Vec3::Vec3(const float &x, const float &y, const float &z)
-	:	x(x),
-		y(y),
-		z(z)
+	:	x(x)
+	,	y(y)
+	,	z(z)
 	{ }
 
 	void Vec3::set(const float &x, const float &y, const float &z)
@@ -446,17 +446,17 @@ namespace Engine
 	//  Vec4
 
 	Vec4::Vec4(void)
-	:	x(0.0f),
-		y(0.0f),
-		z(0.0f),
-		w(0.0f)
+	:	x(0.0f)
+	,	y(0.0f)
+	,	z(0.0f)
+	,	w(0.0f)
 	{ }
 
 	Vec4::Vec4(const float &x, const float &y, const float &z, const float &w)
-	:	x(x),
-		y(y),
-		z(z),
-		w(w)
+	:	x(x)
+	,	y(y)
+	,	z(z)
+	,	w(w)
 	{ }
 
 	void Vec4::set(const float &x, const float &y, const float &z, const float &w)
