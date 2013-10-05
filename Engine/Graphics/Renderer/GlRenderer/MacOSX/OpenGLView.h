@@ -6,5 +6,9 @@
 {
 @private
 	CVDisplayLinkRef displayLink;
+	Engine::Renderer* m_renderer;
 }
+
+- (void)setRenderer:(Engine::Renderer*) renderer;
+
 @end

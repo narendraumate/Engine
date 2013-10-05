@@ -3,6 +3,11 @@
 
 @implementation OpenGLView
 
+- (void)setRenderer:(Engine::Renderer*) renderer
+{
+	m_renderer = renderer;
+}
+
 - (void)awakeFromNib
 {
 	NSOpenGLPixelFormatAttribute attrs[] = {
@@ -45,7 +50,8 @@
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext,
 													  cglPixelFormat);
 
-	OpenGLFramework::initializeOpenGL(cglContext);
+	m_renderer->setContextObj(cglContext);
+	m_renderer->initialize();
 
 	CVDisplayLinkStart(displayLink);
 }
@@ -66,7 +72,12 @@
 - (CVReturn)render
 {
 	CGLContextObj cglContext = [self willStartDrawing];
-	OpenGLFramework::render(cglContext);
+
+	if (m_renderer->preDraw())
+	{
+		m_renderer->postDraw();
+	}
+
 	[self didFinishDrawing:cglContext];
 	return kCVReturnSuccess;
 }
@@ -82,14 +93,18 @@
 {
 	CGLContextObj cglContext = [self willStartDrawing];
 	[super reshape];
-	OpenGLFramework::reshape(cglContext, [self bounds].size.width, [self bounds].size.height);
+
+	m_renderer->resize([self bounds].size.width, [self bounds].size.height);
+
 	[self didFinishDrawing:cglContext];
 }
 
 - (void)dealloc
 {
 	CVDisplayLinkRelease(displayLink);
-	OpenGLFramework::deinitializeOpenGL((CGLContextObj)[[self openGLContext] CGLContextObj]);
+
+	m_renderer->shutdown();
+
 	[super dealloc];
 }
 

@@ -9,14 +9,23 @@
 #ifdef __APPLE__
 
 #include "GlRenderer.h"
+//----------------------------------------------------------------------------//
+static const float vertexPositions[] =
+{
+	0.75f, 0.75f, 0.0f, 1.0f,
+	0.75f, -0.75f, 0.0f, 1.0f,
+	-0.75f, -0.75f, 0.0f, 1.0f,
+};
 
+static GLuint position_buffer_object, vertex_array_object, shader_program;
+//----------------------------------------------------------------------------//
 namespace Engine
 {
 
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
 	{
-		m_openglFramework = new OpenGLFramework(makeFunctor((CBFunctor1<ContextObj>*)0, *this, &Renderer::setContextObj));
+		m_openglFramework = new OpenGLFramework(this, makeFunctor((CBFunctor1<ContextObj>*)0, *this, &Renderer::setContextObj));
 		m_openglFramework->initializeWindow(width, height, applicationName);
 	}
 
@@ -28,6 +37,20 @@ namespace Engine
 
 	bool GlRenderer::initialize()
 	{
+//----------------------------------------------------------------------------//
+		glGenBuffers(1, &position_buffer_object);
+		glBindBuffer(GL_ARRAY_BUFFER, position_buffer_object);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*12, vertexPositions, GL_STATIC_DRAW);
+
+		std::vector<GLuint> shaders;
+		shaders.push_back(Shader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));
+		shaders.push_back(Shader::LoadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
+		shader_program = Shader::CreateProgram(shaders);
+		std::for_each(shaders.begin(), shaders.end(), glDeleteShader);
+
+		glGenVertexArrays(1, &vertex_array_object);
+		glBindVertexArray(vertex_array_object);
+//----------------------------------------------------------------------------//
 		return true;
 	}
 
@@ -161,6 +184,20 @@ namespace Engine
 
 	bool GlRenderer::preDraw()
 	{
+//----------------------------------------------------------------------------//
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shader_program);
+		glBindBuffer(GL_ARRAY_BUFFER, position_buffer_object);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDisableVertexAttribArray(0);
+		glUseProgram(0);
+
+		CGLFlushDrawable(m_contextObj);
+//----------------------------------------------------------------------------//
 		return true;
 	}
 

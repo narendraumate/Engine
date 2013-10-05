@@ -2,6 +2,7 @@
 #include <OpenGL/gl3.h>
 #include "Shader.h"
 #include "../../../../Core/callback/callback.h"
+#include "../../../Renderer/Renderer.h"
 
 #ifndef __Application__OpenGLFramework__
 #define __Application__OpenGLFramework__
@@ -9,19 +10,15 @@
 class OpenGLFramework
 {
 public:
-	OpenGLFramework(const CBFunctor1<CGLContextObj> &uponInitDoThis);
+	OpenGLFramework(Engine::Renderer* renderer, const CBFunctor1<CGLContextObj> &uponInitDoThis);
 	~OpenGLFramework();
 	void initializeWindow(const int& width, const int& height, const char* applicationName);
 	void passbackContext(const CGLContextObj& contextObj);
 	void deinitializeWindow();
 
-	static void initializeOpenGL(const CGLContextObj& contextObject);
-	static void deinitializeOpenGL(const CGLContextObj& contextObject);
-	static void render(const CGLContextObj& contextObject);
-	static void reshape(const CGLContextObj& contextObject, const int& width, const int& height);
-
 private:
-	CBFunctor1<CGLContextObj> setContextObj;
+	Engine::Renderer* m_renderer;
+	CBFunctor1<CGLContextObj> m_setContextObj;
 };
 
 #endif /* defined(__Application__OpenGLFramework__) */
