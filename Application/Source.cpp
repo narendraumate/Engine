@@ -8,15 +8,15 @@
 
 #include "Header.h"
 
-int main(int argc, const char * argv[])
+int runApplication(int argc, const char * argv[])
 {
 	char applicationName[9] = "Renderer";
 
 	// Create the renderer object
 #ifdef __APPLE__
-	Engine::Renderer* renderer = new Engine::GlRenderer(800, 600, applicationName);
+	std::auto_ptr<Engine::Renderer> renderer(new Engine::GlRenderer(800, 600, applicationName));
 #elif _WIN32
-	Engine::Renderer* renderer = new Engine::DxRenderer(800, 600, applicationName);
+	std::auto_ptr<Engine::Renderer> renderer(new Engine::DxRenderer(800, 600, applicationName));
 #endif
 
 	// Initialize and run the renderer object
@@ -28,13 +28,22 @@ int main(int argc, const char * argv[])
 	// Shutdown and release the renderer object
 	renderer->shutdown();
 
-	delete renderer;
-
-#ifdef USE_MEMTRACK
-	Engine::TrackDumpBlocks();
-	
-	Engine::TrackListMemoryUsage();
-#endif //USE_MEMTRACK
+	// Delete not required for auto_ptr
+	//delete renderer;
 
 	return 0;
 }
+
+int main(int argc, const char * argv[])
+{
+	int result = runApplication(argc, argv);
+
+#ifdef USE_MEMTRACK
+	Engine::TrackDumpBlocks();
+
+	Engine::TrackListMemoryUsage();
+#endif //USE_MEMTRACK
+
+	return result;
+}
+

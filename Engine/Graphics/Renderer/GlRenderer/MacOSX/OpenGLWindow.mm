@@ -1,12 +1,12 @@
 #import "OpenGLWindow.h"
 
 #define _HIDDEN_PRESENTATION	NSApplicationPresentationHideDock|\
-								NSApplicationPresentationHideMenuBar
+NSApplicationPresentationHideMenuBar
 #define _DEFAULT_PRESENTATION	NSApplicationPresentationDefault
 
 #define _BORDERLESS_MASK	NSBorderlessWindowMask
 #define _DEFAULT_MASK		NSTitledWindowMask|NSClosableWindowMask|\
-							NSMiniaturizableWindowMask|NSResizableWindowMask
+NSMiniaturizableWindowMask|NSResizableWindowMask
 
 @implementation OpenGLWindow
 
@@ -25,6 +25,17 @@
 	[self deinitAttributes];
 	[self applyAttributesBasedOnState];
 	[super dealloc];
+}
+
+- (BOOL)windowShouldClose:(id)sender
+{
+	[self performClose:sender];
+	return YES;
+}
+
+- (void)performClose:(id)sender
+{
+	[self close];
 }
 /*----------------------------------------------------------------------------*/
 - (void)initAttributes

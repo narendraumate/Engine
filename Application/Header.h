@@ -9,6 +9,9 @@
 #ifndef Application_Header_h
 #define Application_Header_h
 
+#include <iostream>
+#include <memory>
+
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
 
@@ -17,6 +20,5 @@
 #ifdef USE_MEMTRACK
 #include "../Engine/Core/MemTrack/MemTrack.h"
 #endif //USE_MEMTRACK
-
 
 #endif
