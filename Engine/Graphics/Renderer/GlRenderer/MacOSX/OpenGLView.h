@@ -9,6 +9,16 @@
 	Engine::Renderer* m_renderer;
 }
 
+- (CVReturn)render;
+- (CGLContextObj)willStartDrawing;
+- (void)didFinishDrawing:(CGLContextObj) cglContext;
 - (void)setRenderer:(Engine::Renderer*) renderer;
+
+static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
+									const CVTimeStamp* now,
+									const CVTimeStamp* outputTime,
+									CVOptionFlags flagsIn,
+									CVOptionFlags* flagsOut,
+									void* displayLinkContext);
 
 @end

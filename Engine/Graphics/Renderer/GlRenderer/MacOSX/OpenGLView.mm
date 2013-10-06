@@ -3,11 +3,6 @@
 
 @implementation OpenGLView
 
-- (void)setRenderer:(Engine::Renderer*) renderer
-{
-	m_renderer = renderer;
-}
-
 - (void)awakeFromNib
 {
 	NSOpenGLPixelFormatAttribute attrs[] = {
@@ -56,32 +51,6 @@
 	CVDisplayLinkStart(displayLink);
 }
 
-- (CGLContextObj)willStartDrawing
-{
-	CGLContextObj cglContext = (CGLContextObj)[[self openGLContext] CGLContextObj];
-	CGLSetCurrentContext(cglContext);
-	CGLLockContext(cglContext);
-	return cglContext;
-}
-
-- (void)didFinishDrawing:(CGLContextObj) cglContext;
-{
-	CGLUnlockContext(cglContext);
-}
-
-- (CVReturn)render
-{
-	CGLContextObj cglContext = [self willStartDrawing];
-
-	if (m_renderer->preDraw())
-	{
-		m_renderer->postDraw();
-	}
-
-	[self didFinishDrawing:cglContext];
-	return kCVReturnSuccess;
-}
-
 - (void)update
 {
 	CGLContextObj cglContext = [self willStartDrawing];
@@ -112,10 +81,44 @@
 {
 	[self render];
 }
+/*----------------------------------------------------------------------------*/
+- (CVReturn)render
+{
+	CGLContextObj cglContext = [self willStartDrawing];
 
+	if (m_renderer->preDraw())
+	{
+		m_renderer->postDraw();
+	}
+
+	[self didFinishDrawing:cglContext];
+	return kCVReturnSuccess;
+}
+
+- (CGLContextObj)willStartDrawing
+{
+	CGLContextObj cglContext = (CGLContextObj)[[self openGLContext] CGLContextObj];
+	CGLSetCurrentContext(cglContext);
+	CGLLockContext(cglContext);
+	return cglContext;
+}
+
+- (void)didFinishDrawing:(CGLContextObj) cglContext
+{
+	CGLUnlockContext(cglContext);
+}
+
+- (void)setRenderer:(Engine::Renderer*) renderer
+{
+	m_renderer = renderer;
+}
+/*----------------------------------------------------------------------------*/
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
-const CVTimeStamp* now, const CVTimeStamp* outputTime, CVOptionFlags flagsIn,
-CVOptionFlags* flagsOut, void* displayLinkContext)
+									const CVTimeStamp* now,
+									const CVTimeStamp* outputTime,
+									CVOptionFlags flagsIn,
+									CVOptionFlags* flagsOut,
+									void* displayLinkContext)
 {
 	[(OpenGLView*)displayLinkContext render];
 	return kCVReturnSuccess;

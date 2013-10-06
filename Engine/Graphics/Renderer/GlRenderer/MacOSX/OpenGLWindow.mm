@@ -22,15 +22,21 @@
 
 - (void)dealloc
 {
-	[self applyFullscreenAttribute:NO];
+	[self deinitAttributes];
+	[self applyAttributesBasedOnState];
 	[super dealloc];
 }
-
+/*----------------------------------------------------------------------------*/
 - (void)initAttributes
 {
 	self.fullscreen = NO;
 	self.windowedFrame = [self frame];
 	self.windowedTitle = [self title];
+}
+
+- (void)deinitAttributes
+{
+	self.fullscreen = NO;
 }
 
 - (void)applyAttributesBasedOnState
