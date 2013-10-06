@@ -14,7 +14,7 @@
 #include <GLUT/GLUT.h>
 #include <OpenGL/gl.h>
 
-#include "../../../Core/callback/callback.h"
+#include "../../../External/callback/callback.h"
 #include "../Renderer.h"
 #include "MacOSX/OpenGLFramework.h"
 

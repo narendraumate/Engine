@@ -18,7 +18,7 @@
 #define USE_MEMTRACK
 
 #ifdef USE_MEMTRACK
-#include "../Engine/Core/MemTrack/MemTrack.h"
+#include "../Engine/External/MemTrack/MemTrack.h"
 #endif //USE_MEMTRACK
 
 #endif
