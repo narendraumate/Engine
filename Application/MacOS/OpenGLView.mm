@@ -1,5 +1,6 @@
-#include "OpenGLFramework.h"
+#include "MacMain.h"
 #include "OpenGLView.h"
+#include "../Main.h"
 
 @implementation OpenGLView
 
@@ -44,9 +45,8 @@
 	CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext,
 													  cglPixelFormat);
-
-	m_renderer->setContextObj(cglContext);
-	m_renderer->initialize();
+	initializeMain();	// TODO: Pass Width, Height and ApplicationName
+	getRenderer()->setContextObj(cglContext);
 
 	CVDisplayLinkStart(displayLink);
 }
@@ -63,7 +63,7 @@
 	CGLContextObj cglContext = [self willStartDrawing];
 	[super reshape];
 
-	m_renderer->resize([self bounds].size.width, [self bounds].size.height);
+	getRenderer()->resize([self bounds].size.width, [self bounds].size.height);
 
 	[self didFinishDrawing:cglContext];
 }
@@ -72,7 +72,7 @@
 {
 	CVDisplayLinkRelease(displayLink);
 
-	m_renderer->shutdown();
+	deinitializeMain();
 
 	[super dealloc];
 }
@@ -86,10 +86,7 @@
 {
 	CGLContextObj cglContext = [self willStartDrawing];
 
-	if (m_renderer->preDraw())
-	{
-		m_renderer->postDraw();
-	}
+	runMain();
 
 	[self didFinishDrawing:cglContext];
 	return kCVReturnSuccess;
@@ -106,11 +103,6 @@
 - (void)didFinishDrawing:(CGLContextObj) cglContext
 {
 	CGLUnlockContext(cglContext);
-}
-
-- (void)setRenderer:(Engine::Renderer*) renderer
-{
-	m_renderer = renderer;
 }
 /*----------------------------------------------------------------------------*/
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,

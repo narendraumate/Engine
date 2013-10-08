@@ -25,14 +25,10 @@ namespace Engine
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
 	{
-		m_openglFramework = new OpenGLFramework(this, makeFunctor((CBFunctor1<ContextObj>*)0, *this, &Renderer::setContextObj));
-		m_openglFramework->initializeWindow(width, height, applicationName);
 	}
 
 	GlRenderer::~GlRenderer()
 	{
-		m_openglFramework->deinitializeWindow();
-		delete m_openglFramework;
 	}
 
 	bool GlRenderer::initialize()
@@ -184,6 +180,11 @@ namespace Engine
 
 	bool GlRenderer::preDraw()
 	{
+		return true;
+	}
+
+	void GlRenderer::postDraw()
+	{
 //----------------------------------------------------------------------------//
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -198,12 +199,6 @@ namespace Engine
 
 		CGLFlushDrawable(m_contextObj);
 //----------------------------------------------------------------------------//
-		return true;
-	}
-
-	void GlRenderer::postDraw()
-	{
-
 	}
 
 	void GlRenderer::draw(const unsigned char* screenBuffer, const bool& reflectY)

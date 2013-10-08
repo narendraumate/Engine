@@ -13,10 +13,11 @@
 
 #include <GLUT/GLUT.h>
 #include <OpenGL/gl.h>
+#include <vector>
 
 #include "../../../External/callback/callback.h"
 #include "../Renderer.h"
-#include "MacOS/OpenGLFramework.h"
+#include "Shader.h"
 
 namespace Engine
 {
@@ -63,8 +64,6 @@ namespace Engine
 
 		virtual void drawPrimitive();
 
-		// GlRenderer Members
-		OpenGLFramework* m_openglFramework;
 	};
 
 }
