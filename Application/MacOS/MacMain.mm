@@ -1,55 +1,62 @@
-#import <Cocoa/Cocoa.h>
-#import <OpenGL/OpenGL.h>
-#import <QuartzCore/QuartzCore.h>
+//
+//  MacMain.m
+//  Application
+//
+//  Created by Narendra Umate on 10/8/13.
+//
+//
 
-#import "OpenGLView.h"
-#import "OpenGLWindow.h"
 #import "MacMain.h"
 
-#include <iostream>
-#include <vector>
+@implementation MacMain
 
-void initializeWindow(const int& width, const int& height, const char* applicationName)
+int main(int argc, char *argv[])
 {
-	@autoreleasepool
-	{
-		NSString* nsApplicationName = [[[NSString alloc] initWithUTF8String:applicationName] autorelease];
-		[NSApplication sharedApplication];
-		[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+	char applicationName[] = "Renderer";
+	int applicationWidth = 800;
+	int applicationHeight = 600;
+/*----------------------------------------------------------------------------*/
+    // create an autorelease pool
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
-		id menubar = [[NSMenu new] autorelease];
-		id appMenuItem = [[NSMenuItem new] autorelease];
-		[menubar addItem:appMenuItem];
-		[NSApp setMainMenu:menubar];
-		id appMenu = [[NSMenu new] autorelease];
-		id quitTitle = [@"Quit " stringByAppendingString:nsApplicationName];
-		id quitMenuItem = [[[NSMenuItem alloc] initWithTitle:quitTitle
-													  action:@selector(terminate:)
-											   keyEquivalent:@"q"] autorelease];
-		[appMenu addItem:quitMenuItem];
-		[appMenuItem setSubmenu:appMenu];
+    // make sure the application singleton has been instantiated
+    NSApplication* application = [NSApplication sharedApplication];
 
-		id window = [[[OpenGLWindow alloc] initWithContentRect:NSMakeRect(0, 0, width, height)
-													 styleMask:NSTitledWindowMask
-													   backing:NSBackingStoreBuffered
-														 defer:NO] autorelease];
-		[window centerOnScreen];
-		[window setTitle:nsApplicationName];
-		[window awakeFromNib];
-		//[window toggleWindowFullscreen:nil];
+	[application setPresentationOptions:NSApplicationPresentationDefault];
+	[application setActivationPolicy:NSApplicationActivationPolicyRegular];
+/*----------------------------------------------------------------------------*/
+	NSString* nsApplicationName = [[[NSString alloc] initWithUTF8String:applicationName] autorelease];
+	[NSApplication sharedApplication];
+	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
-		id view = [[[OpenGLView alloc] 	init] autorelease];
-		[window setContentView:view];
-		[view awakeFromNib];
+	id menubar = [[NSMenu new] autorelease];
+	id appMenuItem = [[NSMenuItem new] autorelease];
+	[menubar addItem:appMenuItem];
+	[NSApp setMainMenu:menubar];
+	id appMenu = [[NSMenu new] autorelease];
+	id quitTitle = [@"Quit " stringByAppendingString:nsApplicationName];
+	id quitMenuItem = [[[NSMenuItem alloc] initWithTitle:quitTitle
+												  action:@selector(terminate:)
+										   keyEquivalent:@"q"] autorelease];
+	[appMenu addItem:quitMenuItem];
+	[appMenuItem setSubmenu:appMenu];
+/*----------------------------------------------------------------------------*/
+	// instantiate our application delegate
+    id applicationDelegate = [[[AppDelegate alloc] initWithTitle:nsApplicationName
+														   width:applicationWidth
+														  height:applicationHeight] autorelease];
 
-		[window makeKeyAndOrderFront:nil];
-		[NSApp activateIgnoringOtherApps:YES];
-		[NSApp run];
-	}
+    // assign our delegate to the NSApplication
+    [application setDelegate:applicationDelegate];
+
+    // call the run method of our application
+    [application run];
+
+    // drain the autorelease pool
+    [pool drain];
+
+    // execution never gets here ..
+    return 0;
 }
 
-int main(int argc, const char * argv[])
-{
-	initializeWindow(800, 600, "Renderer");
-	return 0;
-}
+@end

@@ -1,11 +1,14 @@
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl3.h>
-#include "Shader.h"
+//
+//  MacMain.h
+//  Application
+//
+//  Created by Narendra Umate on 10/8/13.
+//
+//
 
-#ifndef __Application__MacMain__
-#define __Application__MacMain__
+#import <Cocoa/Cocoa.h>
+#import "AppDelegate.h"
 
-void initializeWindow(const int& width, const int& height, const char* applicationName);
-int main(int argc, const char * argv[]);
+@interface MacMain : NSObject
 
-#endif /* defined(__Application__MacMain__) */
+@end
