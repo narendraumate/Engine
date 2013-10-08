@@ -9,7 +9,7 @@
 #ifndef __Application__Shader__
 #define __Application__Shader__
 
-#include "MacOSX/OpenGLFramework.h"
+#include "MacOS/OpenGLFramework.h"
 
 #include <string>
 #include <fstream>

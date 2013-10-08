@@ -16,7 +16,7 @@
 
 #include "../../../External/callback/callback.h"
 #include "../Renderer.h"
-#include "MacOSX/OpenGLFramework.h"
+#include "MacOS/OpenGLFramework.h"
 
 namespace Engine
 {
