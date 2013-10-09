@@ -19,7 +19,7 @@ void initializeMain()
 	g_renderer = new Engine::GlRenderer(800, 600, applicationName);
 #elif _WIN32
 	g_renderer = new Engine::DxRenderer(800, 600, applicationName);
-#endif
+#endif //_WIN32
 
 	// Initialize and run the renderer object
 	g_renderer->initialize();

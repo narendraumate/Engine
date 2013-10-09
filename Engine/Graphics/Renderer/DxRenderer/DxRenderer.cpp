@@ -39,12 +39,22 @@ namespace Engine
 
 	}
 
+	void DxRenderer::setContextObj(const ContextObj& contextObj)
+	{
+		m_contextObj = contextObj;
+	}
+
+	ContextObj DxRenderer::getContextObj()
+	{
+		return m_contextObj;
+	}
+
 	void DxRenderer::setViewport(const int& xPos, const int& yPos, const int& w, const int& h)
 	{
 
 	}
 
-	void GlRenderer::getViewport(int& xPos, int& yPos, int& w, int& h) const
+	void DxRenderer::getViewport(int& xPos, int& yPos, int& w, int& h) const
 	{
 
 	}
@@ -126,14 +136,14 @@ namespace Engine
 
 	void DxRenderer::draw(const int& x, const int& y, const Color4f& color, const std::string& message)
 	{
-		
+
 	}
-	
+
 	void DxRenderer::drawPrimitive()
 	{
-		
+
 	}
-	
+
 }
 
 #endif //_WIN32

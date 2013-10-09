@@ -28,6 +28,9 @@ namespace Engine
 		virtual void run();
 		virtual void shutdown();
 
+		virtual void setContextObj(const ContextObj& contextObj);
+		virtual ContextObj getContextObj();
+
 		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h);
 		virtual void getViewport(int& xPos, int& yPos, int& w, int& h) const;
 		virtual void setDepthRange(const float& zMin, const float& zMax);
