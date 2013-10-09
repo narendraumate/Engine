@@ -17,10 +17,10 @@ int main(int argc, char *argv[])
 	int applicationHeight = 600;
 /*----------------------------------------------------------------------------*/
     // create an autorelease pool
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    ////NSAutoreleasePool* pool = [[[NSAutoreleasePool alloc] init] autorelease];
 
     // make sure the application singleton has been instantiated
-    NSApplication* application = [NSApplication sharedApplication];
+    NSApplication* application = [[NSApplication sharedApplication] autorelease];
 
 	[application setPresentationOptions:NSApplicationPresentationDefault];
 	[application setActivationPolicy:NSApplicationActivationPolicyRegular];
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	[menubar addItem:appMenuItem];
 	[NSApp setMainMenu:menubar];
 	id appMenu = [[NSMenu new] autorelease];
-	id quitTitle = [@"Quit " stringByAppendingString:nsApplicationName];
+	id quitTitle = [[@"Quit " stringByAppendingString:nsApplicationName] autorelease];
 	id quitMenuItem = [[[NSMenuItem alloc] initWithTitle:quitTitle
 												  action:@selector(terminate:)
 										   keyEquivalent:@"q"] autorelease];
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     [application run];
 
     // drain the autorelease pool
-    [pool drain];
+    ////[pool drain];
 
     // execution never gets here ..
     return 0;
