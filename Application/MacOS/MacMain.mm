@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     // drain the autorelease pool
     ////[pool drain];
 
-    // execution never gets here ..
+    // execution never gets here unless application stops instead of exiting
     return 0;
 }
 

@@ -51,9 +51,18 @@
     [window makeKeyAndOrderFront:self];
 }
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)application
 {
 	return YES;
+}
+
+- (void)applicationWillTerminate:(NSApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+	[view dealloc];
+	////[window dealloc];
+	////[self dealloc];
+	[super dealloc];
 }
 
 - (void)dealloc

@@ -8,6 +8,7 @@
 	CVDisplayLinkRef displayLink;
 }
 
+- (void)drawRect:(NSRect)bounds;
 - (CVReturn)render;
 - (CGLContextObj)willStartDrawing;
 - (void)didFinishDrawing:(CGLContextObj) cglContext;

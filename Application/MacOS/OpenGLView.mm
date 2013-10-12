@@ -4,6 +4,11 @@
 
 @implementation OpenGLView
 
+- (void)drawRect:(NSRect)bounds
+{
+	[self render];
+}
+
 - (void)awakeFromNib
 {
 	NSOpenGLPixelFormatAttribute attrs[] = {
@@ -45,7 +50,15 @@
 	CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext,
 													  cglPixelFormat);
-	initializeMain();	// TODO: Pass Width, Height and ApplicationName
+
+	// TODO Fix This
+	getSettings()->setWidth(400);
+	getSettings()->setHeight(300);
+	getSettings()->setApplicationName("Renderer");
+	// TODO Fix This
+	
+	initializeMain();
+
 	getRenderer()->setContextObj(cglContext);
 
 	CVDisplayLinkStart(displayLink);
@@ -75,11 +88,6 @@
 	deinitializeMain();
 
 	[super dealloc];
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[self render];
 }
 /*----------------------------------------------------------------------------*/
 - (CVReturn)render

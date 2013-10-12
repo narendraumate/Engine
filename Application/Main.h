@@ -12,6 +12,9 @@
 #include <iostream>
 #include <memory>
 
+#include "../Engine/Core/Logger.h"
+#include "../Engine/Core/Settings.h"
+
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
 
@@ -25,6 +28,8 @@ void initializeMain();
 bool runMain();
 void deinitializeMain();
 
+Engine::Logger* getLogger();
 Engine::Renderer* getRenderer();
+Engine::Settings* getSettings();
 
 #endif
