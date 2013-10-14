@@ -20,5 +20,5 @@
 	OpenGLView* view;
 }
 
-- (id)initWithTitle:(NSString*)title width:(int)applicationWidth height:(int)applicationHeight;
+- (id)initWithTitle:(NSString*)applicationTitle width:(int)applicationWidth height:(int)applicationHeight;
 @end

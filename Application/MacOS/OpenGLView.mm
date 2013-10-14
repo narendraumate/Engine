@@ -51,12 +51,10 @@
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext,
 													  cglPixelFormat);
 
-	// TODO Fix This
-	getSettings()->setWidth(400);
-	getSettings()->setHeight(300);
-	getSettings()->setApplicationName("Renderer");
-	// TODO Fix This
-	
+	getSettings()->setWidth(applicationWidth);
+	getSettings()->setHeight(applicationHeight);
+	getSettings()->setTitle([applicationTitle UTF8String]);
+
 	initializeMain();
 
 	getRenderer()->setContextObj(cglContext);
@@ -111,6 +109,21 @@
 - (void)didFinishDrawing:(CGLContextObj) cglContext
 {
 	CGLUnlockContext(cglContext);
+}
+
+- (void)setWidth:(int) width
+{
+	applicationWidth = width;
+}
+
+- (void)setHeight:(int) height
+{
+	applicationHeight = height;
+}
+
+- (void)setTitle:(NSString*) title
+{
+	applicationTitle = title;
 }
 /*----------------------------------------------------------------------------*/
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,

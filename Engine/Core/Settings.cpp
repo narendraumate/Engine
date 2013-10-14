@@ -22,7 +22,7 @@ namespace Engine
 	{
 		m_width = 0;
 		m_height = 0;
-		m_applicationName = "";
+		m_title = "";
 	}
 
 	Settings* Settings::singleton()
@@ -63,14 +63,14 @@ namespace Engine
 		return m_height;
 	}
 
-	void Settings::setApplicationName(const char* applicationName)
+	void Settings::setTitle(const char* title)
 	{
-		m_applicationName = applicationName;
+		m_title = title;
 	}
 
 	const char* Settings::getApplicationName()
 	{
-		return m_applicationName.c_str();
+		return m_title.c_str();
 	}
 	
 }

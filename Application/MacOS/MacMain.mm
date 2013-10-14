@@ -13,11 +13,11 @@
 int main(int argc, char *argv[])
 {
 	char applicationName[] = "Renderer";
-	int applicationWidth = 800;
-	int applicationHeight = 600;
+	int applicationWidth = 1280;
+	int applicationHeight = 720;
 /*----------------------------------------------------------------------------*/
     // create an autorelease pool
-    ////NSAutoreleasePool* pool = [[[NSAutoreleasePool alloc] init] autorelease];
+    ////NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 
     // make sure the application singleton has been instantiated
     NSApplication* application = [[NSApplication sharedApplication] autorelease];
@@ -25,9 +25,10 @@ int main(int argc, char *argv[])
 	[application setPresentationOptions:NSApplicationPresentationDefault];
 	[application setActivationPolicy:NSApplicationActivationPolicyRegular];
 /*----------------------------------------------------------------------------*/
+	////[NSApplication sharedApplication];
+	////[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
+
 	NSString* nsApplicationName = [[[NSString alloc] initWithUTF8String:applicationName] autorelease];
-	[NSApplication sharedApplication];
-	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
 	id menubar = [[NSMenu new] autorelease];
 	id appMenuItem = [[NSMenuItem new] autorelease];
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
     // drain the autorelease pool
     ////[pool drain];
 
-    // execution never gets here unless application stops instead of exiting
+	// execution never gets here unless application stops instead of exiting
     return 0;
 }
 

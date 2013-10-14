@@ -29,13 +29,13 @@ namespace Engine
 		int getWidth();
 		void setHeight(const int& height);
 		int getHeight();
-		void setApplicationName(const char* applicationName);
+		void setTitle(const char* title);
 		const char* getApplicationName();
 
 	private:
 		int m_width;
 		int m_height;
-		std::string m_applicationName;
+		std::string m_title;
 		static Settings* s_instance;
 	};
 

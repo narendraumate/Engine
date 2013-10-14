@@ -42,6 +42,9 @@
 	[window awakeFromNib];
 ////[window toggleWindowFullscreen:self];
     [window setContentView:view];
+	[view setWidth:width];
+	[view setHeight:height];
+	[view setTitle:title];
 	[view awakeFromNib];
 }
 
@@ -60,17 +63,7 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	[view dealloc];
-	////[window dealloc];
-	////[self dealloc];
 	[super dealloc];
-}
-
-- (void)dealloc
-{
-    // don’t forget to release allocated objects!
-    [view release];
-    [window release];
-    [super dealloc];
 }
 
 @end
