@@ -17,10 +17,10 @@ void initializeMain()
 	g_logger->print0();
 
 	// Create the renderer object
-#ifdef __APPLE__
-	g_renderer = new Engine::GlRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getApplicationName());
+#if defined(__APPLE__) || defined(__linux__)
+    g_renderer = new Engine::GlRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getApplicationName());
 #elif _WIN32
-	g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getApplicationName());
+    g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getApplicationName());
 #endif //_WIN32
 
 	// Initialize and run the renderer object

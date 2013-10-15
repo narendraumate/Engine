@@ -27,7 +27,7 @@ namespace Engine
 	{
 		if (s_instance == NULL)
 		{
-			s_instance = new Logger::Logger("Application.log");
+			s_instance = new Logger("Application.log");
 		}
 		return s_instance;
 	}

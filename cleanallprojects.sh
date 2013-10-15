@@ -1,5 +1,6 @@
 #!/bin/bash
-find . -type d -name *.xcodeproj -exec rm -rf {} \;
-find . -type d -name *.xcworkspace -exec rm -rf {} \;
-find . -type d -name build -exec rm -rf {} \;
-find . -type d -name obj -exec rm -rf {} \;
+
+case "$OSTYPE" in
+	darwin*) ./Tools/MacOS/premake4 --file=premake4.lua --os=macosx clean;;
+	linux*)  ./Tools/Linux/premake4 --file=premake4.lua --os=linux clean;;
+esac

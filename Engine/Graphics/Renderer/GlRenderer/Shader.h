@@ -9,8 +9,13 @@
 #ifndef __Application__Shader__
 #define __Application__Shader__
 
+#if defined(__APPLE__)
 #include <OpenGL/OpenGL.h>
 #include <OpenGL/gl3.h>
+#elif defined(__linux__)
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h> // sudo apt-get install mesa-common-dev mesa-utils freeglut3 freeglut3-dev
+#endif //defined(__linux__)
 
 #include <string>
 #include <fstream>
@@ -20,7 +25,11 @@
 #include <vector>
 
 #define LOCAL_FILE_DIR "Data/"
+#if defined(__APPLE__)
 #define GLOBAL_FILE_DIR "/Users/ardneran/Documents/Projects/GitHub/Engine/Data/"
+#elif defined(__linux__)
+#define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
+#endif //defined(__linux__)
 
 class Shader
 {

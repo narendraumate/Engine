@@ -10,13 +10,18 @@ solution "Application"
         configuration "Debug"
             defines { "DEBUG" }
             flags { "Symbols" }
+            targetdir ( "bin/Debug" )
+            objdir ( "obj/Debug" )
+            -- targetname ( "Application" )
 
         configuration "Release"
             defines { "NDEBUG" }
             flags { "Optimize" }
+            targetdir ( "bin/Release" )
+            objdir ( "obj/Release" )
+            -- targetname ( "Application" )
 
         configuration "windows"
-            targetdir ( "build" )
             files { "**.h", "**.hpp", "**.c", "**.cpp" }
             excludes { "**/MacOS/**", "**/Linux/**" }
 
@@ -26,6 +31,7 @@ solution "Application"
             excludes { "**/Windows/**", "**/Linux/**" }
 
         configuration "linux"
+            linkoptions { "-lGL", "-lGLU" }
             files { "**.h", "**.hpp", "**.c", "**.cpp" }
             excludes { "**/Windows/**", "**/MacOS/**" }
 

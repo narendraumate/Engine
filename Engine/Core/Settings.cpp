@@ -29,7 +29,7 @@ namespace Engine
 	{
 		if (s_instance == NULL)
 		{
-			s_instance = new Settings::Settings();
+			s_instance = new Settings();
 		}
 		return s_instance;
 	}

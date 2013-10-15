@@ -165,6 +165,10 @@ Desktop.ini
 
 *.make
 Makefile
+default.profile
+*.db
+*.anjuta
+*~
 
 #############
 ## Python

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Narendra Umate. All rights reserved.
 //
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 
 #include "GlRenderer.h"
 //----------------------------------------------------------------------------//
@@ -42,7 +42,10 @@ namespace Engine
 		shaders.push_back(Shader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));
 		shaders.push_back(Shader::LoadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
 		shader_program = Shader::CreateProgram(shaders);
-		std::for_each(shaders.begin(), shaders.end(), glDeleteShader);
+        for (std::vector<GLuint>::const_iterator shader = shaders.begin(); shader != shaders.end(); shader++)
+        {
+            glDeleteShader(*shader);
+        }
 
 		glGenVertexArrays(1, &vertex_array_object);
 		glBindVertexArray(vertex_array_object);
@@ -197,7 +200,13 @@ namespace Engine
 		glDisableVertexAttribArray(0);
 		glUseProgram(0);
 
-		CGLFlushDrawable(m_contextObj);
+#if defined(__APPLE__)
+        CGLFlushDrawable(m_contextObj);
+#elif defined(_WIN32)
+        //TODO
+#elif defined(__linux___)
+        //TODO
+#endif //defined(__linux__)
 //----------------------------------------------------------------------------//
 	}
 
@@ -218,4 +227,4 @@ namespace Engine
 
 }
 
-#endif //__APPLE__
+#endif //defined(__APPLE__) || defined(__linux__)

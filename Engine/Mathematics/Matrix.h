@@ -12,11 +12,11 @@
 #include "Math.h"
 #include "Vector.h"
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 #define ROWMAJOR		//  OpenGL
-#elif _WIN32
+#elif defined(_WIN32)
 #define COLUMNMAJOR		//  DirectX
-#endif
+#endif //defined(_WIN32)
 
 namespace Engine
 {
@@ -31,13 +31,13 @@ namespace Engine
 	{
 	public:
 
-#if defined COLUMNMAJOR
+#if defined(COLUMNMAJOR)
 		float d00, d01;
 		float d10, d11;
-#elif defined ROWMAJOR
+#elif defined(ROWMAJOR)
 		float d00, d10;
 		float d01, d11;
-#endif
+#endif //defined(ROWMAJOR)
 
 		Mat2(void);
 		Mat2(const float &m00, const float &m01,
@@ -62,15 +62,15 @@ namespace Engine
 	{
 	public:
 
-#if defined COLUMNMAJOR
+#if defined(COLUMNMAJOR)
 		float d00, d01, d02;
 		float d10, d11, d12;
 		float d20, d21, d22;
-#elif defined ROWMAJOR
+#elif defined(ROWMAJOR)
 		float d00, d10, d20;
 		float d01, d11, d21;
 		float d02, d12, d22;
-#endif
+#endif //defined(ROWMAJOR)
 
 		Mat3(void);
 		Mat3(const float &m00, const float &m01, const float &m02,
@@ -100,17 +100,17 @@ namespace Engine
 	{
 	public:
 
-#if defined COLUMNMAJOR
+#if defined(COLUMNMAJOR)
 		float d00, d01, d02, d03;
 		float d10, d11, d12, d13;
 		float d20, d21, d22, d23;
 		float d30, d31, d32, d33;
-#elif defined ROWMAJOR
+#elif defined(ROWMAJOR)
 		float d00, d10, d20, d30;
 		float d01, d11, d21, d31;
 		float d02, d12, d22, d32;
 		float d03, d13, d23, d33;
-#endif
+#endif //defined(ROWMAJOR)
 
 		Mat4(void);
 		Mat4(const float &m00,const float &m01,const float &m02,const float &m03,

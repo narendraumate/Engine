@@ -35,6 +35,7 @@
 #define MemTrack_H_
 
 #include <typeinfo>
+#include <cstring>
 
 namespace Engine
 {

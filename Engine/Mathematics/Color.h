@@ -12,9 +12,9 @@
 #include <iostream>
 #include "Vector.h"
 
-#ifdef _WIN32
+#if defined(__linux__) || defined(_WIN32)
 #include <stdint.h>
-#endif //_WIN32
+#endif //defined(__linux__) || defined(_WIN32)
 
 using namespace std;
 

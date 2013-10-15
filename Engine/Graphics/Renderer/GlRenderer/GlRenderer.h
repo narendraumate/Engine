@@ -9,13 +9,17 @@
 #ifndef __Application__GlRenderer__
 #define __Application__GlRenderer__
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 
+#if defined(__APPLE__)
 #include <GLUT/GLUT.h>
 #include <OpenGL/gl.h>
+#elif defined(__linux__)
+
+#endif //defined(__linux__)
+
 #include <vector>
 
-#include "../../../External/callback/callback.h"
 #include "Shader.h"
 #include "../Renderer.h"
 
@@ -68,6 +72,6 @@ namespace Engine
 
 }
 
-#endif //__APPLE__
+#endif //defined(__APPLE__) || defined(__linux__)
 
 #endif /* defined(__Application__GlRenderer__) */

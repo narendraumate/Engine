@@ -16,12 +16,16 @@
 #include "../../Mathematics/Color.h"
 #include "../../Mathematics/Matrix.h"
 
-#if defined __APPLE__
+#if defined(__APPLE__)
 #include <OpenGL/OpenGL.h>
 #define ContextObj CGLContextObj
-#elif defined _WIN32
+#elif defined(__linux__)
+#include <GL/gl.h>
+#include <GL/glx.h>
+#define ContextObj GLXContext
+#elif defined(_WIN32)
 #define ContextObj WGLContextObj
-#endif //_WIN32
+#endif //defined(_WIN32)
 
 namespace Engine
 {

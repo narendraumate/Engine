@@ -1,4 +1,1 @@
-rmdir /s /q build
-rmdir /s /q ipch
-rmdir /s /q obj
-del Application.*
+Tools\Windows\premake4 --file=premake4.lua --os=windows clean
