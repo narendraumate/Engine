@@ -159,6 +159,12 @@ Thumbs.db
 # Folder config file
 Desktop.ini
 
+############
+## Linux
+############
+
+*.make
+Makefile
 
 #############
 ## Python

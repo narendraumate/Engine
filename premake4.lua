@@ -18,9 +18,14 @@ solution "Application"
         configuration "windows"
             targetdir ( "build" )
             files { "**.h", "**.hpp", "**.c", "**.cpp" }
-            excludes { "**/MacOS/**" }
+            excludes { "**/MacOS/**", "**/Linux/**" }
 
         configuration "macosx"
             linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
             files { "**.h", "**.hpp", "**.c", "**.cpp", "**.m", "**.mm" }
-            excludes { "**/Windows/**" }
+            excludes { "**/Windows/**", "**/Linux/**" }
+
+        configuration "linux"
+            files { "**.h", "**.hpp", "**.c", "**.cpp" }
+            excludes { "**/Windows/**", "**/MacOS/**" }
+
