@@ -9,7 +9,18 @@
 #ifndef __Application__Logger__
 #define __Application__Logger__
 
+#include <string>
+
+#define PRINT_TO_FILE
+#define PRINT_TO_DISPLAY
+
+#ifdef PRINT_TO_FILE
+#include <fstream>
+#endif //PRINT_TO_FILE
+
+#ifdef PRINT_TO_DISPLAY
 #include <iostream>
+#endif //PRINT_TO_DISPLAY
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -32,6 +43,9 @@ namespace Engine
 
 	private:
 		static Logger* s_instance;
+#ifdef PRINT_TO_FILE
+		std::fstream m_fstream;
+#endif //PRINT_TO_FILE
 	};
 
 }

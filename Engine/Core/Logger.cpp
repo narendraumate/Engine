@@ -15,12 +15,16 @@ namespace Engine
 
 	Logger::Logger(std::string logfile)
 	{
-
+#ifdef PRINT_TO_FILE
+		m_fstream.open(logfile.c_str(), std::fstream::out);
+#endif //PRINT_TO_FILE
 	}
 
 	Logger::~Logger()
 	{
-
+#ifdef PRINT_TO_FILE
+		m_fstream.close();
+#endif //PRINT_TO_FILE
 	}
 
 	Logger* Logger::singleton()
@@ -43,7 +47,13 @@ namespace Engine
 
 	void Logger::printInfo(std::string file, std::string line, std::string message)
 	{
+#ifdef PRINT_TO_FILE
+		m_fstream << file << ":" << line << " " << message << std::endl;
+#endif //PRINT_TO_FILE
+
+#ifdef PRINT_TO_DISPLAY
 		std::cout << file << ":" << line << " " << message << std::endl;
+#endif //PRINT_TO_DISPLAY
 	}
 	
 }
