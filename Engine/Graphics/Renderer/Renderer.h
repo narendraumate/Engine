@@ -45,16 +45,16 @@ namespace Engine
 		virtual void setContextObj(const ContextObj& contextObj) = 0;
 		virtual ContextObj getContextObj() = 0;
 
-		inline int getWidth() const;
-		inline int getHeight() const;
-		inline char* getApplicationName() const;
+		int getWidth() const;
+		int getHeight() const;
+		char* getApplicationName() const;
 
-		inline void setCamera(Camera* camera);
-		inline Camera* getCamera() const;
+		void setCamera(Camera* camera);
+		Camera* getCamera() const;
 
-		inline Mat4* getViewMatrix() const;
-		inline Mat4* getProjectionMatrix() const;
-		inline Mat4* getPostProjectionMatrix() const;
+		Mat4* getViewMatrix() const;
+		Mat4* getProjectionMatrix() const;
+		Mat4* getPostProjectionMatrix() const;
 
 		inline void setClearColor(const Color4f& clearColor);
 		inline Color4f getClearColor() const;

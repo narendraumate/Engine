@@ -50,12 +50,12 @@ namespace Engine
 		return m_contextObj;
 	}
 
-	inline int Renderer::getWidth() const
+	int Renderer::getWidth() const
 	{
 		return m_width;
 	}
 
-	inline int Renderer::getHeight() const
+	int Renderer::getHeight() const
 	{
 		return m_height;
 	}
