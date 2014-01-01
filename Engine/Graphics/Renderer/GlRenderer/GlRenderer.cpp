@@ -36,7 +36,7 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		glGenBuffers(1, &position_buffer_object);
 		glBindBuffer(GL_ARRAY_BUFFER, position_buffer_object);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*12, vertexPositions, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions) * sizeof(float), vertexPositions, GL_STATIC_DRAW);
 
 		std::vector<GLuint> shaders;
 		shaders.push_back(Shader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));

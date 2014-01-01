@@ -20,8 +20,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <exception>
-#include <stdexcept>
 #include <vector>
 
 #define LOCAL_FILE_DIR "Data/"
@@ -39,7 +37,7 @@ public:
 	static GLuint CreateProgram(const std::vector<GLuint> &shaderList);
 
 private:
-	static std::string FindFileOrThrow(const std::string &strBasename);
+	static std::string FindFile(const std::string &strBasename);
 };
 
 #endif /* defined(__Application__Shader__) */
