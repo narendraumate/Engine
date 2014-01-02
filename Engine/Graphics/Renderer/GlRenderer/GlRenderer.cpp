@@ -39,9 +39,9 @@ namespace Engine
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions) * sizeof(float), vertexPositions, GL_STATIC_DRAW);
 
 		std::vector<GLuint> shaders;
-		shaders.push_back(Shader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));
-		shaders.push_back(Shader::LoadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
-		shader_program = Shader::CreateProgram(shaders);
+		shaders.push_back(GlShader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));
+		shaders.push_back(GlShader::LoadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
+		shader_program = GlShader::CreateProgram(shaders);
         for (std::vector<GLuint>::const_iterator shader = shaders.begin(); shader != shaders.end(); shader++)
         {
             glDeleteShader(*shader);

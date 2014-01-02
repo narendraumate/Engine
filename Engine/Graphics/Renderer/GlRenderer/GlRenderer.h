@@ -20,7 +20,7 @@
 
 #include <vector>
 
-#include "Shader.h"
+#include "GlShader.h"
 #include "../Renderer.h"
 
 namespace Engine
