@@ -13,12 +13,19 @@ namespace Engine
 
 	GLuint GlShader::loadShader(GLenum eShaderType, const std::string &strShaderFilename)
 	{
-		std::string strFilename = findFile(strShaderFilename);
-		std::ifstream shaderFile(strFilename.c_str());
-		std::stringstream shaderData;
-		shaderData << shaderFile.rdbuf();
-		shaderFile.close();
-		return createShader(eShaderType, shaderData.str().c_str());
+		std::string strFilename = Utils::singleton()->findFile(strShaderFilename);
+		if (strFilename != "")
+		{
+			std::ifstream shaderFile(strFilename.c_str());
+			std::stringstream shaderData;
+			shaderData << shaderFile.rdbuf();
+			shaderFile.close();
+			return createShader(eShaderType, shaderData.str().c_str());
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 
 	GLuint GlShader::createShader(GLenum shader_type, const char *shader_string)
@@ -80,27 +87,6 @@ namespace Engine
 			glDetachShader(program, *shader);
 
 		return program;
-	}
-
-	std::string GlShader::findFile(const std::string &strBasename)
-	{
-		std::string strFilename = LOCAL_FILE_DIR + strBasename;
-		std::ifstream testFile(strFilename.c_str());
-		if (testFile.is_open())
-		{
-			testFile.close();
-			return strFilename;
-		}
-
-		strFilename = GLOBAL_FILE_DIR + strBasename;
-		testFile.open(strFilename.c_str());
-		if (testFile.is_open())
-		{
-			testFile.close();
-			return strFilename;
-		}
-
-		return NULL;
 	}
 
 }

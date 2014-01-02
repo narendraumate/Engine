@@ -17,17 +17,11 @@
 #include <GL/gl.h> // sudo apt-get install mesa-common-dev mesa-utils freeglut3 freeglut3-dev
 #endif //defined(__linux__)
 
-#include <string>
 #include <fstream>
 #include <sstream>
+#include <string>
 #include <vector>
-
-#define LOCAL_FILE_DIR "Data/"
-#if defined(__APPLE__)
-#define GLOBAL_FILE_DIR "/Users/ardneran/Documents/Projects/GitHub/Engine/Data/"
-#elif defined(__linux__)
-#define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
-#endif //defined(__linux__)
+#include "Utils.h"
 
 namespace Engine
 {
@@ -38,9 +32,6 @@ namespace Engine
 		static GLuint loadShader(GLenum eShaderType, const std::string &strShaderFilename);
 		static GLuint createShader(GLenum shader_type, const char *shader_string);
 		static GLuint createProgram(const std::vector<GLuint> &shaderList);
-
-	private:
-		static std::string findFile(const std::string &strBasename);
 	};
 
 }

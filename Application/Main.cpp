@@ -9,8 +9,10 @@
 #include "Main.h"
 
 Engine::Logger* g_logger = Engine::Logger::singleton();
-Engine::Renderer* g_renderer = NULL;
 Engine::Settings* g_settings = Engine::Settings::singleton();
+Engine::Utils* g_utils = Engine::Utils::singleton();
+
+Engine::Renderer* g_renderer = NULL;
 
 void initializeMain()
 {
@@ -50,6 +52,7 @@ void deinitializeMain()
 
 	g_logger->destroySingleton();
 	g_settings->destroySingleton();
+	g_utils->destroySingleton();
 
 #ifdef USE_MEMTRACK
 	Engine::MemTrack::TrackDumpBlocks();
@@ -66,11 +69,6 @@ Engine::Logger* getLogger()
 	return g_logger;
 }
 
-Engine::Renderer* getRenderer()
-{
-	return g_renderer;
-}
-
 Engine::Settings* getSettings()
 {
 	if (g_settings == NULL)
@@ -78,4 +76,18 @@ Engine::Settings* getSettings()
 		g_settings = Engine::Settings::singleton();
 	}
 	return g_settings;
+}
+
+Engine::Utils* getUtils()
+{
+	if (g_utils == NULL)
+	{
+		g_utils = Engine::Utils::singleton();
+	}
+	return g_utils;
+}
+
+Engine::Renderer* getRenderer()
+{
+	return g_renderer;
 }

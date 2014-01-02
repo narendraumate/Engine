@@ -54,7 +54,6 @@ local.properties
 *.idb
 *.lib
 *.meta
-*.obj
 *.pch
 *.pdb
 *.pgc
