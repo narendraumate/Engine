@@ -29,15 +29,20 @@
 #define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
 #endif //defined(__linux__)
 
-class GlShader
+namespace Engine
 {
-public:
-	static GLuint LoadShader(GLenum eShaderType, const std::string &strShaderFilename);
-	static GLuint CreateShader(GLenum shader_type, const char *shader_string);
-	static GLuint CreateProgram(const std::vector<GLuint> &shaderList);
 
-private:
-	static std::string FindFile(const std::string &strBasename);
-};
+	class GlShader
+	{
+	public:
+		static GLuint loadShader(GLenum eShaderType, const std::string &strShaderFilename);
+		static GLuint createShader(GLenum shader_type, const char *shader_string);
+		static GLuint createProgram(const std::vector<GLuint> &shaderList);
+
+	private:
+		static std::string findFile(const std::string &strBasename);
+	};
+
+}
 
 #endif /* defined(__Application__GlShader__) */

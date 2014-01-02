@@ -19,7 +19,6 @@
 #endif //defined(__linux__)
 
 #include <vector>
-
 #include "GlShader.h"
 #include "../Renderer.h"
 

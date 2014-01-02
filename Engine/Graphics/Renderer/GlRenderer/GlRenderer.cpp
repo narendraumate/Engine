@@ -10,14 +10,16 @@
 
 #include "GlRenderer.h"
 //----------------------------------------------------------------------------//
-static const float vertexPositions[] =
+static const float vertices[] =
 {
 	0.75f, 0.75f, 0.0f, 1.0f,
 	0.75f, -0.75f, 0.0f, 1.0f,
 	-0.75f, -0.75f, 0.0f, 1.0f,
 };
 
-static GLuint position_buffer_object, vertex_array_object, shader_program;
+static GLuint vertexBufferObject;
+static GLuint vertexArrayObject;
+static GLuint shaderProgramId;
 //----------------------------------------------------------------------------//
 namespace Engine
 {
@@ -34,21 +36,21 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		glGenBuffers(1, &position_buffer_object);
-		glBindBuffer(GL_ARRAY_BUFFER, position_buffer_object);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions) * sizeof(float), vertexPositions, GL_STATIC_DRAW);
+		glGenBuffers(1, &vertexBufferObject);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) * sizeof(float), vertices, GL_STATIC_DRAW);
 
 		std::vector<GLuint> shaders;
-		shaders.push_back(GlShader::LoadShader(GL_VERTEX_SHADER, "pass_along.vert"));
-		shaders.push_back(GlShader::LoadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
-		shader_program = GlShader::CreateProgram(shaders);
+		shaders.push_back(GlShader::loadShader(GL_VERTEX_SHADER, "pass_along.vert"));
+		shaders.push_back(GlShader::loadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
+		shaderProgramId = GlShader::createProgram(shaders);
         for (std::vector<GLuint>::const_iterator shader = shaders.begin(); shader != shaders.end(); shader++)
         {
             glDeleteShader(*shader);
         }
 
-		glGenVertexArrays(1, &vertex_array_object);
-		glBindVertexArray(vertex_array_object);
+		glGenVertexArrays(1, &vertexArrayObject);
+		glBindVertexArray(vertexArrayObject);
 //----------------------------------------------------------------------------//
 		return true;
 	}
@@ -189,11 +191,11 @@ namespace Engine
 	void GlRenderer::postDraw()
 	{
 //----------------------------------------------------------------------------//
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glUseProgram(shader_program);
-		glBindBuffer(GL_ARRAY_BUFFER, position_buffer_object);
+		glUseProgram(shaderProgramId);
+		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
