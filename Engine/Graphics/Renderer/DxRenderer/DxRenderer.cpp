@@ -39,16 +39,6 @@ namespace Engine
 
 	}
 
-	void DxRenderer::setContextObj(const ContextObj& contextObj)
-	{
-		m_contextObj = contextObj;
-	}
-
-	ContextObj DxRenderer::getContextObj()
-	{
-		return m_contextObj;
-	}
-
 	void DxRenderer::setViewport(const int& xPos, const int& yPos, const int& w, const int& h)
 	{
 

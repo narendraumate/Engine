@@ -60,16 +60,6 @@ namespace Engine
 
 	}
 
-	void GlRenderer::setContextObj(const ContextObj& contextObj)
-	{
-		m_contextObj = contextObj;
-	}
-
-	ContextObj GlRenderer::getContextObj()
-	{
-		return m_contextObj;
-	}
-
 	void GlRenderer::setViewport(const int& xPos, const int& yPos, const int& w, const int& h)
 	{
 		glViewport(xPos, yPos, w, h);

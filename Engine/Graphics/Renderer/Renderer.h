@@ -38,12 +38,8 @@ namespace Engine
 		Renderer(const int& width, const int& height, const char* applicationName);
 		virtual ~Renderer() = 0;
 
-		virtual bool initialize() = 0;
-		virtual void run() = 0;
-		virtual void shutdown() = 0;
-
-		virtual void setContextObj(const ContextObj& contextObj) = 0;
-		virtual ContextObj getContextObj() = 0;
+		void setContextObj(const ContextObj& contextObj);
+		ContextObj getContextObj();
 
 		int getWidth() const;
 		int getHeight() const;
@@ -56,12 +52,17 @@ namespace Engine
 		Mat4* getProjectionMatrix() const;
 		Mat4* getPostProjectionMatrix() const;
 
-		inline void setClearColor(const Color4f& clearColor);
-		inline Color4f getClearColor() const;
-		inline void setClearDepth(const float& clearDepth);
-		inline float getClearDepth() const;
-		inline void setClearStencil(unsigned int& clearStencil);
-		inline unsigned int getClearStencil() const;
+		void setClearColor(const Color4f& clearColor);
+		Color4f getClearColor() const;
+		void setClearDepth(const float& clearDepth);
+		float getClearDepth() const;
+		void setClearStencil(unsigned int& clearStencil);
+		unsigned int getClearStencil() const;
+
+		// virtual functions
+		virtual bool initialize() = 0;
+		virtual void run() = 0;
+		virtual void shutdown() = 0;
 
 		// viewport, depth range, resize.
 		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h) = 0;

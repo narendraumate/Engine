@@ -25,21 +25,6 @@ namespace Engine
 		delete [] m_applicationName;
 	}
 
-	bool Renderer::initialize()
-	{
-		return true;
-	}
-
-	void Renderer::run()
-	{
-		//
-	}
-
-	void Renderer::shutdown()
-	{
-		//
-	}
-
 	void Renderer::setContextObj(const ContextObj& contextObj)
 	{
 		m_contextObj = contextObj;
@@ -60,62 +45,62 @@ namespace Engine
 		return m_height;
 	}
 
-	inline char* Renderer::getApplicationName() const
+	char* Renderer::getApplicationName() const
 	{
 		return m_applicationName;
 	}
 
-	inline void Renderer::setCamera(Camera* camera)
+	void Renderer::setCamera(Camera* camera)
 	{
 		m_camera = camera;
 	}
 
-	inline Camera* Renderer::getCamera() const
+	Camera* Renderer::getCamera() const
 	{
 		return m_camera;
 	}
 
-	inline Mat4* Renderer::getViewMatrix() const
+	Mat4* Renderer::getViewMatrix() const
 	{
 		return m_camera->getViewMatrix();
 	}
 
-	inline Mat4* Renderer::getProjectionMatrix() const
+	Mat4* Renderer::getProjectionMatrix() const
 	{
 		return m_camera->getProjectionMatrix();
 	}
 
-	inline Mat4* Renderer::getPostProjectionMatrix() const
+	Mat4* Renderer::getPostProjectionMatrix() const
 	{
 		return m_camera->getPostProjectionMatrix();
 	}
 
-	inline void Renderer::setClearColor(const Color4f& clearColor)
+	void Renderer::setClearColor(const Color4f& clearColor)
 	{
 		m_clearColor = clearColor;
 	}
 
-	inline Color4f Renderer::getClearColor() const
+	Color4f Renderer::getClearColor() const
 	{
 		return m_clearColor;
 	}
 
-	inline void Renderer::setClearDepth(const float& clearDepth)
+	void Renderer::setClearDepth(const float& clearDepth)
 	{
 		m_clearDepth = clearDepth;
 	}
 
-	inline float Renderer::getClearDepth() const
+	float Renderer::getClearDepth() const
 	{
 		return m_clearDepth;
 	}
 
-	inline void Renderer::setClearStencil(unsigned int& clearStencil)
+	void Renderer::setClearStencil(unsigned int& clearStencil)
 	{
 		m_clearStencil = clearStencil;
 	}
 	
-	inline unsigned int Renderer::getClearStencil() const
+	unsigned int Renderer::getClearStencil() const
 	{
 		return m_clearStencil;
 	}

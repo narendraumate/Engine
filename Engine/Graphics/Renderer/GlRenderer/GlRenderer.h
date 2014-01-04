@@ -31,41 +31,38 @@ namespace Engine
 	public:
 
 		GlRenderer(const int& width, const int& height, const char* applicationName);
-		virtual ~GlRenderer();
+		~GlRenderer();
 
-		virtual bool initialize();
-		virtual void run();
-		virtual void shutdown();
+		bool initialize();
+		void run();
+		void shutdown();
 
-		virtual void setContextObj(const ContextObj& contextObj);
-		virtual ContextObj getContextObj();
+		void setViewport(const int& xPos, const int& yPos, const int& w, const int& h);
+		void getViewport(int& xPos, int& yPos, int& w, int& h) const;
+		void setDepthRange(const float& zMin, const float& zMax);
+		void getDepthRange(float& zMin, float& zMax) const;
+		void resize(const int& width, const int& height);
 
-		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h);
-		virtual void getViewport(int& xPos, int& yPos, int& w, int& h) const;
-		virtual void setDepthRange(const float& zMin, const float& zMax);
-		virtual void getDepthRange(float& zMin, float& zMax) const;
-		virtual void resize(const int& width, const int& height);
+		void clearColorBuffer();
+		void clearDepthBuffer();
+		void clearStencilBuffer();
+		void clearBuffers();
+		void clearColorBuffer(const int& x, const int& y, const int& w, const int& h);
+		void clearDepthBuffer(const int& x, const int& y, const int& w, const int& h);
+		void clearStencilBuffer(const int& x, const int& y, const int& w, const int& h);
+		void clearBuffers(const int& x, const int& y, const int& w, const int& h);
+		void displayColorBuffer();
 
-		virtual void clearColorBuffer();
-		virtual void clearDepthBuffer();
-		virtual void clearStencilBuffer();
-		virtual void clearBuffers();
-		virtual void clearColorBuffer(const int& x, const int& y, const int& w, const int& h);
-		virtual void clearDepthBuffer(const int& x, const int& y, const int& w, const int& h);
-		virtual void clearStencilBuffer(const int& x, const int& y, const int& w, const int& h);
-		virtual void clearBuffers(const int& x, const int& y, const int& w, const int& h);
-		virtual void displayColorBuffer();
+		bool preDraw();
+		void postDraw();
 
-		virtual bool preDraw();
-		virtual void postDraw();
+		void draw(const unsigned char* screenBuffer, const bool& reflectY = false);
 
-		virtual void draw(const unsigned char* screenBuffer, const bool& reflectY = false);
-
-		virtual void draw(const int& x, const int& y, const Color4f& color, const std::string& message);
+		void draw(const int& x, const int& y, const Color4f& color, const std::string& message);
 
 	private:
 
-		virtual void drawPrimitive();
+		void drawPrimitive();
 
 	};
 
