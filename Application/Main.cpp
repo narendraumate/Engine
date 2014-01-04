@@ -33,6 +33,7 @@ bool runMain()
 {
 	if (g_renderer->preDraw())
 	{
+		g_renderer->run();
 		g_renderer->postDraw();
 		return true;
 	}

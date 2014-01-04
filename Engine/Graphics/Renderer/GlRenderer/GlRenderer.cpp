@@ -35,6 +35,11 @@ namespace Engine
 
 	bool GlRenderer::initialize()
 	{
+		return true;
+	}
+
+	void GlRenderer::run()
+	{
 //----------------------------------------------------------------------------//
 		glGenBuffers(1, &vertexBufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
@@ -44,20 +49,10 @@ namespace Engine
 		shaders.push_back(GlShader::loadShader(GL_VERTEX_SHADER, "pass_along.vert"));
 		shaders.push_back(GlShader::loadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
 		shaderProgramId = GlShader::createProgram(shaders);
-        for (std::vector<GLuint>::const_iterator shader = shaders.begin(); shader != shaders.end(); shader++)
-        {
-            glDeleteShader(*shader);
-        }
 
 		glGenVertexArrays(1, &vertexArrayObject);
 		glBindVertexArray(vertexArrayObject);
 //----------------------------------------------------------------------------//
-		return true;
-	}
-
-	void GlRenderer::run()
-	{
-
 	}
 
 	void GlRenderer::shutdown()
