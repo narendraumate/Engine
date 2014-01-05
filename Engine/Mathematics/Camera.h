@@ -23,11 +23,10 @@ namespace Engine
 		Camera(const bool& isPerspective = true);
 		virtual ~Camera();
 
-		inline bool getIsPerspective() const { return m_isPerspective; }
-
-		inline Mat4* getViewMatrix() const { return (Mat4*)&m_viewMatrix; }
-		inline Mat4* getProjectionMatrix() const { return (Mat4*)&m_projectionMatrix; }
-		inline Mat4* getPostProjectionMatrix() const { return (Mat4*)&m_postProjectionMatrix; }
+		bool getIsPerspective() const { return m_isPerspective; }
+		Mat4* getViewMatrix() const { return (Mat4*)&m_viewMatrix; }
+		Mat4* getProjectionMatrix() const { return (Mat4*)&m_projectionMatrix; }
+		Mat4* getPostProjectionMatrix() const { return (Mat4*)&m_postProjectionMatrix; }
 
 	private:
 

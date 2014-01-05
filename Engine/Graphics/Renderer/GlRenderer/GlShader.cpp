@@ -51,6 +51,7 @@ namespace Engine
 				}
 
 				fprintf(stderr, "Compile failure in %s shader:\n%s\n", shaderTypeString, logString);
+				delete [] logString;
 			}
 			return shader;
 		}
@@ -78,6 +79,7 @@ namespace Engine
 			GLchar *logString = new GLchar[logLenth + 1];
 			glGetProgramInfoLog(program, logLenth, NULL, logString);
 			fprintf(stderr, "Linker failure: %s\n", logString);
+			delete [] logString;
 		}
 
 		glDetachShader(program, vertexShader);
