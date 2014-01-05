@@ -30,7 +30,7 @@ namespace Engine
 		void setHeight(const int& height);
 		int getHeight();
 		void setTitle(const char* title);
-		const char* getApplicationName();
+		const char* getTitle();
 
 	private:
 		int m_width;

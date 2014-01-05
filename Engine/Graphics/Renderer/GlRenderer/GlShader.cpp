@@ -60,12 +60,12 @@ namespace Engine
 		}
 	}
 
-	GLuint GlShader::createProgram(const std::vector<GLuint> &shaderList)
+	GLuint GlShader::createProgram(const GLuint& vertexShader, const GLuint& fragmentShader)
 	{
 		GLuint program = glCreateProgram();
 
-		for (std::vector<GLuint>::const_iterator shader = shaderList.begin(); shader != shaderList.end(); shader++)
-			glAttachShader(program, *shader);
+		glAttachShader(program, vertexShader);
+		glAttachShader(program, fragmentShader);
 
 		glLinkProgram(program);
 
@@ -80,11 +80,8 @@ namespace Engine
 			fprintf(stderr, "Linker failure: %s\n", logString);
 		}
 
-		for (std::vector<GLuint>::const_iterator shader = shaderList.begin(); shader != shaderList.end(); shader++)
-		{
-				glDetachShader(program, *shader);
-				glDeleteShader(*shader);
-		}
+		glDetachShader(program, vertexShader);
+		glDetachShader(program, fragmentShader);
 
 		return program;
 	}

@@ -56,14 +56,6 @@ namespace Engine
 		bool preDraw();
 		void postDraw();
 
-		void draw(const unsigned char* screenBuffer, const bool& reflectY = false);
-
-		void draw(const int& x, const int& y, const Color4f& color, const std::string& message);
-
-	private:
-
-		void drawPrimitive();
-
 	};
 
 }

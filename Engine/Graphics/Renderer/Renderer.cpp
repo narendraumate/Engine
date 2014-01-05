@@ -45,7 +45,7 @@ namespace Engine
 		return m_height;
 	}
 
-	char* Renderer::getApplicationName() const
+	const char* Renderer::getApplicationName() const
 	{
 		return m_applicationName;
 	}

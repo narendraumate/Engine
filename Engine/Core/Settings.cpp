@@ -68,7 +68,7 @@ namespace Engine
 		m_title = title;
 	}
 
-	const char* Settings::getApplicationName()
+	const char* Settings::getTitle()
 	{
 		return m_title.c_str();
 	}

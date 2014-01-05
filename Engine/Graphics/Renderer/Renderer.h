@@ -43,7 +43,7 @@ namespace Engine
 
 		int getWidth() const;
 		int getHeight() const;
-		char* getApplicationName() const;
+		const char* getApplicationName() const;
 
 		void setCamera(Camera* camera);
 		Camera* getCamera() const;
@@ -59,12 +59,11 @@ namespace Engine
 		void setClearStencil(unsigned int& clearStencil);
 		unsigned int getClearStencil() const;
 
-		// virtual functions
 		virtual bool initialize() = 0;
 		virtual void run() = 0;
 		virtual void shutdown() = 0;
 
-		// viewport, depth range, resize.
+		// Support for viewport, depth range, resize.
 		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h) = 0;
 		virtual void getViewport(int& xPos, int& yPos, int& w, int& h) const = 0;
 		virtual void setDepthRange(const float& zMin, const float& zMax) = 0;
@@ -82,22 +81,8 @@ namespace Engine
 		virtual void clearBuffers(const int& x, const int& y, const int& w, const int& h) = 0;
 		virtual void displayColorBuffer() = 0;
 
-		// Support for predraw and postdraw semantics.  All Renderer abstract
-		// interface functions and drawing functions must occur within a block of
-		// code bounded by PreDraw() and PostDraw().  The general format is
-		//   if (renderer->PreDraw())
-		//   {
-		//       <abstract-interface renderer calls and draw calls>;
-		//       renderer->PostDraw();
-		//   }
 		virtual bool preDraw() = 0;
 		virtual void postDraw() = 0;
-
-		// The entry point for drawing 2D buffers (for 2D applications).
-		virtual void draw(const unsigned char* screenBuffer, const bool& reflectY = false) = 0;
-
-		// The entry point for drawing 2D text.
-		virtual void draw(const int& x, const int& y, const Color4f& color, const std::string& message) = 0;
 
 	protected:
 
@@ -116,12 +101,6 @@ namespace Engine
 		float m_clearDepth;
 		unsigned int m_clearStencil;
 
-	private:
-
-		// The entry point for drawing 3D objects, called by the single-object
-		// Draw function.
-		virtual void drawPrimitive() = 0;
-		
 	};
 	
 }

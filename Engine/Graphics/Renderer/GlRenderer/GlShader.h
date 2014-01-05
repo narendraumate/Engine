@@ -30,7 +30,7 @@ namespace Engine
 	{
 	public:
 		static GLuint loadShader(GLenum shaderType, const std::string &strShaderFilename);
-		static GLuint createProgram(const std::vector<GLuint> &shaderList);
+		static GLuint createProgram(const GLuint& vertexShader, const GLuint& fragmentShader);
 	};
 
 }

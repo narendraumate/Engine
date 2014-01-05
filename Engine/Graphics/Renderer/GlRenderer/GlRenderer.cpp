@@ -41,17 +41,33 @@ namespace Engine
 	void GlRenderer::run()
 	{
 //----------------------------------------------------------------------------//
+		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
 		glGenBuffers(1, &vertexBufferObject);
 		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) * sizeof(float), vertices, GL_STATIC_DRAW);
 
-		std::vector<GLuint> shaders;
-		shaders.push_back(GlShader::loadShader(GL_VERTEX_SHADER, "pass_along.vert"));
-		shaders.push_back(GlShader::loadShader(GL_FRAGMENT_SHADER, "uniform_color.frag"));
-		shaderProgramId = GlShader::createProgram(shaders);
+		GLuint vertexShader = GlShader::loadShader(GL_VERTEX_SHADER, "defaultVertex.vert");
+		GLuint fragmentShader = GlShader::loadShader(GL_FRAGMENT_SHADER, "defaultFragment.frag");
+		shaderProgramId = GlShader::createProgram(vertexShader, fragmentShader);
+
+		glUseProgram(shaderProgramId);
 
 		glGenVertexArrays(1, &vertexArrayObject);
 		glBindVertexArray(vertexArrayObject);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDisableVertexAttribArray(0);
+
+		glDeleteBuffers(1, &vertexBufferObject);
+		glDeleteVertexArrays(1, &vertexArrayObject);
+		glDeleteShader(vertexShader);
+		glDeleteShader(fragmentShader);
+
+		glUseProgram(0);
 //----------------------------------------------------------------------------//
 	}
 
@@ -176,17 +192,6 @@ namespace Engine
 	void GlRenderer::postDraw()
 	{
 //----------------------------------------------------------------------------//
-		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glUseProgram(shaderProgramId);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDisableVertexAttribArray(0);
-		glUseProgram(0);
-
 #if defined(__APPLE__)
         CGLFlushDrawable(m_contextObj);
 #elif defined(_WIN32)
@@ -195,21 +200,6 @@ namespace Engine
         //TODO
 #endif //defined(__linux__)
 //----------------------------------------------------------------------------//
-	}
-
-	void GlRenderer::draw(const unsigned char* screenBuffer, const bool& reflectY)
-	{
-
-	}
-
-	void GlRenderer::draw(const int& x, const int& y, const Color4f& color, const std::string& message)
-	{
-		
-	}
-
-	void GlRenderer::drawPrimitive()
-	{
-		
 	}
 
 }
