@@ -10,16 +10,15 @@
 
 #include "GlRenderer.h"
 //----------------------------------------------------------------------------//
-static const float vertices[] =
-{
-	0.75f, 0.75f, 0.0f, 1.0f,
-	0.75f, -0.75f, 0.0f, 1.0f,
-	-0.75f, -0.75f, 0.0f, 1.0f,
-};
+enum VAO_IDS { Triangles, NumVAOs };
+enum Buffer_IDs { ArrayBuffer, NumBuffers };
+enum Attribute_IDs { vPosition = 0, vColor = 1 };
 
-static GLuint vertexBufferObject;
-static GLuint vertexArrayObject;
-static GLuint shaderProgramId;
+GLuint  VAOs[NumVAOs];
+GLuint  Buffers[NumBuffers];
+
+const GLuint  NumVertices = 6;
+#define BUFFER_OFFSET(offset) ((void *)(offset))
 //----------------------------------------------------------------------------//
 namespace Engine
 {
@@ -35,45 +34,65 @@ namespace Engine
 
 	bool GlRenderer::initialize()
 	{
+//----------------------------------------------------------------------------//
+		glGenVertexArrays(NumVAOs, VAOs);
+		glBindVertexArray(VAOs[Triangles]);
+
+		struct VertexData
+		{
+			GLubyte color[4];
+			GLfloat position[4];
+		};
+
+		VertexData vertices[NumVertices] =
+		{
+			{{ 255,   0,   0, 255 }, { -0.90, -0.90 }},  // Triangle 1
+			{{   0, 255,   0, 255 }, {  0.85, -0.90 }},
+			{{   0,   0, 255, 255 }, { -0.90,  0.85 }},
+
+			{{  10,  10,  10, 255 }, {  0.90, -0.85 }},  // Triangle 2
+			{{ 100, 100, 100, 255 }, {  0.90,  0.90 }},
+			{{ 255, 255, 255, 255 }, { -0.85,  0.90 }}
+		};
+
+		glGenBuffers(NumBuffers, Buffers);
+		glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		std::map<std::string, GLuint> shaderMap;
+		shaderMap["gouraud.vert"] = GL_VERTEX_SHADER;
+		shaderMap["gouraud.frag"] = GL_FRAGMENT_SHADER;
+		std::vector<GLuint> shaders = GlShader::loadShaders(shaderMap);
+		GLuint program = GlShader::createProgram(shaders);
+
+		glUseProgram(program);
+		glVertexAttribPointer(vColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexData), BUFFER_OFFSET(0));
+		glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(vertices[0].color)));
+
+		glEnableVertexAttribArray(vColor);
+		glEnableVertexAttribArray(vPosition);
+//----------------------------------------------------------------------------//
 		return true;
 	}
 
 	void GlRenderer::run()
 	{
 //----------------------------------------------------------------------------//
-		glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+		glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
 
-		glGenBuffers(1, &vertexBufferObject);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) * sizeof(float), vertices, GL_STATIC_DRAW);
-
-		GLuint vertexShader = GlShader::loadShader(GL_VERTEX_SHADER, "defaultVertex.vert");
-		GLuint fragmentShader = GlShader::loadShader(GL_FRAGMENT_SHADER, "defaultFragment.frag");
-		shaderProgramId = GlShader::createProgram(vertexShader, fragmentShader);
-
-		glUseProgram(shaderProgramId);
-
-		glGenVertexArrays(1, &vertexArrayObject);
-		glBindVertexArray(vertexArrayObject);
-
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glDisableVertexAttribArray(0);
-
-		glDeleteBuffers(1, &vertexBufferObject);
-		glDeleteVertexArrays(1, &vertexArrayObject);
-		glDeleteShader(vertexShader);
-		glDeleteShader(fragmentShader);
-
-		glUseProgram(0);
+		glBindVertexArray(VAOs[Triangles]);
+		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+		glFlush();
 //----------------------------------------------------------------------------//
 	}
 
 	void GlRenderer::shutdown()
 	{
-
+//----------------------------------------------------------------------------//
+		glDeleteBuffers(NumBuffers, Buffers);
+//----------------------------------------------------------------------------//
 	}
 
 	void GlRenderer::setViewport(const int& xPos, const int& yPos, const int& w, const int& h)

@@ -20,6 +20,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <map>
 #include <vector>
 #include "Utils.h"
 
@@ -29,8 +30,8 @@ namespace Engine
 	class GlShader
 	{
 	public:
-		static GLuint loadShader(GLenum shaderType, const std::string &strShaderFilename);
-		static GLuint createProgram(const GLuint& vertexShader, const GLuint& fragmentShader);
+		static std::vector<GLuint> loadShaders(const std::map<std::string, GLenum>& shaderPairs);
+		static GLuint createProgram(const std::vector<GLuint>& shaders);
 	};
 
 }
