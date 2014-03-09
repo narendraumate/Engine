@@ -30,7 +30,7 @@ namespace Engine
 	class GlShader
 	{
 	public:
-		static std::vector<GLuint> loadShaders(const std::map<std::string, GLenum>& shaderPairs);
+		static std::vector<GLuint> loadShaders(const std::map<std::string, GLenum>& shaderFileTypePairs);
 		static GLuint createProgram(const std::vector<GLuint>& shaders);
 	};
 

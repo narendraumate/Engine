@@ -103,11 +103,11 @@ namespace Engine
 						normalIndices.push_back(normalIndex[1]);
 						normalIndices.push_back(normalIndex[2]);
 						*/
+						
 						lineStream >> vertexIndex[0] >> vertexIndex[1] >> vertexIndex[2];
 						vertexIndices.push_back(vertexIndex[0]);
 						vertexIndices.push_back(vertexIndex[1]);
 						vertexIndices.push_back(vertexIndex[2]);
-
 					}
 				}
 			}

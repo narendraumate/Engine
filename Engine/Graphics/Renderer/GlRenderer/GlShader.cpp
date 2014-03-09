@@ -10,11 +10,11 @@
 
 namespace Engine
 {
-	std::vector<GLuint> GlShader::loadShaders(const std::map<std::string, GLenum>& shaderPairs)
+	std::vector<GLuint> GlShader::loadShaders(const std::map<std::string, GLenum>& shaderFileTypePairs)
 	{
 		std::vector<GLuint> shaders;
 		
-		for (std::map<std::string, GLuint>::const_iterator shaderPair = shaderPairs.begin(); shaderPair != shaderPairs.end(); ++shaderPair)
+		for (std::map<std::string, GLuint>::const_iterator shaderPair = shaderFileTypePairs.begin(); shaderPair != shaderFileTypePairs.end(); ++shaderPair)
 		{
 			std::string strFilename = Utils::singleton()->findFile(shaderPair->first);
 			if (strFilename != "")
@@ -78,6 +78,7 @@ namespace Engine
 		for (shader = shaders.begin(); shader != shaders.end(); ++shader)
 		{
 			glDetachShader(program, *shader);
+			glDeleteShader(*shader);
 		}
 
 		return program;
