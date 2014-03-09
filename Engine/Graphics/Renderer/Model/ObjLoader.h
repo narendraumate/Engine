@@ -13,8 +13,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "../../../External/WavefrontObject/Mesh.hpp"
+#include "../../../External/WavefrontObject/WavefrontObject.hpp"
 #include "../../../Mathematics/Vector.h"
-#include "Mesh.h"
 #include "Utils.h"
 
 namespace Engine
@@ -30,7 +31,8 @@ namespace Engine
 	public:
 		static ObjLoader* singleton();
 		static void destroySingleton();
-		Mesh loadObj(const std::string& strObjFileName);
+		Mesh* load(const std::string& strObjFileName);
+		void unload(Mesh* const meshPtr);
 	};
 
 }
