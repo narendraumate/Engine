@@ -1,6 +1,8 @@
 -- A solution contains projects, and defines the available configurations
 solution "Application"
     configurations { "Debug", "Release" }
+	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
+	includedirs { "Engine/External/assimp/code/BoostWorkaround", "Engine/External/assimp/contrib/cppunit-1.12.1/include" }
 
     -- A project defines one build target
     project "Application"
@@ -22,16 +24,16 @@ solution "Application"
             -- targetname ( "Application" )
 
         configuration "windows"
-            files { "**.h", "**.hpp", "**.c", "**.cpp" }
+            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
             excludes { "**/MacOS/**", "**/Linux/**" }
 
         configuration "macosx"
             linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
-            files { "**.h", "**.hpp", "**.c", "**.cpp", "**.m", "**.mm" }
+            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp", "**.m", "**.mm" }
             excludes { "**/Windows/**", "**/Linux/**" }
 
         configuration "linux"
             linkoptions { "-lGL", "-lGLU" }
-            files { "**.h", "**.hpp", "**.c", "**.cpp" }
+            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
             excludes { "**/Windows/**", "**/MacOS/**" }
 

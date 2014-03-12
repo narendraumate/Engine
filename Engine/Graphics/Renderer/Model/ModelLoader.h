@@ -10,6 +10,7 @@
 #define __Application__ModelLoader__
 
 #include <iostream>
+#include "../../../External/assimp/include/assimp/Importer.hpp"
 
 namespace Engine
 {
@@ -20,6 +21,7 @@ namespace Engine
 		ModelLoader();
 		~ModelLoader();
 		static ModelLoader* s_instance;
+		Assimp::Importer m_importer;
 
 	public:
 		static ModelLoader* singleton();
