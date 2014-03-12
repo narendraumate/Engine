@@ -686,14 +686,14 @@ aiNode* ProcessSpatialStructure(aiNode* parent, const IfcProduct& el, Conversion
 
 	// skip over space and annotation nodes - usually, these have no meaning in Assimp's context
 	if(conv.settings.skipSpaceRepresentations) {
-		if(const IfcSpace* const space = el.ToPtr<IfcSpace>()) {
+		if(/*const IfcSpace* const space = */el.ToPtr<IfcSpace>()) {
 			IFCImporter::LogDebug("skipping IfcSpace entity due to importer settings");
 			return NULL;
 		}
 	}
 
 	if(conv.settings.skipAnnotations) {
-		if(const IfcAnnotation* const ann = el.ToPtr<IfcAnnotation>()) {
+		if(/*const IfcAnnotation* const ann = */el.ToPtr<IfcAnnotation>()) {
 			IFCImporter::LogDebug("skipping IfcAnnotation entity due to importer settings");
 			return NULL;
 		}
@@ -772,7 +772,7 @@ aiNode* ProcessSpatialStructure(aiNode* parent, const IfcProduct& el, Conversion
 					continue;
 				}
 				BOOST_FOREACH(const IfcProduct& pro, cont->RelatedElements) {		
-					if(const IfcOpeningElement* const open = pro.ToPtr<IfcOpeningElement>()) {
+					if(/*const IfcOpeningElement* const open = */pro.ToPtr<IfcOpeningElement>()) {
 						// IfcOpeningElement is handled below. Sadly we can't use it here as is:
 						// The docs say that opening elements are USUALLY attached to building storey,
 						// but we want them for the building elements to which they belong.

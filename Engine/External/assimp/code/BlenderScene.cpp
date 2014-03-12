@@ -252,7 +252,7 @@ template <> void Structure :: Convert<Base> (
 
 	std::pair<Base*, int> todo = std::make_pair(&dest, initial_pos);
 
-	Base* saved_prev = NULL;
+	////Base* saved_prev = NULL;
 
 	while(true) {
 	
@@ -267,7 +267,7 @@ template <> void Structure :: Convert<Base> (
 
 		// just record the offset of the blob data and allocate storage.
 		// Does _not_ invoke Convert() recursively.
-		const int old = db.reader->GetCurrentPos();
+		/*const int old = */db.reader->GetCurrentPos();
 
 		// the return value of ReadFieldPtr indicates whether the object 
 		// was already cached. In this case, we don't need to resolve

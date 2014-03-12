@@ -779,7 +779,7 @@ private:
 
 			// all values are converted to strings using the following stringstream
 			std::stringstream ss;
-			bool parse_succeeded = false;
+			////bool parse_succeeded = false;
 
 			// Interpret the property as a concrete type
 			if (const TypedProperty<std::string>* interpreted = prop.second->As<TypedProperty<std::string> >())
