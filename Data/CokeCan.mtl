@@ -1,0 +1,37 @@
+
+newmtl BLACK_MATTE
+illum 4
+Kd 0.01 0.01 0.01
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 96.08
+
+newmtl COCACOLA_COKE_BMP
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.50 0.50 0.50
+Tf 1.00 1.00 1.00
+map_Kd CokeCan.tga
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 96.08
+
+newmtl L2
+illum 4
+Kd 0.77 0.76 0.76
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 96.08
+
+newmtl SILVER
+illum 4
+Kd 0.77 0.76 0.76
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 96.08
