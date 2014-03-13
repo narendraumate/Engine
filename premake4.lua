@@ -2,7 +2,10 @@
 solution "Application"
     configurations { "Debug", "Release" }
 	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
-	includedirs { "Engine/External/assimp/code/BoostWorkaround", "Engine/External/assimp/contrib/cppunit-1.12.1/include" }
+	excludes { "**/src-IL/**", "**/src-ILU/**", "**/src-ILUT/**" }
+	includedirs {	"Engine/External/assimp/code/BoostWorkaround", 
+					"Engine/External/assimp/contrib/cppunit-1.12.1/include", 
+					"Engine/External/DevIL/DevIL/include"	}
 
     -- A project defines one build target
     project "Application"

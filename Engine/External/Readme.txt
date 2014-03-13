@@ -1,9 +1,8 @@
 assimp
 https://github.com/assimp/assimp/tree/master/code
+https://github.com/assimp/assimp/tree/master/contrib
 https://github.com/assimp/assimp/tree/master/include
-
-boost
-https://github.com/mirror/boost/tree/master/boost
+https://github.com/assimp/assimp/tree/master/revision.h
 
 callback
 Modified
