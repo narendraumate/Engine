@@ -2,7 +2,10 @@
 solution "Application"
     configurations { "Debug", "Release" }
 	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
-	excludes { "**/src-IL/**", "**/src-ILU/**", "**/src-ILUT/**" }
+	excludes {	"**/src-IL/**", 
+				"**/src-ILU/**", 
+				"**/src-ILUT/**", 
+				"Engine/External/assimp/revision.h" }
 	includedirs {	"Engine/External/assimp/code/BoostWorkaround", 
 					"Engine/External/assimp/contrib/cppunit-1.12.1/include", 
 					"Engine/External/DevIL/DevIL/include"	}
