@@ -190,7 +190,7 @@ namespace Engine
 						   (uint8_t)(a * 255.0f));
 	}
 
-	ostream& operator<<(ostream& out, const Color4f &u)
+	std::ostream& operator<<(std::ostream& out, const Color4f &u)
 	{
 		out << u.r << ' ' << u.g << ' ' << u.b << ' ' << u.a << ' ';
 		return out;

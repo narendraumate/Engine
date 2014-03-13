@@ -16,8 +16,6 @@
 #include <stdint.h>
 #endif //defined(__linux__) || defined(_WIN32)
 
-using namespace std;
-
 //----------------------------------------------------------------------------//
 //  Endian  First Byte Low Address  Last Byte High Address  1000	Decimal   //
 //  Big		Most Significant		Least Significant		03E8	Straight  //
@@ -240,7 +238,7 @@ namespace Engine
 		Vec4	vec4() const;
 		Color	color() const;
 
-		friend ostream& operator<<(ostream& out, const Color4f &u);
+		friend std::ostream& operator<<(std::ostream& out, const Color4f &u);
 
 		float r, g, b, a;
 
