@@ -10,12 +10,13 @@
 
 #include "GlRenderer.h"
 //----------------------------------------------------------------------------//
-enum VAO_IDS { Triangles, NumVAOs };
+enum VAO_IDs { Triangles, NumVAOs };
 enum Buffer_IDs { ArrayBuffer, NumBuffers };
 enum Attribute_IDs { vPosition = 0, vColor = 1 };
 
-GLuint  VAOs[NumVAOs];
-GLuint  Buffers[NumBuffers];
+GLuint ProgramID;
+GLuint VAOs[NumVAOs];
+GLuint Buffers[NumBuffers];
 
 const GLuint  NumVertices = 6;
 #define BUFFER_OFFSET(offset) ((void *)(offset))
@@ -35,8 +36,11 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		glGenVertexArrays(NumVAOs, VAOs);
-		glBindVertexArray(VAOs[Triangles]);
+		std::map<std::string, GLuint> shaderMap;
+		shaderMap["gouraud.vert"] = GL_VERTEX_SHADER;
+		shaderMap["gouraud.frag"] = GL_FRAGMENT_SHADER;
+		std::vector<GLuint> shaders = GlShader::loadShaders(shaderMap);
+		ProgramID = GlProgram::createProgram(shaders);
 
 		struct VertexData
 		{
@@ -55,22 +59,19 @@ namespace Engine
 			{{ 255, 255, 255, 255 }, { -0.85,  0.90 }}
 		};
 
+		glGenVertexArrays(NumVAOs, VAOs);
+		glBindVertexArray(VAOs[Triangles]);
+
 		glGenBuffers(NumBuffers, Buffers);
 		glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		std::map<std::string, GLuint> shaderMap;
-		shaderMap["gouraud.vert"] = GL_VERTEX_SHADER;
-		shaderMap["gouraud.frag"] = GL_FRAGMENT_SHADER;
-		std::vector<GLuint> shaders = GlShader::loadShaders(shaderMap);
-		GLuint program = GlShader::createProgram(shaders);
-
-		glUseProgram(program);
-		glVertexAttribPointer(vColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexData), BUFFER_OFFSET(0));
+		glUseProgram(ProgramID);
 		glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(vertices[0].color)));
+		glVertexAttribPointer(vColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexData), BUFFER_OFFSET(0));
 
-		glEnableVertexAttribArray(vColor);
 		glEnableVertexAttribArray(vPosition);
+		glEnableVertexAttribArray(vColor);
 //----------------------------------------------------------------------------//
 		return true;
 	}
@@ -81,8 +82,6 @@ namespace Engine
 		glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
-
-		glBindVertexArray(VAOs[Triangles]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 		glFlush();
 //----------------------------------------------------------------------------//
@@ -92,6 +91,8 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		glDeleteBuffers(NumBuffers, Buffers);
+		glDeleteVertexArrays(NumVAOs, VAOs);
+		GlProgram::deleteProgram(ProgramID);
 //----------------------------------------------------------------------------//
 	}
 

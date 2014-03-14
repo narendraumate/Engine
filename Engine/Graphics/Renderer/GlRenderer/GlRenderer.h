@@ -11,14 +11,10 @@
 
 #if defined(__APPLE__) || defined(__linux__)
 
-#if defined(__APPLE__)
-#include <GLUT/GLUT.h>
-#include <OpenGL/gl.h>
-#elif defined(__linux__)
-
-#endif //defined(__linux__)
-
 #include <vector>
+
+#include "GlHeader.h"
+#include "GlProgram.h"
 #include "GlShader.h"
 #include "../Renderer.h"
 

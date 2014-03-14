@@ -9,19 +9,11 @@
 #ifndef __Application__GlShader__
 #define __Application__GlShader__
 
-#if defined(__APPLE__)
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/gl3.h>
-#elif defined(__linux__)
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h> // sudo apt-get install mesa-common-dev mesa-utils freeglut3 freeglut3-dev
-#endif //defined(__linux__)
-
-#include <fstream>
 #include <sstream>
-#include <string>
 #include <map>
 #include <vector>
+
+#include "GlHeader.h"
 #include "Utils.h"
 
 namespace Engine
@@ -31,7 +23,6 @@ namespace Engine
 	{
 	public:
 		static std::vector<GLuint> loadShaders(const std::map<std::string, GLenum>& shaderFileTypePairs);
-		static GLuint createProgram(const std::vector<GLuint>& shaders);
 	};
 
 }
