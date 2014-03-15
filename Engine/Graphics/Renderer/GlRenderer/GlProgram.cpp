@@ -10,6 +10,11 @@
 
 namespace Engine
 {
+	GlProgram::GlProgram()
+	{ }
+	
+	GlProgram::~GlProgram()
+	{ }
 	
 	GLuint GlProgram::createProgram(const std::vector<GLuint>& shaders)
 	{

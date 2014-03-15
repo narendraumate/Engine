@@ -19,6 +19,10 @@ namespace Engine
 {
 	class GlProgram
 	{
+	private:
+		GlProgram();
+		~GlProgram();
+		
 	public:
 		static GLuint createProgram(const std::vector<GLuint>& shaders);
 		static void deleteProgram(const GLuint& program);

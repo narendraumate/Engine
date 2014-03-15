@@ -23,23 +23,19 @@ const GLuint  NumVertices = 6;
 //----------------------------------------------------------------------------//
 namespace Engine
 {
-
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
-	{
-	}
+	{ }
 
 	GlRenderer::~GlRenderer()
-	{
-	}
+	{ }
 
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		std::map<std::string, GLuint> shaderMap;
-		shaderMap["gouraud.vert"] = GL_VERTEX_SHADER;
-		shaderMap["gouraud.frag"] = GL_FRAGMENT_SHADER;
-		std::vector<GLuint> shaders = GlShader::loadShaders(shaderMap);
+		std::vector<GLuint> shaders;
+		shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));
+		shaders.push_back(GlShader::loadShader("simple.fragment", GL_FRAGMENT_SHADER));
 		ProgramID = GlProgram::createProgram(shaders);
 
 		struct VertexData

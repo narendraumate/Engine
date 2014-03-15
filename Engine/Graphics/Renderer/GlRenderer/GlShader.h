@@ -21,13 +21,16 @@
 
 namespace Engine
 {
-
 	class GlShader
 	{
+	private:
+		GlShader();
+		~GlShader();
+	
 	public:
-		static std::vector<GLuint> loadShaders(const std::map<std::string, GLenum>& shaderFileTypePairs);
+		static GLuint loadShader(const std::string& shaderFilename, const GLenum& shaderType);
+		static std::vector<GLuint> loadShaderMap(const std::map<std::string, GLenum>& shaderFileTypePairs);
 	};
-
 }
 
 #endif /* defined(__Application__GlShader__) */
