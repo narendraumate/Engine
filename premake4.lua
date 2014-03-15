@@ -2,6 +2,10 @@
 solution "Application"
     configurations { "Debug", "Release" }
 	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
+	
+	-- Disable assimp and DevIL entirely
+	excludes { "**/assimp/**", "**/DevIL/**" }
+	
 	excludes {	"**/src-IL/**", 
 				"**/src-ILU/**", 
 				"**/src-ILUT/**", 
