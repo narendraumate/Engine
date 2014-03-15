@@ -1,46 +1,70 @@
-//
-//  Camera.h
-//  Application
-//
-//  Created by Narendra Umate on 9/12/13.
-//  Copyright (c) 2013 Narendra Umate. All rights reserved.
-//
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
 
-#ifndef __Application__Camera__
-#define __Application__Camera__
-
+#ifdef __APPLE__
 #include "Matrix.h"
-#include "Point.h"
+#include "Vector.h"
+#endif //__APPLE__
+
+#ifdef _WIN32
+#include <D3DX10math.h>
+#include "Math/Math.h"
+#endif //_WIN32
 
 namespace Engine
 {
-
+	
 	class Camera
 	{
-
 	public:
-
-		Camera(const bool& isPerspective = true);
-		virtual ~Camera();
-
-		bool getIsPerspective() const { return m_isPerspective; }
-		Mat4* getViewMatrix() const { return (Mat4*)&m_viewMatrix; }
-		Mat4* getProjectionMatrix() const { return (Mat4*)&m_projectionMatrix; }
-		Mat4* getPostProjectionMatrix() const { return (Mat4*)&m_postProjectionMatrix; }
-
+		Camera();
+		~Camera();
+		
+		void setPosition(const float& x, const float& y, const float& z);
+		void setRotation(const float& x, const float& y, const float& z);
+		
+		void render();
+		
+#ifdef __APPLE__
+		const Vec3* getPosition();
+		const Vec3* getRotation();
+		const Mat4* getViewMatrix();
+#endif //__APPLE__
+		
+#ifdef _WIN32
+		const D3DXVECTOR3* getPosition();
+		const D3DXVECTOR3* getRotation();
+		const D3DXMATRIX* getViewMatrix();
+#endif //_WIN32
+		
 	private:
-
-		bool m_isPerspective;
-		Point m_position;
-		Vec4 m_directionVector;
-		Vec4 m_uvVector;
-		Vec4 m_reflectionVector;
+		
+#ifdef __APPLE__
+		Vec3 m_position;
+		Vec3 m_rotation;
+#endif //__APPLE__
+		
+#ifdef _WIN32
+		D3DXVECTOR3 m_position;
+		D3DXVECTOR3 m_rotation;
+#endif //_WIN32
+		
+#ifdef __APPLE__
 		Mat4 m_viewMatrix;
-		Mat4 m_projectionMatrix;
-		Mat4 m_postProjectionMatrix;
-
+#endif //__APPLE__
+		
+#ifdef _WIN32
+		D3DXMATRIX m_viewMatrix;
+#endif //_WIN32
+		
+#ifdef __APPLE__
+		Mat4* matrixRotationYawPitchRoll(Mat4* pOut, float yaw, float pitch, float roll);
+		Vec3* vec3TransformCoord(Vec3* pOut, Vec3* pV, Mat4* pM);
+		Mat4* matrixLookAtLh(Mat4* pOut, Vec3* pEye, Vec3* pAt, Vec3* pUp);
+#endif //__APPLE__
+		
 	};
-
+	
 }
 
-#endif /* defined(__Application__Camera__) */
+#endif //_CAMERA_H_

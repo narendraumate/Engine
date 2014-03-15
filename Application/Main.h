@@ -12,9 +12,9 @@
 #include <iostream>
 #include <memory>
 
-#include "../Engine/Core/Logger.h"
-#include "../Engine/Core/Settings.h"
-#include "../Engine/Core/Utils.h"
+#include "Common/Logger.h"
+#include "Common/Settings.h"
+#include "Common/Utils.h"
 
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"

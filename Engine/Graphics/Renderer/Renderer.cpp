@@ -60,19 +60,23 @@ namespace Engine
 		return m_camera;
 	}
 
-	Mat4* Renderer::getViewMatrix() const
+	const Mat4* Renderer::getViewMatrix() const
 	{
 		return m_camera->getViewMatrix();
 	}
 
-	Mat4* Renderer::getProjectionMatrix() const
+	const Mat4* Renderer::getProjectionMatrix() const
 	{
-		return m_camera->getProjectionMatrix();
+		//TODO
+		//return m_camera->getProjectionMatrix();
+		return NULL;
 	}
 
-	Mat4* Renderer::getPostProjectionMatrix() const
+	const Mat4* Renderer::getPostProjectionMatrix() const
 	{
-		return m_camera->getPostProjectionMatrix();
+		//TODO
+		//return m_camera->getPostProjectionMatrix();
+		return NULL;
 	}
 
 	void Renderer::setClearColor(const Color4f& clearColor)

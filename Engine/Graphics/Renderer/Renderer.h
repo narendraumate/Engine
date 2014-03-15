@@ -49,9 +49,9 @@ namespace Engine
 		void setCamera(Camera* camera);
 		Camera* getCamera() const;
 
-		Mat4* getViewMatrix() const;
-		Mat4* getProjectionMatrix() const;
-		Mat4* getPostProjectionMatrix() const;
+		const Mat4* getViewMatrix() const;
+		const Mat4* getProjectionMatrix() const;
+		const Mat4* getPostProjectionMatrix() const;
 
 		void setClearColor(const Color4f& clearColor);
 		Color4f getClearColor() const;
@@ -94,6 +94,7 @@ namespace Engine
 
 		Camera* m_camera;
 
+		// TODO ACCESS THIS
 		Mat4* m_viewMatrix;
 		Mat4* m_projectionMatrix;
 		Mat4* m_postProjectionMatrix;
