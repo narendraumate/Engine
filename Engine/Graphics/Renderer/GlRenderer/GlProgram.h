@@ -9,7 +9,10 @@
 #ifndef __Application__GlProgram__
 #define __Application__GlProgram__
 
-#include "GlHeader.h"
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#endif //defined(__APPLE__)
+
 #include <vector>
 
 namespace Engine

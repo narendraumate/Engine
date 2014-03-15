@@ -13,10 +13,9 @@
 
 #include <vector>
 
-#include "GlHeader.h"
+#include "../Renderer.h"
 #include "GlProgram.h"
 #include "GlShader.h"
-#include "../Renderer.h"
 
 namespace Engine
 {

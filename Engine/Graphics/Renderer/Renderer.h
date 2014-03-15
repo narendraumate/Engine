@@ -20,7 +20,8 @@
 #include <OpenGL/OpenGL.h>
 #define ContextObj CGLContextObj
 #elif defined(__linux__)
-#include <GL/gl.h>
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h> // sudo apt-get install mesa-common-dev mesa-utils freeglut3 freeglut3-dev
 #include <GL/glx.h>
 #define ContextObj GLXContext
 #elif defined(_WIN32)

@@ -9,11 +9,14 @@
 #ifndef __Application__GlShader__
 #define __Application__GlShader__
 
-#include <sstream>
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#endif //defined(__APPLE__)
+
 #include <map>
+#include <sstream>
 #include <vector>
 
-#include "GlHeader.h"
 #include "Utils.h"
 
 namespace Engine
