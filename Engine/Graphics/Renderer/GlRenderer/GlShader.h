@@ -17,6 +17,7 @@
 #include <sstream>
 #include <vector>
 
+#include "../../../External/glsw/glsw.h"
 #include "Utils.h"
 
 namespace Engine
@@ -28,6 +29,7 @@ namespace Engine
 		~GlShader();
 	
 	public:
+		static GLuint loadShader(const std::string& shaderName);
 		static GLuint loadShader(const std::string& shaderFilename, const GLenum& shaderType);
 		static std::vector<GLuint> loadShaderMap(const std::map<std::string, GLenum>& shaderFileTypePairs);
 	};

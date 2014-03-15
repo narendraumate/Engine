@@ -13,5 +13,8 @@ https://github.com/svn2github/DevIL/tree/master/DevIL/src-IL
 https://github.com/svn2github/DevIL/tree/master/DevIL/src-ILU
 https://github.com/svn2github/DevIL/tree/master/DevIL/src-ILUT
 
+glsw
+http://prideout.net/blog/?p=11
+
 MemTrack
 Modified

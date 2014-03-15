@@ -3,8 +3,8 @@ solution "Application"
     configurations { "Debug", "Release" }
 	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
 	
-	-- Disable assimp and DevIL entirely
-	excludes { "**/assimp/**", "**/DevIL/**" }
+	-- Disable assimp, DevIL, glsw
+	excludes { "**/assimp/**", "**/DevIL/**", "**/glsw/**" }
 	
 	excludes {	"**/src-IL/**", 
 				"**/src-ILU/**", 

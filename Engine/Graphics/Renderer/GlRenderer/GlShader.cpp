@@ -16,6 +16,11 @@ namespace Engine
 	GlShader::~GlShader()
 	{ }
 
+	GLuint GlShader::loadShader(const std::string& shaderName)
+	{
+		//TODO
+	}
+
 	GLuint GlShader::loadShader(const std::string& shaderFilename, const GLenum& shaderType)
 	{
 		std::string strFilename = Utils::singleton()->findFile(shaderFilename);
