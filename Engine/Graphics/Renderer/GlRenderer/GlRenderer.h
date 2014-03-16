@@ -11,11 +11,7 @@
 
 #if defined(__APPLE__) || defined(__linux__)
 
-#include <vector>
-
 #include "../Renderer.h"
-#include "GlProgram.h"
-#include "GlShader.h"
 
 namespace Engine
 {

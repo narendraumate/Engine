@@ -15,8 +15,7 @@ namespace Engine
 	:	m_width(width)
 	,	m_height(height)
 	,	m_applicationName(strdup(applicationName))
-	{
-	}
+	{ }
 
 	Renderer::~Renderer()
 	{

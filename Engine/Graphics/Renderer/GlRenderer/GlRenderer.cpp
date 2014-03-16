@@ -9,18 +9,12 @@
 #if defined(__APPLE__) || defined(__linux__)
 
 #include "GlRenderer.h"
-//----------------------------------------------------------------------------//
-enum VAO_IDs { Triangles, NumVAOs };
-enum Buffer_IDs { ArrayBuffer, NumBuffers };
-enum Attribute_IDs { vPosition = 0, vColor = 1 };
 
-GLuint ProgramID;
-GLuint VAOs[NumVAOs];
-GLuint Buffers[NumBuffers];
-
-const GLuint  NumVertices = 6;
-#define BUFFER_OFFSET(offset) ((void *)(offset))
 //----------------------------------------------------------------------------//
+#include "GlModel.h"
+Engine::GlModel* g_glModel = nullptr;
+//----------------------------------------------------------------------------//
+
 namespace Engine
 {
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
@@ -33,62 +27,28 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		std::vector<GLuint> shaders;
-		shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));
-		shaders.push_back(GlShader::loadShader("simple.fragment", GL_FRAGMENT_SHADER));
-		ProgramID = GlProgram::createProgram(shaders);
-
-		struct VertexData
-		{
-			GLubyte color[4];
-			GLfloat position[4];
-		};
-
-		VertexData vertices[NumVertices] =
-		{
-			{{ 255,   0,   0, 255 }, { -0.90, -0.90 }},  // Triangle 1
-			{{   0, 255,   0, 255 }, {  0.85, -0.90 }},
-			{{   0,   0, 255, 255 }, { -0.90,  0.85 }},
-
-			{{  10,  10,  10, 255 }, {  0.90, -0.85 }},  // Triangle 2
-			{{ 100, 100, 100, 255 }, {  0.90,  0.90 }},
-			{{ 255, 255, 255, 255 }, { -0.85,  0.90 }}
-		};
-
-		glGenVertexArrays(NumVAOs, VAOs);
-		glBindVertexArray(VAOs[Triangles]);
-
-		glGenBuffers(NumBuffers, Buffers);
-		glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		glUseProgram(ProgramID);
-		glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(vertices[0].color)));
-		glVertexAttribPointer(vColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexData), BUFFER_OFFSET(0));
-
-		glEnableVertexAttribArray(vPosition);
-		glEnableVertexAttribArray(vColor);
+		g_glModel = new GlModel(Engine::Utils::singleton()->findFile("Dragon.obj"));
 //----------------------------------------------------------------------------//
 		return true;
 	}
 
 	void GlRenderer::run()
 	{
-//----------------------------------------------------------------------------//
-		glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		clearColorBuffer();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
-		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-		glFlush();
 //----------------------------------------------------------------------------//
+		g_glModel->render();
+//----------------------------------------------------------------------------//
+		glFlush();
 	}
 
 	void GlRenderer::shutdown()
 	{
 //----------------------------------------------------------------------------//
-		glDeleteBuffers(NumBuffers, Buffers);
-		glDeleteVertexArrays(NumVAOs, VAOs);
-		GlProgram::deleteProgram(ProgramID);
+		if (g_glModel)
+		{
+			delete g_glModel;
+		}
 //----------------------------------------------------------------------------//
 	}
 
