@@ -63,6 +63,8 @@ namespace Engine
 	
 	GlModel::~GlModel()
 	{
+		glDisableVertexAttribArray(vPosition);
+		glDisableVertexAttribArray(vColor);
 		glDeleteBuffers(NumBuffers, Buffers);
 		glDeleteVertexArrays(NumVAOs, VAOs);
 		GlProgram::deleteProgram(ProgramID);
