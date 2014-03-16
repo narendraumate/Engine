@@ -10,10 +10,9 @@
 
 namespace Engine
 {
-	
+
 	GlModel::GlModel(std::string objFilename)
 	:	m_loaded(false)
-	,	shapes(0)
 	{
 		if (tinyobj::LoadObj(shapes, objFilename.c_str()).empty())
 		{			
@@ -21,11 +20,12 @@ namespace Engine
 			shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));
 			shaders.push_back(GlShader::loadShader("simple.fragment", GL_FRAGMENT_SHADER));
 			ProgramID = GlProgram::createProgram(shaders);
+		
 			
 			struct VertexData
 			{
 				GLubyte color[4];
-				GLfloat position[4];
+				GLfloat position[2];
 			};
 			
 			VertexData vertices[6] =
