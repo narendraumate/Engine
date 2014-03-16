@@ -163,7 +163,7 @@
 
  /////////////////////// BEGIN Example 2 //////////////////////////
  #include <iostream>
- #include "callback.h"
+ #include "callback.hpp"
  using namespace std;
 
  class CDPlayer;

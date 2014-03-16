@@ -19,6 +19,7 @@ namespace Engine
 	GLuint GlShader::loadShader(const std::string& shaderName)
 	{
 		//TODO
+		return 0;
 	}
 
 	GLuint GlShader::loadShader(const std::string& shaderFilename, const GLenum& shaderType)
