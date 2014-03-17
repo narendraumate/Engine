@@ -2,7 +2,6 @@
 
 namespace Engine
 {
-	
 	Camera::Camera()
 	:	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
@@ -64,8 +63,8 @@ namespace Engine
 		// Transform lookAt and up vector by rotation matrix so the view is
 		// correctly rotated at the origin
 #ifdef __APPLE__
-		vec3TransformCoord(&lookAt, &lookAt, &rotationMatrix);
-		vec3TransformCoord(&up, &up, &rotationMatrix);
+		vec3TransformCoord(&lookAt, lookAt, rotationMatrix);
+		vec3TransformCoord(&up, up, rotationMatrix);
 #endif //__APPLE__
 		
 #ifdef _WIN32
@@ -78,7 +77,7 @@ namespace Engine
 		
 		// Finally create the view matrix from three updated vectors
 #ifdef __APPLE__
-		matrixLookAtLh(&m_viewMatrix, &m_position, &lookAt, &up);
+		matrixLookAtLh(&m_viewMatrix, m_position, lookAt, up);
 #endif //__APPLE__
 		
 #ifdef _WIN32
@@ -121,36 +120,37 @@ namespace Engine
 #endif //_WIN32
 	
 #ifdef __APPLE__
-	Mat4* Camera::matrixRotationYawPitchRoll(Mat4* pOut, float yaw, float pitch, float roll)
+	Mat4* Camera::matrixRotationYawPitchRoll(Mat4* pOut,
+											 const float& yaw, const float& pitch, const float& roll)
 	{
 		// Yaw * Pitch * Roll unoptimized but functional with the gimble lock
 		*pOut = Mat4::rotateY(yaw) * Mat4::rotateX(pitch) * Mat4::rotateZ(roll);
 		return pOut;
 	}
 	
-	Vec3* Camera::vec3TransformCoord(Vec3* pOut, Vec3* pV, Mat4* pM)
+	Vec3* Camera::vec3TransformCoord(Vec3* pOut, const Vec3& pV, const Mat4& pM)
 	{
 		// Transforms the vector, pV (x, y, z, 1), by the matrix, pM,
 		// projecting the result back into w=1
-		*pOut = (freeVector(*pV) * (*pM)).project();
+		*pOut = (freeVector(pV) * (pM)).project();
 		return pOut;
 	}
 	
-	Mat4* Camera::matrixLookAtLh(Mat4* pOut, Vec3* pEye, Vec3* pAt, Vec3* pUp)
+	Mat4* Camera::matrixLookAtLh(Mat4* pOut, const Vec3& pEye, const Vec3& pAt, const Vec3& pUp)
 	{
 		//*pOut = Transform::lookatlh(*pEye, *pAt, *pUp);
 		//return pOut;
 		
-		Vec3 look = (*pAt - *pEye).normal();
-		Vec3 right  = cross(*pUp, look).normal();
+		Vec3 look = (pAt - pEye).normal();
+		Vec3 right  = cross(pUp, look).normal();
 		Vec3 up     = cross(look, right).normal();
 		
-		*pOut = Mat4(right.x,	right.y,	right.z,	-dot(right, *pEye),
-					 up.x,		up.y,		up.z,		-dot(up, *pEye),
-					 look.x,	look.y,		look.z,		-dot(look, *pEye),
+		*pOut = Mat4(right.x,	right.y,	right.z,	-dot(right, pEye),
+					 up.x,		up.y,		up.z,		-dot(up, pEye),
+					 look.x,	look.y,		look.z,		-dot(look, pEye),
 					 0.0f,		0.0f,		0.0f,		1.0f);
 		return pOut;
 	}
-	
 }
+
 #endif //__APPLE__

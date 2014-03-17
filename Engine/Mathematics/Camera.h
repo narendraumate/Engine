@@ -58,9 +58,10 @@ namespace Engine
 #endif //_WIN32
 		
 #ifdef __APPLE__
-		Mat4* matrixRotationYawPitchRoll(Mat4* pOut, float yaw, float pitch, float roll);
-		Vec3* vec3TransformCoord(Vec3* pOut, Vec3* pV, Mat4* pM);
-		Mat4* matrixLookAtLh(Mat4* pOut, Vec3* pEye, Vec3* pAt, Vec3* pUp);
+		Mat4* matrixRotationYawPitchRoll(Mat4* pOut,
+										 const float& yaw, const float& pitch, const float& roll);
+		Vec3* vec3TransformCoord(Vec3* pOut, const Vec3& pV, const Mat4& pM);
+		Mat4* matrixLookAtLh(Mat4* pOut, const Vec3& pEye, const Vec3& pAt, const Vec3& pUp);
 #endif //__APPLE__
 		
 	};
