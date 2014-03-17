@@ -14,7 +14,7 @@ namespace Engine
 	GlModel::GlModel(std::string objFilename)
 	:	m_loaded(false)
 	{
-		if (tinyobj::LoadObj(shapes, objFilename.c_str()).empty())
+		if (tinyobj::LoadObj(m_shapes, objFilename.c_str()).empty())
 		{			
 			std::vector<GLuint> shaders;
 			shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));

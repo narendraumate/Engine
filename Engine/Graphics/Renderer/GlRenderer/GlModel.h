@@ -24,7 +24,7 @@ namespace Engine
 		void render();
 	private:
 		bool m_loaded;
-		std::vector<tinyobj::shape_t> shapes;
+		std::vector<tinyobj::shape_t> m_shapes;
 //----------------------------------------------------------------------------//
 		enum VAO_IDs { Triangles, NumVAOs };
 		enum Buffer_IDs { ArrayBuffer, NumBuffers };
