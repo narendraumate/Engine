@@ -19,10 +19,11 @@ namespace Engine
 	class GlModel
 	{
 	public:
-		GlModel(std::string objFilename);
+		GlModel(GLuint programId, std::string objFilename);
 		~GlModel();
 		void render();
 	private:
+		GLuint m_programId;
 		bool m_loaded;
 		std::vector<tinyobj::shape_t> m_shapes;
 //----------------------------------------------------------------------------//
@@ -30,7 +31,6 @@ namespace Engine
 		enum Buffer_IDs { ArrayBuffer, NumBuffers };
 		enum Attribute_IDs { vPosition = 0, vColor = 1 };
 		
-		GLuint ProgramID;
 		GLuint VAOs[NumVAOs];
 		GLuint Buffers[NumBuffers];
 		

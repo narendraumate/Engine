@@ -27,7 +27,12 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		g_glModel = new GlModel(Engine::Utils::singleton()->findFile("Dragon.obj"));
+		std::vector<GLuint> shaders;
+		shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));
+		shaders.push_back(GlShader::loadShader("simple.fragment", GL_FRAGMENT_SHADER));
+		GLuint programId = GlProgram::createProgram(shaders);
+
+		g_glModel = new GlModel(programId, Engine::Utils::singleton()->findFile("Dragon.obj"));
 //----------------------------------------------------------------------------//
 		return true;
 	}
