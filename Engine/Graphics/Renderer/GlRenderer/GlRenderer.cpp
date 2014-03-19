@@ -43,6 +43,10 @@ namespace Engine
 		g_programId = GlProgram::createProgram(shaders);
 
 		g_glModel = new GlModel(g_programId, Engine::Utils::singleton()->findFile("CokeCan.obj"));
+
+		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
+		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));
+		
 		g_glModel->setViewMatrix(m_camera.getView());
 		g_glModel->setPerspectiveMatrix(m_camera.getPerspectiveProjection());
 		g_glModel->setOrthographicMatrix(m_camera.getOrthographicProjection());

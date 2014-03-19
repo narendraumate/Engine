@@ -16,14 +16,9 @@
 #include "Common/Settings.h"
 #include "Common/Utils.h"
 
+//#include "../Engine/External/MemTrack/MemTrack.h"
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
-
-//#define USE_MEMTRACK
-
-#ifdef USE_MEMTRACK
-#include "../Engine/External/MemTrack/MemTrack.h"
-#endif //USE_MEMTRACK
 
 void initializeMain();
 bool runMain();

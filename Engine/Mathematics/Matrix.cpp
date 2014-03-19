@@ -289,11 +289,11 @@ namespace Engine
 	Mat4 Mat4::rotateX(const float &theta)
 	{
 #if defined RADIANS
-		float cosT = cosf(theta);				   //  theta in radians
-		float sinT = sinf(theta);				   //  theta in radians
+		float cosT = cosf(theta);				//  theta in radians
+		float sinT = sinf(theta);				//  theta in radians
 #elif defined DEGREES
-		float cosT = cosf(theta * M_PI / 180.0f);   //  theta in degrees
-		float sinT = sinf(theta * M_PI / 180.0f);   //  theta in degrees
+		float cosT = cosf(theta * M_PI_180);	//  theta in degrees
+		float sinT = sinf(theta * M_PI_180);	//  theta in degrees
 #endif
 
 #ifdef RIGHTHANDED
@@ -312,11 +312,11 @@ namespace Engine
 	Mat4 Mat4::rotateY(const float &theta)
 	{
 #if defined RADIANS
-		float cosT = cosf(theta);				   //  theta in radians
-		float sinT = sinf(theta);				   //  theta in radians
+		float cosT = cosf(theta);				//  theta in radians
+		float sinT = sinf(theta);				//  theta in radians
 #elif defined DEGREES
-		float cosT = cosf(theta * M_PI / 180.0f);   //  theta in degrees
-		float sinT = sinf(theta * M_PI / 180.0f);   //  theta in degrees
+		float cosT = cosf(theta * M_PI_180);	//  theta in degrees
+		float sinT = sinf(theta * M_PI_180);	//  theta in degrees
 #endif
 
 #ifdef RIGHTHANDED
@@ -335,11 +335,11 @@ namespace Engine
 	Mat4 Mat4::rotateZ(const float &theta)
 	{
 #if defined RADIANS
-		float cosT = cosf(theta);				   //  theta in radians
-		float sinT = sinf(theta);				   //  theta in radians
+		float cosT = cosf(theta);				//  theta in radians
+		float sinT = sinf(theta);				//  theta in radians
 #elif defined DEGREES
-		float cosT = cosf(theta * M_PI / 180.0f);   //  theta in degrees
-		float sinT = sinf(theta * M_PI / 180.0f);   //  theta in degrees
+		float cosT = cosf(theta * M_PI_180);	//  theta in degrees
+		float sinT = sinf(theta * M_PI_180);	//  theta in degrees
 #endif
 
 #ifdef RIGHTHANDED
