@@ -15,7 +15,7 @@ namespace Engine
 	:	m_programId(programId)
 	,	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
-	,	m_scale(0.0f, 0.0f, 0.0f)
+	,	m_scale(1.0f, 1.0f, 1.0f)
 	,	m_modelMatrix()
 	{
 		//----------------------------------------------------------------------------//
@@ -127,8 +127,11 @@ namespace Engine
 	
 	void GlModel::updateModelMatrix()
 	{
-		// TODO create model matrix from position, rotation and scale.
+		// TODO verify this.
 		m_modelMatrix = Mat4::identity();
+		m_modelMatrix = m_modelMatrix * Mat4::rotateX(m_rotation.x) * Mat4::rotateY(m_rotation.y) * Mat4::rotateZ(m_rotation.z);
+		m_modelMatrix = m_modelMatrix * Mat4::translate(m_position);
+		m_modelMatrix = m_modelMatrix * Mat4::scale(m_scale);
 		setModelMatrix(&m_modelMatrix);
 	}
 	

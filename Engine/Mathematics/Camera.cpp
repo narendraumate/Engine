@@ -9,7 +9,9 @@ namespace Engine
 		
 		// TODO screenNear and screenDepth to be fed from Renderer or Settings.
 		setPerspectiveProjection(M_PI_4, (float)screenWidth / (float)screenHeight, 1.0f, 10.0f);
-		setOrthographicProjection(screenWidth, screenHeight, 1.0f, 10.0f);//TODO Fix this
+		
+		//TODO Fix this so transition between projections is seamless.
+		setOrthographicProjection(screenWidth, screenHeight, 1.0f, 10.0f);
 	}
 	
 	Camera::~Camera()

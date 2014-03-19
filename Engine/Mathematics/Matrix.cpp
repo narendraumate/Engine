@@ -129,6 +129,13 @@ namespace Engine
 					0.0f, 0.0f, 1.0f);
 	}
 
+	Mat3 Mat3::translate(const Vec2& v)
+	{
+		return Mat3(1.0f, 0.0f,   v.x,
+					0.0f, 1.0f,   v.y,
+					0.0f, 0.0f, 1.0f);
+	}
+
 	Mat3 Mat3::rotate(const float &theta)
 	{
 #if defined RADIANS
@@ -154,6 +161,13 @@ namespace Engine
 	{
 		return Mat3(  sx, 0.0f, 0.0f,
 					0.0f,   sy, 0.0f,
+					0.0f, 0.0f, 1.0f);
+	}
+
+	Mat3 Mat3::scale(const Vec2 &s)
+	{
+		return Mat3( s.x, 0.0f, 0.0f,
+					0.0f,  s.y, 0.0f,
 					0.0f, 0.0f, 1.0f);
 	}
 
@@ -261,6 +275,14 @@ namespace Engine
 		return Mat4(1.0f, 0.0f, 0.0f,   tx,
 					0.0f, 1.0f, 0.0f,   ty,
 					0.0f, 0.0f, 1.0f,   tz,
+					0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+	Mat4 Mat4::translate(const Vec3 &v)
+	{
+		return Mat4(1.0f, 0.0f, 0.0f,   v.x,
+					0.0f, 1.0f, 0.0f,   v.y,
+					0.0f, 0.0f, 1.0f,   v.z,
 					0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
@@ -374,6 +396,14 @@ namespace Engine
 		return Mat4(  sx, 0.0f, 0.0f, 0.0f,
 					0.0f,   sy, 0.0f, 0.0f,
 					0.0f, 0.0f,   sz, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
+	Mat4 Mat4::scale(const Vec3 &s)
+	{
+		return Mat4( s.x, 0.0f, 0.0f, 0.0f,
+					0.0f,  s.y, 0.0f, 0.0f,
+					0.0f, 0.0f,  s.z, 0.0f,
 					0.0f, 0.0f, 0.0f, 1.0f);
 	}
 

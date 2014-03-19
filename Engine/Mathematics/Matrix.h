@@ -81,9 +81,11 @@ namespace Engine
 		static Mat3	 zero();
 
 		static Mat3	 translate(const float &tx, const float &ty);
+		static Mat3	 translate(const Vec2 &v);
 		static Mat3	 rotate(const float &theta);
 		static Mat3	 scale(const float &sx, const float &sy);
-
+		static Mat3	 scale(const Vec2 &s);
+		
 		Mat3			transpose();
 		Mat3			inverse();
 		float			determinant();
@@ -122,6 +124,7 @@ namespace Engine
 		static Mat4 zero();
 
 		static Mat4 translate(const float &tx, const float &ty, const float &tz);
+		static Mat4 translate(const Vec3 &v);
 		static Mat4 rotateX(const float &theta);
 		static Mat4 rotateY(const float &theta);
 		static Mat4 rotateZ(const float &theta);
@@ -131,6 +134,7 @@ namespace Engine
 						   const float &z);
 		static Mat4 rotate(const float &theta, const Vec3 &v);
 		static Mat4 scale(const float &sx, const float &sy, const float &sz);
+		static Mat4 scale(const Vec3 &s);
 
 		Mat4		transpose();
 		Mat4		inverse();
