@@ -12,6 +12,8 @@
 #include <string>
 #include "GlProgram.h"
 #include "GlShader.h"
+#include "../../../Mathematics/Matrix.h"
+#include "../../../External/objloader/objloader.hpp"
 #include "../../../External/tinyobjloader/tiny_obj_loader.h"
 
 namespace Engine
@@ -21,20 +23,35 @@ namespace Engine
 	public:
 		GlModel(GLuint programId, std::string objFilename);
 		~GlModel();
-		void render();
+		
+		void setViewMatrix(const Mat4* viewMatrix);
+		void setModelMatrix(const Mat4* modelMatrix);
+		void setPerspectiveMatrix(const Mat4* perspectiveMatrix);
+		void setOrthographicMatrix(const Mat4* orthographicMatrix);
+		void setPosition(const Vec3& position);
+		void setRotation(const Vec3& rotation);
+		void setScale(const Vec3& scale);
+		void updateModelMatrix();
+		
+		void draw();
+		
 	private:
 		GLuint m_programId;
-		bool m_loaded;
-		std::vector<tinyobj::shape_t> m_shapes;
+		
+		Vec3 m_position;
+		Vec3 m_rotation;
+		Vec3 m_scale;
+		
+		Mat4 m_modelMatrix;		
 //----------------------------------------------------------------------------//
-		enum VAO_IDs { Triangles, NumVAOs };
-		enum Buffer_IDs { ArrayBuffer, NumBuffers };
-		enum Attribute_IDs { vPosition = 0, vColor = 1 };
+		enum Vao { VaoTriangles, VaoCount };
+		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboCount };
+		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
 		
-		GLuint VAOs[NumVAOs];
-		GLuint Buffers[NumBuffers];
+		GLuint m_vaos[VaoCount];
+		GLuint m_vbos[VboCount];
 		
-		const GLuint NumVertices = 6;
+		GLuint m_vertexCount;
 #define BUFFER_OFFSET(offset) ((void *)(offset))
 //----------------------------------------------------------------------------//
 	};

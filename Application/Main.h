@@ -19,7 +19,7 @@
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
 
-#define USE_MEMTRACK
+//#define USE_MEMTRACK
 
 #ifdef USE_MEMTRACK
 #include "../Engine/External/MemTrack/MemTrack.h"

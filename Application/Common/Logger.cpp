@@ -13,7 +13,7 @@ Engine::Logger* Engine::Logger::s_instance = NULL;
 namespace Engine
 {
 
-	Logger::Logger(std::string logfile)
+	Logger::Logger(const std::string& logfile)
 	{
 #ifdef PRINT_TO_FILE
 		m_fstream.open(logfile.c_str(), std::fstream::out);
@@ -45,7 +45,7 @@ namespace Engine
 		}
 	}
 
-	void Logger::printInfo(std::string file, std::string line, std::string message)
+	void Logger::printInfo(const std::string& file, const std::string& line, const std::string& message)
 	{
 #ifdef PRINT_TO_FILE
 		m_fstream << file << ":" << line << " " << message << std::endl;

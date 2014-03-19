@@ -47,11 +47,11 @@ namespace Engine
 		const char* getApplicationName() const;
 
 		void setCamera(Camera* camera);
-		Camera* getCamera() const;
+		const Camera* getCamera() const;
 
 		const Mat4* getViewMatrix() const;
-		const Mat4* getProjectionMatrix() const;
-		const Mat4* getPostProjectionMatrix() const;
+		const Mat4* getPerspectiveProjectionMatrix() const;
+		const Mat4* getOrthographicProjectionMatrix() const;
 
 		void setClearColor(const Color4f& clearColor);
 		Color4f getClearColor() const;
@@ -92,12 +92,7 @@ namespace Engine
 		int m_height;
 		char* m_applicationName;
 
-		Camera* m_camera;
-
-		// TODO ACCESS THIS
-		Mat4* m_viewMatrix;
-		Mat4* m_projectionMatrix;
-		Mat4* m_postProjectionMatrix;
+		Camera m_camera;
 
 		Color4f m_clearColor;
 		float m_clearDepth;

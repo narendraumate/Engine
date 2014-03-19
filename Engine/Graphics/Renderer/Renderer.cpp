@@ -15,6 +15,7 @@ namespace Engine
 	:	m_width(width)
 	,	m_height(height)
 	,	m_applicationName(strdup(applicationName))
+	,	m_camera(width, height)
 	{ }
 
 	Renderer::~Renderer()
@@ -51,31 +52,27 @@ namespace Engine
 
 	void Renderer::setCamera(Camera* camera)
 	{
-		m_camera = camera;
+		m_camera = *camera;
 	}
 
-	Camera* Renderer::getCamera() const
+	const Camera* Renderer::getCamera() const
 	{
-		return m_camera;
+		return &m_camera;
 	}
 
 	const Mat4* Renderer::getViewMatrix() const
 	{
-		return m_camera->getViewMatrix();
+		return m_camera.getView();
 	}
 
-	const Mat4* Renderer::getProjectionMatrix() const
+	const Mat4* Renderer::getPerspectiveProjectionMatrix() const
 	{
-		//TODO
-		//return m_camera->getProjectionMatrix();
-		return NULL;
+		return m_camera.getPerspectiveProjection();
 	}
 
-	const Mat4* Renderer::getPostProjectionMatrix() const
+	const Mat4* Renderer::getOrthographicProjectionMatrix() const
 	{
-		//TODO
-		//return m_camera->getPostProjectionMatrix();
-		return NULL;
+		return m_camera.getOrthographicProjection();
 	}
 
 	void Renderer::setClearColor(const Color4f& clearColor)

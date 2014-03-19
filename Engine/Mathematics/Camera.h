@@ -9,6 +9,9 @@
 #ifdef _WIN32
 #include <D3DX10math.h>
 #include "Math/Math.h"
+#define Vec3 D3DXVECTOR3
+#define Mat4 D3DXMATRIX
+#define matrixRotationYawPitchRoll D3DXMatrixRotationYawPitchRoll
 #endif //_WIN32
 
 namespace Engine
@@ -17,53 +20,45 @@ namespace Engine
 	class Camera
 	{
 	public:
-		Camera();
+		Camera(const int& screenWidth, const int& screenHeight);
 		~Camera();
-		
-		void setPosition(const float& x, const float& y, const float& z);
-		void setRotation(const float& x, const float& y, const float& z);
-		
-		void render();
-		
-#ifdef __APPLE__
-		const Vec3* getPosition();
-		const Vec3* getRotation();
-		const Mat4* getViewMatrix();
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		const D3DXVECTOR3* getPosition();
-		const D3DXVECTOR3* getRotation();
-		const D3DXMATRIX* getViewMatrix();
-#endif //_WIN32
+
+		void setPosition(const Vec3& position);
+		void setAxes(const Vec3& look, const Vec3& right, const Vec3& up);
+		void setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up);
+		void setPerspectiveProjection(const float& fieldOfViewX, const float& screenAspect, const float& screenNear, const float& screenFar);
+		void setOrthographicProjection(const int& screenWidth, const int& screenHeight, const float& screenNear, const float& screenFar);
+		const Mat4* getView() const;
+		const Mat4* getPerspectiveProjection() const;
+		const Mat4* getOrthographicProjection() const;
+		void updateViewMatrix();
+		void updatePerspectiveProjection();
+		void updateOrthographicProjection();
 		
 	private:
-		
-#ifdef __APPLE__
 		Vec3 m_position;
-		Vec3 m_rotation;
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		D3DXVECTOR3 m_position;
-		D3DXVECTOR3 m_rotation;
-#endif //_WIN32
-		
-#ifdef __APPLE__
+		Vec3 m_look;
+		Vec3 m_right;
+		Vec3 m_up;
 		Mat4 m_viewMatrix;
-#endif //__APPLE__
 		
-#ifdef _WIN32
-		D3DXMATRIX m_viewMatrix;
-#endif //_WIN32
+		float m_fieldOfViewX;
+		float m_screenAspect;
+		float m_pScreenNear;
+		float m_pScreenFar;
+		Mat4 m_perspectiveProjection;
+		
+		int m_screenWidth;
+		int m_screenHeight;
+		float m_oScreenNear;
+		float m_oScreenFar;
+		Mat4 m_orthographicProjection;
 		
 #ifdef __APPLE__
-		Mat4* matrixRotationYawPitchRoll(Mat4* pOut,
-										 const float& yaw, const float& pitch, const float& roll);
-		Vec3* vec3TransformCoord(Vec3* pOut, const Vec3& pV, const Mat4& pM);
-		Mat4* matrixLookAtLh(Mat4* pOut, const Vec3& pEye, const Vec3& pAt, const Vec3& pUp);
+		//Mat4* matrixRotationYawPitchRoll(Mat4* pOut, const float& yaw, const float& pitch, const float& roll);
+		//Vec3* vec3TransformCoord(Vec3* pOut, Vec3* pV, Mat4* pM);
+		//Mat4* matrixLookAtLh(Mat4* pOut, Vec3* pEye, Vec3* pAt, Vec3* pUp);
 #endif //__APPLE__
-		
 	};
 	
 }

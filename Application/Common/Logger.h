@@ -33,13 +33,13 @@ namespace Engine
 	class Logger
 	{
 	private:
-		Logger(std::string logfile);
+		Logger(const std::string& logfile);
 		~Logger();
 
 	public:
 		static Logger* singleton();
 		static void destroySingleton();
-		void printInfo(std::string file, std::string line, std::string message);
+		void printInfo(const std::string& file, const std::string& line, const std::string& message);
 
 	private:
 		static Logger* s_instance;

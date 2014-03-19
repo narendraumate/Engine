@@ -12,6 +12,7 @@
 
 //----------------------------------------------------------------------------//
 #include "GlModel.h"
+GLuint g_programId = 0;
 Engine::GlModel* g_glModel = nullptr;
 //----------------------------------------------------------------------------//
 
@@ -19,7 +20,16 @@ namespace Engine
 {
 	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
 	:	Renderer(width, height, applicationName)
-	{ }
+	{
+//----------------------------------------------------------------------------//
+		int major = 0;
+		int minor = 0;
+		char cardName[128];
+		getVideoCardInfo(cardName);
+		getGlVersion(&major, &minor);
+		getGlslVersion(&major, &minor);		
+//----------------------------------------------------------------------------//
+	}
 
 	GlRenderer::~GlRenderer()
 	{ }
@@ -28,11 +38,16 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<GLuint> shaders;
-		shaders.push_back(GlShader::loadShader("simple.vertex", GL_VERTEX_SHADER));
-		shaders.push_back(GlShader::loadShader("simple.fragment", GL_FRAGMENT_SHADER));
-		GLuint programId = GlProgram::createProgram(shaders);
+		shaders.push_back(GlShader::loadShader("3d.vert", GL_VERTEX_SHADER));
+		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
+		g_programId = GlProgram::createProgram(shaders);
 
-		g_glModel = new GlModel(programId, Engine::Utils::singleton()->findFile("Dragon.obj"));
+		g_glModel = new GlModel(g_programId, Engine::Utils::singleton()->findFile("CokeCan.obj"));
+		g_glModel->setViewMatrix(m_camera.getView());
+		g_glModel->setPerspectiveMatrix(m_camera.getPerspectiveProjection());
+		g_glModel->setOrthographicMatrix(m_camera.getOrthographicProjection());
+		
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// GL_FILL or GL_LINE
 //----------------------------------------------------------------------------//
 		return true;
 	}
@@ -40,11 +55,13 @@ namespace Engine
 	void GlRenderer::run()
 	{
 		clearColorBuffer();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
+		clearDepthBuffer();
+//		glEnable(GL_CULL_FACE);
+//		glCullFace(GL_BACK);
+//		glFrontFace(GL_CW);	// GL_CW or GL_CCW
 //----------------------------------------------------------------------------//
-		g_glModel->render();
+		g_glModel->draw();
 //----------------------------------------------------------------------------//
-		glFlush();
 	}
 
 	void GlRenderer::shutdown()
@@ -54,6 +71,7 @@ namespace Engine
 		{
 			delete g_glModel;
 		}
+		GlProgram::deleteProgram(g_programId);
 //----------------------------------------------------------------------------//
 	}
 
@@ -182,7 +200,54 @@ namespace Engine
 #endif //defined(__linux__)
 //----------------------------------------------------------------------------//
 	}
-
+	
+	void GlRenderer::getVideoCardInfo(char* cardName)
+	{
+		strncpy(cardName, (const char *)glGetString(GL_RENDERER), 128);
+		std::cout << cardName << std::endl;
+	}
+	
+	void GlRenderer::getGlVersion(int *major, int *minor)
+	{
+		const char *verstr = (const char *) glGetString(GL_VERSION);
+		if ((verstr == NULL) || (sscanf(verstr,"%d.%d", major, minor) != 2))
+		{
+			*major = *minor = 0;
+			std::cout << "Invalid GL_VERSION format." << std::endl;
+		}
+		std::cout << "GL_VERSION " << verstr << std::endl;
+	}
+	
+	void GlRenderer::getGlslVersion(int *major, int *minor)
+	{
+		int gl_major, gl_minor;
+		getGlVersion(&gl_major, &gl_minor);
+		*major = *minor = 0;
+		if (gl_major == 1)
+		{
+			/* GL v1.x can provide GLSL v1.00 only as an extension */
+			const char *extstr = (const char *) glGetString(GL_EXTENSIONS);
+			if ((extstr != NULL) &&
+				(strstr(extstr, "GL_ARB_shading_language_100") != NULL))
+			{
+				*major = 1;
+				*minor = 0;
+			}
+			std::cout << "GL_EXTENSIONS " << extstr << std::endl;
+		}
+		else if (gl_major >= 2)
+		{
+			/* GL v2.0 and greater must parse the version string */
+			const char *verstr =
+			(const char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
+			if ((verstr == NULL) || (sscanf(verstr, "%d.%d", major, minor) != 2))
+			{
+				*major = *minor = 0;
+				std::cout << "Invalid GL_SHADING_LANGUAGE_VERSION format." << std::endl;
+			}
+			std::cout << "GL_SHADING_LANGUAGE_VERSION " << verstr << std::endl;
+		}
+	}
 }
 
 #endif //defined(__APPLE__) || defined(__linux__)

@@ -2,155 +2,146 @@
 
 namespace Engine
 {
-	Camera::Camera()
-	:	m_position(0.0f, 0.0f, 0.0f)
-	,	m_rotation(0.0f, 0.0f, 0.0f)
-	{ }
+	Camera::Camera(const int& screenWidth, const int& screenHeight)
+	{
+		// TODO OpenGL -Z inside and DirectX +Z inside. X is right and Y is up.
+		setView(Vec3(0, 0, 10), Vec3(0, 0, 1), Vec3(1, 0, 0), Vec3(0, 1, 0));
+		
+		// TODO screenNear and screenDepth to be fed from Renderer or Settings.
+		setPerspectiveProjection(M_PI_4, (float)screenWidth / (float)screenHeight, 1.0f, 10.0f);
+		setOrthographicProjection(screenWidth, screenHeight, 1.0f, 10.0f);//TODO Fix this
+	}
 	
 	Camera::~Camera()
 	{ }
 	
-	void Camera::setPosition(const float& x, const float& y, const float& z)
+	void Camera::setPosition(const Vec3& position)
 	{
-		m_position.x = x;
-		m_position.y = y;
-		m_position.z = z;
+		m_position = position;
+		updateViewMatrix();
 	}
 	
-	void Camera::setRotation(const float& x, const float& y, const float& z)
+	void Camera::setAxes(const Vec3& look, const Vec3& right, const Vec3& up)
 	{
-		m_rotation.x = x;
-		m_rotation.y = y;
-		m_rotation.z = z;
+		m_look = look.normal();
+		m_right = right.normal();
+		m_up = up.normal();
+		updateViewMatrix();
 	}
 	
-	void Camera::render()
+	void Camera::setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up)
 	{
-#ifdef __APPLE__
-		Vec3 up, lookAt;
-		Mat4 rotationMatrix;
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		D3DXVECTOR3 up, lookAt;
-		D3DXMATRIX rotationMatrix;
-#endif //_WIn32
-		
-		// Setup up vector
-		up.x = 0.0f;
-		up.y = 1.0f;
-		up.z = 0.0f;
-		
-		// Setup lookAt
-		lookAt.x = 0.0f;
-		lookAt.y = 0.0f;
-		lookAt.z = 1.0f;
-		
-		// Set the yaw y, pitch x, roll z rotations in radians
-		float pitch = float(m_rotation.x * M_PI_180);
-		float yaw   = float(m_rotation.y * M_PI_180);
-		float roll  = float(m_rotation.z * M_PI_180);
-		
-		// Create the rotation matrix from yaw, pitch roll values
-#ifdef __APPLE__
-		matrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		D3DXMatrixRotationYawPitchRoll(&rotationMatrix, yaw, pitch, roll);
-#endif //_WIn32
-		
-		// Transform lookAt and up vector by rotation matrix so the view is
-		// correctly rotated at the origin
-#ifdef __APPLE__
-		vec3TransformCoord(&lookAt, lookAt, rotationMatrix);
-		vec3TransformCoord(&up, up, rotationMatrix);
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		D3DXVec3TransformCoord(&lookAt, &lookAt, &rotationMatrix);
-		D3DXVec3TransformCoord(&up, &up, &rotationMatrix);
-#endif //_WIN32
-		
-		// Translate rotated camera position to the location of the viewer
-		lookAt += m_position;
-		
-		// Finally create the view matrix from three updated vectors
-#ifdef __APPLE__
-		matrixLookAtLh(&m_viewMatrix, m_position, lookAt, up);
-#endif //__APPLE__
-		
-#ifdef _WIN32
-		D3DXMatrixLookAtLH(&m_viewMatrix, &m_position, &lookAt, &up);
-#endif //_WIN32
+		m_position = position;
+		m_look = look.normal();
+		m_right = right.normal();
+		m_up = up.normal();		
+		updateViewMatrix();
 	}
 	
-#ifdef __APPLE__
-	const Vec3* Camera::getPosition()
+	void Camera::setPerspectiveProjection(const float& fieldOfViewX, const float& screenAspect, const float& screenNear, const float& screenFar)
 	{
-		return (Vec3*)&m_position;
+		m_fieldOfViewX = fieldOfViewX;
+		m_screenAspect = screenAspect;
+		m_pScreenNear = screenNear;
+		m_pScreenFar = screenFar;
+		updatePerspectiveProjection();
 	}
 	
-	const Vec3* Camera::getRotation()
+	void Camera::setOrthographicProjection(const int& screenWidth, const int& screenHeight, const float& screenNear, const float& screenFar)
 	{
-		return (Vec3*)&m_rotation;
+		m_screenWidth = screenWidth;
+		m_screenHeight = screenHeight;
+		m_oScreenNear = screenNear;
+		m_oScreenFar = screenFar;
+		updateOrthographicProjection();
 	}
 	
-	const Mat4* Camera::getViewMatrix()
+	const Mat4* Camera::getView() const
 	{
 		return &m_viewMatrix;
 	}
-#endif //__APPLE__
 	
-#ifdef _WIN32
-	const D3DXVECTOR3* Camera::getPosition()
+	const Mat4* Camera::getPerspectiveProjection() const
 	{
-		return &m_position;
+		return &m_perspectiveProjection;
+	}
+
+	const Mat4* Camera::getOrthographicProjection() const
+	{
+		return &m_orthographicProjection;
 	}
 	
-	const D3DXVECTOR3* Camera::getRotation()
+	void Camera::updateViewMatrix()
 	{
-		return &m_rotation;
+		m_viewMatrix = Mat4(m_right.x,	m_right.y,	m_right.z,	-dot(m_right, m_position),
+							m_up.x,		m_up.y,		m_up.z,		-dot(m_up, m_position),
+							m_look.x,	m_look.y,	m_look.z,	-dot(m_look, m_position),
+							0.0f,		0.0f,		0.0f,		1.0f);
 	}
 	
-	const D3DXMATRIX* Camera::getViewMatrix()
+	void Camera::updatePerspectiveProjection()
 	{
-		return &m_viewMatrix;
+		// http://unspecified.wordpress.com/2012/06/21/calculating-the-gluperspective-matrix-and-other-opengl-matrix-maths/
+		float h = 1.0f / tan(m_fieldOfViewX * 0.5f);
+		float w = h / m_screenAspect;
+		m_perspectiveProjection =
+		Mat4(w, 0.0f, 0.0f, 0.0f,
+			 0.0f, h, 0.0f, 0.0f,
+			 0.0f, 0.0f, (m_pScreenFar + m_pScreenNear) / (m_pScreenNear - m_pScreenFar), (2.0f * m_pScreenNear * m_pScreenFar) / (m_pScreenNear - m_pScreenFar),
+			 0.0f, 0.0f, -1.0f, 0.0f);
 	}
-#endif //_WIN32
+	
+	void Camera::updateOrthographicProjection()
+	{
+		// http://unspecified.wordpress.com/2012/06/21/calculating-the-gluperspective-matrix-and-other-opengl-matrix-maths/
+		/*
+		m_orthographicProjection = 
+		Mat4(2.0f / m_screenWidth, 0.0f, 0.0f, 0.0f,
+			 0.0f, 2.0f / m_screenHeight, 0.0f, 0.0f,
+			 0.0f, 0.0f, -2.0f / (m_oScreenFar - m_oScreenNear), (m_oScreenNear + m_oScreenFar) / (m_oScreenNear - m_oScreenFar),
+			 0.0f, 0.0f, 0.0f, 1.0f);
+		 */
+		// Experimental but works.
+		float multiplier = m_oScreenNear / m_oScreenFar;
+		m_orthographicProjection = 
+		Mat4((2.0f / m_screenWidth * m_screenHeight * multiplier), 0.0f, 0.0f, 0.0f,
+			 0.0f,(2.0f * multiplier), 0.0f, 0.0f,
+			 0.0f, 0.0f, -2.0f / (m_oScreenFar - m_oScreenNear), (m_oScreenNear + m_oScreenFar) / (m_oScreenNear - m_oScreenFar),
+			 0.0f, 0.0f, 0.0f, 1.0f);			 
+	}
 	
 #ifdef __APPLE__
-	Mat4* Camera::matrixRotationYawPitchRoll(Mat4* pOut,
-											 const float& yaw, const float& pitch, const float& roll)
+	/*Mat4* Camera::matrixRotationYawPitchRoll(Mat4* pOut, const float& yaw, const float& pitch, const float& roll)
 	{
 		// Yaw * Pitch * Roll unoptimized but functional with the gimble lock
 		*pOut = Mat4::rotateY(yaw) * Mat4::rotateX(pitch) * Mat4::rotateZ(roll);
 		return pOut;
 	}
 	
-	Vec3* Camera::vec3TransformCoord(Vec3* pOut, const Vec3& pV, const Mat4& pM)
+	Vec3* Camera::vec3TransformCoord(Vec3* pOut, Vec3* pV, Mat4* pM)
 	{
 		// Transforms the vector, pV (x, y, z, 1), by the matrix, pM,
 		// projecting the result back into w=1
-		*pOut = (freeVector(pV) * (pM)).project();
+		*pOut = (freeVector(*pV) * (*pM)).project();
 		return pOut;
 	}
 	
-	Mat4* Camera::matrixLookAtLh(Mat4* pOut, const Vec3& pEye, const Vec3& pAt, const Vec3& pUp)
+	Mat4* Camera::matrixLookAtLh(Mat4* pOut, Vec3* pEye, Vec3* pAt, Vec3* pUp)
 	{
-		//*pOut = Transform::lookatlh(*pEye, *pAt, *pUp);
-		//return pOut;
+		// Transform of the matrix below.
+		// http://msdn.microsoft.com/en-us/library/windows/desktop/bb205342(v=vs.85).aspx
 		
-		Vec3 look = (pAt - pEye).normal();
-		Vec3 right  = cross(pUp, look).normal();
+		Vec3 look = (*pAt - *pEye).normal();
+		Vec3 right  = cross(*pUp, look).normal();
 		Vec3 up     = cross(look, right).normal();
 		
-		*pOut = Mat4(right.x,	right.y,	right.z,	-dot(right, pEye),
-					 up.x,		up.y,		up.z,		-dot(up, pEye),
-					 look.x,	look.y,		look.z,		-dot(look, pEye),
+		*pOut = Mat4(right.x,	right.y,	right.z,	-dot(right, *pEye),
+					 up.x,		up.y,		up.z,		-dot(up, *pEye),
+					 look.x,	look.y,		look.z,		-dot(look, *pEye),
 					 0.0f,		0.0f,		0.0f,		1.0f);
 		return pOut;
-	}
+	}*/
+#endif //__APPLE__
 }
 
-#endif //__APPLE__
+
