@@ -55,10 +55,8 @@ void deinitializeMain()
 	g_settings->destroySingleton();
 	g_utils->destroySingleton();
 
-#ifdef USE_MEMTRACK
 	Engine::MemTrack::TrackDumpBlocks();
 	Engine::MemTrack::TrackListMemoryUsage();
-#endif //USE_MEMTRACK
 }
 
 Engine::Logger* getLogger()

@@ -9,14 +9,11 @@
 #ifndef Application_Main_h
 #define Application_Main_h
 
-#include <iostream>
-#include <memory>
-
 #include "Common/Logger.h"
 #include "Common/Settings.h"
 #include "Common/Utils.h"
 
-//#include "../Engine/External/MemTrack/MemTrack.h"
+#include "../Engine/External/MemTrack/MemTrack.h"
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
 

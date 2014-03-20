@@ -410,19 +410,17 @@ namespace Engine
 		{
 			// Get an array of pointers to all extant blocks.
 			size_t numBlocks = BlockHeader::CountBlocks();
+			if (numBlocks <= 0) return;
 			BlockHeader **ppBlockHeader =
             (BlockHeader **)calloc(numBlocks, sizeof(*ppBlockHeader));
 			BlockHeader::GetBlocks(ppBlockHeader);
 
 			// Dump information about the memory blocks.
-			if (numBlocks > 0)
-			{
-				printf("\n");
-				printf("---------------------\n");
-				printf("Current Memory Blocks\n");
-				printf("---------------------\n");
-				printf("\n");
-			}
+			printf("\n");
+			printf("---------------------\n");
+			printf("Current Memory Blocks\n");
+			printf("---------------------\n");
+			printf("\n");
 
 			for (size_t i = 0; i < numBlocks; i++)
 			{
@@ -493,7 +491,7 @@ namespace Engine
 		{
 			// If there are no allocated blocks, then return now.
 			size_t numBlocks = BlockHeader::CountBlocks();
-			if (numBlocks == 0) return;
+			if (numBlocks <= 0) return;
 
 			// Get an array of pointers to all extant blocks.
 			BlockHeader **ppBlockHeader =
@@ -593,6 +591,9 @@ namespace Engine
 	}	// namespace MemTrack
 }    // namespace Engine
 
+//#define USE_MEMTRACK // TOGGLE MEMTRACK ONLY HERE!
+
+#ifdef USE_MEMTRACK
 /* ------------------------------------------------------------ */
 /* ---------------------- new and delete ---------------------- */
 /* ------------------------------------------------------------ */
@@ -628,3 +629,4 @@ void operator delete[](void *p) throw()
 {
     Engine::MemTrack::TrackFree(p);
 }
+#endif // USE_MEMTRACK
