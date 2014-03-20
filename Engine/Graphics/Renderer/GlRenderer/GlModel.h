@@ -21,7 +21,7 @@ namespace Engine
 	class GlModel
 	{
 	public:
-		GlModel(GLuint programId, std::string objFilename);
+		GlModel(const GLuint& programId, const std::string& objFilePath, const std::string& mtlBasePath);
 		~GlModel();
 		
 		void setViewMatrix(const Mat4* viewMatrix);
@@ -45,13 +45,13 @@ namespace Engine
 		Mat4 m_modelMatrix;		
 //----------------------------------------------------------------------------//
 		enum Vao { VaoTriangles, VaoCount };
-		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboCount };
+		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboIndex, VboCount };
 		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
 		
 		GLuint m_vaos[VaoCount];
 		GLuint m_vbos[VboCount];
 		
-		GLuint m_vertexCount;
+		GLuint m_indexCount;
 #define BUFFER_OFFSET(offset) ((void *)(offset))
 //----------------------------------------------------------------------------//
 	};

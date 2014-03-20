@@ -10,8 +10,9 @@
 
 namespace Engine
 {
-	
-	GlModel::GlModel(GLuint programId, std::string objFilename)
+#define USE_OBJLOADER
+#ifdef USE_OBJLOADER
+	GlModel::GlModel(const GLuint& programId, const std::string& objFilename, const std::string& mtlBasePath)
 	:	m_programId(programId)
 	,	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
@@ -23,20 +24,9 @@ namespace Engine
 		std::vector<Engine::Vec3> normals;
 		std::vector<Engine::Vec2> texCoords;
 		
-		if (1)
-		{
-			objloader::loadObj(objFilename.c_str(), positions, normals, texCoords);
-		}
-		else
-		{
-			std::vector<tinyobj::shape_t> shapes;
-			tinyobj::LoadObj(shapes, objFilename.c_str());
-			//positions = shapes[0].mesh.positions;
-			//normals = shapes[0].mesh.positions;
-			//texCoords = shapes[0].mesh.positions;
-		}
+		objloader::loadObj(objFilename.c_str(), positions, normals, texCoords);
 		
-		m_vertexCount = positions.size();
+		m_indexCount = positions.size();
 		
 		glGenVertexArrays(VaoCount, m_vaos);
 		glBindVertexArray(m_vaos[VaoTriangles]);		
@@ -64,7 +54,73 @@ namespace Engine
 //----------------------------------------------------------------------------//		
 		updateModelMatrix();
 	}
-	
+#else
+	GlModel::GlModel(const GLuint& programId, const std::string& objFilePath, const std::string& mtlBasePath)
+	:	m_programId(programId)
+	,	m_position(0.0f, 0.0f, 0.0f)
+	,	m_rotation(0.0f, 0.0f, 0.0f)
+	,	m_scale(1.0f, 1.0f, 1.0f)
+	,	m_modelMatrix()
+	{
+//----------------------------------------------------------------------------//
+		std::vector<float> positions; 
+		std::vector<float> normals;
+		std::vector<float> texCoords;
+		std::vector<unsigned int> indices;
+		
+		std::vector<tinyobj::shape_t> shapes;
+		std::string error = tinyobj::LoadObj(shapes, objFilePath.c_str(), mtlBasePath.c_str());
+						
+		if (error.empty())
+		{
+			int i = 0;
+			for (auto it = shapes.begin(); it != shapes.end(); ++it)
+			{
+				positions.insert(positions.end(), it->mesh.positions.begin(), it->mesh.positions.end());
+				normals.insert(normals.end(), it->mesh.normals.begin(), it->mesh.normals.end());
+				texCoords.insert(texCoords.end(), it->mesh.texcoords.begin(), it->mesh.texcoords.end());
+				indices.insert(indices.end(), it->mesh.indices.begin(), it->mesh.indices.end());
+				if (++i == 1) break;
+			}
+						
+			m_indexCount = indices.size();
+		
+			glGenVertexArrays(VaoCount, m_vaos);
+			glBindVertexArray(m_vaos[VaoTriangles]);		
+		
+			glGenBuffers(VboCount, m_vbos);
+		
+			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboPosition]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(positions[0]) * positions.size(), &positions[0], GL_STATIC_DRAW);
+			glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		
+			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboNormal]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(normals[0]) * normals.size(), &normals[0], GL_STATIC_DRAW);
+			glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, NULL);
+		
+			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTexCoord]);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords[0]) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
+			glVertexAttribPointer(AttributeTexCoord, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+			
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vbos[VboIndex]);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), &indices[0], GL_STATIC_DRAW);
+			//No Vertex Attrib Pointer for Index buffer
+		
+			glEnableVertexAttribArray(AttributePosition);
+			glEnableVertexAttribArray(AttributeNormal);
+			glEnableVertexAttribArray(AttributeTexCoord);
+		
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+		}
+		else
+		{
+			std::cerr << error;
+		}
+//----------------------------------------------------------------------------//		
+		updateModelMatrix();
+	}
+#endif // USE_OBJLOADER
 	GlModel::~GlModel()
 	{
 		glDisableVertexAttribArray(AttributePosition);
@@ -140,7 +196,11 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
 		glBindVertexArray(m_vaos[VaoTriangles]);
-		glDrawArrays(GL_TRIANGLES, 0, m_vertexCount);
+#ifdef USE_OBJLOADER
+		glDrawArrays(GL_TRIANGLES, 0, m_indexCount);
+#else
+		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+#endif
 		glUseProgram(0);
 //----------------------------------------------------------------------------//
 	}

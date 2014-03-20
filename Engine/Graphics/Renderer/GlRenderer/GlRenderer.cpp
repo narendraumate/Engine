@@ -42,7 +42,9 @@ namespace Engine
 		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
 		g_programId = GlProgram::createProgram(shaders);
 
-		g_glModel = new GlModel(g_programId, Engine::Utils::singleton()->findFile("CokeCan.obj"));
+		g_glModel = new GlModel(g_programId, 
+								Utils::singleton()->findFilePath("CokeCan.obj"),
+								Utils::singleton()->findBasePath("CokeCan.mtl"));
 
 		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));

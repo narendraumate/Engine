@@ -24,7 +24,7 @@ namespace Engine
 
 	GLuint GlShader::loadShader(const std::string& shaderFilename, const GLenum& shaderType)
 	{
-		std::string strFilename = Utils::singleton()->findFile(shaderFilename);
+		std::string strFilename = Utils::singleton()->findFilePath(shaderFilename);
 		if (strFilename != "")
 		{
 			std::ifstream shaderFile(strFilename.c_str());

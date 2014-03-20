@@ -37,25 +37,40 @@ namespace Engine
 		}
 	}
 
-	std::string Utils::findFile(const std::string &strBasename)
+	std::string Utils::findFilePath(const std::string &strFileName)
 	{
-		std::string strFilename = LOCAL_FILE_DIR + strBasename;
-		std::ifstream testFile(strFilename.c_str());
+		std::string strFilePath = LOCAL_FILE_DIR + strFileName;
+		std::ifstream testFile(strFilePath.c_str());
 		if (testFile.is_open())
 		{
 			testFile.close();
-			return strFilename;
+			return strFilePath;
 		}
 
-		strFilename = GLOBAL_FILE_DIR + strBasename;
-		testFile.open(strFilename.c_str());
+		strFilePath = GLOBAL_FILE_DIR + strFileName;
+		testFile.open(strFilePath.c_str());
 		if (testFile.is_open())
 		{
 			testFile.close();
-			return strFilename;
+			return strFilePath;
 		}
 
 		return "";
 	}
-
+	
+	std::string Utils::findBasePath(const std::string &strFileName)
+	{
+		std::string strFilePath = findFilePath(strFileName);
+		if (strFilePath.empty())
+		{
+			return "";
+		}
+		else
+		{
+			unsigned found = strFilePath.find_last_of("/\\");
+			return strFilePath.substr(0, found + 1);	// base directory with ending /
+			//return strFilePath.substr(found + 1);	// file name without startin /
+		}
+	}
+	
 }

@@ -32,7 +32,8 @@ namespace Engine
 	public:
 		static Utils* singleton();
 		static void destroySingleton();
-		std::string findFile(const std::string &strBasename);
+		std::string findFilePath(const std::string &strFileName);
+		std::string findBasePath(const std::string &strFileName);
 
 	private:
 		static Utils* s_instance;
