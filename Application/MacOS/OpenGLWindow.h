@@ -1,6 +1,4 @@
 #import <Cocoa/Cocoa.h>
-#import <OpenGL/OpenGL.h>
-#import <QuartzCore/QuartzCore.h>
 
 @interface OpenGLWindow : NSWindow
 @property (nonatomic, assign, getter=isFullscreen) BOOL fullscreen;

@@ -30,11 +30,16 @@ int main(int argc, char *argv[])
 
 	NSString* nsApplicationName = [[[NSString alloc] initWithUTF8String:applicationName] autorelease];
 
-	id menubar = [[NSMenu new] autorelease];
-	id appMenuItem = [[NSMenuItem new] autorelease];
+	////id menubar = [[NSMenu new] autorelease];			// Avoiding new
+	//..id appMenuItem = [[NSMenuItem new] autorelease];	// Avoiding new
+	id menubar = [[[NSMenu alloc] init] autorelease];
+	id appMenuItem = [[[NSMenuItem alloc] init] autorelease];
+	
 	[menubar addItem:appMenuItem];
 	[NSApp setMainMenu:menubar];
-	id appMenu = [[NSMenu new] autorelease];
+	////id appMenu = [[NSMenu new] autorelease];			// Avoiding new
+	id appMenu = [[[NSMenu alloc] init] autorelease];
+	
 	id quitTitle = [[@"Quit " stringByAppendingString:nsApplicationName] autorelease];
 	id quitMenuItem = [[[NSMenuItem alloc] initWithTitle:quitTitle
 												  action:@selector(terminate:)

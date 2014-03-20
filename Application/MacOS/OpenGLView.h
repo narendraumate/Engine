@@ -1,7 +1,5 @@
-#import <Cocoa/Cocoa.h>
-#import <OpenGL/OpenGL.h>
-#import <QuartzCore/QuartzCore.h>
- 
+#include "../Main.h"
+
 @interface OpenGLView : NSOpenGLView
 {
 @private

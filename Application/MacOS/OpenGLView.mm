@@ -1,6 +1,5 @@
 #include "MacMain.h"
 #include "OpenGLView.h"
-#include "../Main.h"
 
 @implementation OpenGLView
 
