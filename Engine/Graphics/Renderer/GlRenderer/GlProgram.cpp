@@ -39,7 +39,7 @@ namespace Engine
 			glGetShaderiv(program, GL_INFO_LOG_LENGTH, &logLenth);
 			GLchar *logString = new GLchar[logLenth + 1];
 			glGetProgramInfoLog(program, logLenth, NULL, logString);
-			fprintf(stderr, "Linker failure: %s\n", logString);
+			fprintf(stderr, "Link Error: %s", logString);
 			delete [] logString;
 		}
 		

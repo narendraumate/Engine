@@ -43,14 +43,14 @@ namespace Engine
 				GLchar *logString = new GLchar[logLength + 1];
 				glGetProgramInfoLog(shader, logLength, NULL, logString);
 				
-				fprintf(stderr, "Shader Compile Error: %s:\n%s\n", shaderFilename.c_str(), logString);
+				fprintf(stderr, "Compile Error: %s\n%s", shaderFilename.c_str(), logString);
 				delete [] logString;
 			}
 			return shader;
 		}
 		else
 		{
-			fprintf(stderr, "Shader Missing: %s:\n", shaderFilename.c_str());
+			fprintf(stderr, "File Missing: %s\n", shaderFilename.c_str());
 			return 0;
 		}
 	}
