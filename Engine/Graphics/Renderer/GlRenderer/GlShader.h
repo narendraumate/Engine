@@ -27,7 +27,8 @@ namespace Engine
 	private:
 		GlShader();
 		~GlShader();
-	
+		static char* loadShaderSourceFile(const char* shaderSourceFile);
+		
 	public:
 		static GLuint loadShader(const std::string& shaderName);
 		static GLuint loadShader(const std::string& shaderFilename, const GLenum& shaderType);
