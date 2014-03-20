@@ -18,6 +18,8 @@ solution "Application"
     project "Application"
         kind "WindowedApp"
         language "C++"
+		files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
+		files { "**.vert", "**.frag" }
  
         configuration "Debug"
             defines { "DEBUG" }
@@ -34,16 +36,16 @@ solution "Application"
             -- targetname ( "Application" )
 
         configuration "windows"
-            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
+            files { }
             excludes { "**/MacOS/**", "**/Linux/**" }
 
         configuration "macosx"
             linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
-            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp", "**.m", "**.mm" }
+            files { "**.m", "**.mm" }
             excludes { "**/Windows/**", "**/Linux/**" }
 
         configuration "linux"
             linkoptions { "-lGL", "-lGLU" }
-            files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
+			files { }
             excludes { "**/Windows/**", "**/MacOS/**" }
 
