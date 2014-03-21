@@ -49,7 +49,7 @@ namespace Engine
 								Utils::singleton()->findBasePath(modelNames[modelIndex]));
 
 		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
-		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));
+		g_glModel->setRotation(Vec3(30.0f, 30.0f, 0.0f));
 		g_glModel->setScale(Vec3(1.5f, 1.5f, 1.5f));
 
 		g_glModel->updateViewMatrix();
