@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string.h>
 
-#include "../../Mathematics/Camera.h"
+#include "../../Graphics/SceneGraph/Camera.h"
 #include "../../Mathematics/Color.h"
 #include "../../Mathematics/Matrix.h"
 
