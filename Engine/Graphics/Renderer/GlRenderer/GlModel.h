@@ -45,7 +45,7 @@ namespace Engine
 		void pushModelViewMatrix();
 		void pushNormMatrix();
 
-		void pushTextureSamplers();
+		//void pushTextureSamplers();
 
 		GLuint m_programId;
 

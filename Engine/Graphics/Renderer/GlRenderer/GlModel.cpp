@@ -87,6 +87,7 @@ namespace Engine
 							
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
+			//pushTextureSamplers();//??
 			
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vbos[VboIndex]);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), &indices[0], GL_STATIC_DRAW);
@@ -103,13 +104,13 @@ namespace Engine
 		{
 			std::cerr << error;
 		}
-//----------------------------------------------------------------------------//		
-		pushTextureSamplers();
+//----------------------------------------------------------------------------//
 		updateModelMatrix();
 	}
 
 	GlModel::~GlModel()
 	{
+//----------------------------------------------------------------------------//
 		glDisableVertexAttribArray(AttributePosition);
 		glDisableVertexAttribArray(AttributeNormal);
 		glDisableVertexAttribArray(AttributeTexCoord);
@@ -117,6 +118,7 @@ namespace Engine
 		glDeleteTextures(TextureCount, m_textures);
 		glDeleteBuffers(VboCount, m_vbos);
 		glDeleteVertexArrays(VaoCount, m_vaos);
+//----------------------------------------------------------------------------//
 	}
 
 	void GlModel::draw()
@@ -179,13 +181,13 @@ namespace Engine
 		glUseProgram(0);
 	}
 	
-	void GlModel::pushTextureSamplers()
+	/*void GlModel::pushTextureSamplers()
 	{
 		glUseProgram(m_programId);
 		GLint diffuseTextureSamplerLocation = glGetUniformLocation(m_programId, "diffuseTextureSampler");
 		glUniform1i(diffuseTextureSamplerLocation, m_textureSamplers[TextureSamplerDiffuse]);
 		glUseProgram(0);
-	}
+	}*/
 	
 	void GlModel::setPosition(const Vec3& position)
 	{
