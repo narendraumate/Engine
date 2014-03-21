@@ -27,7 +27,7 @@ namespace Engine
 		char cardName[128];
 		getVideoCardInfo(cardName);
 		getGlVersion(&major, &minor);
-		getGlslVersion(&major, &minor);		
+		getGlslVersion(&major, &minor);
 //----------------------------------------------------------------------------//
 	}
 
@@ -49,11 +49,11 @@ namespace Engine
 		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));
 		
-		g_glModel->setViewMatrix(m_camera.getView());
-		g_glModel->setPerspectiveMatrix(m_camera.getPerspectiveProjection());
-		g_glModel->setOrthographicMatrix(m_camera.getOrthographicProjection());
+		g_glModel->pushViewMatrix(m_camera.getView());
+		g_glModel->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
+		g_glModel->pushOrthographicMatrix(m_camera.getOrthographicProjection());
 		
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	// GL_FILL or GL_LINE
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
 //----------------------------------------------------------------------------//
 		return true;
 	}

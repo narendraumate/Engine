@@ -14,6 +14,7 @@
 #include "GlShader.h"
 #include "../../../Mathematics/Matrix.h"
 #include "../../../External/objloader/objloader.hpp"
+#include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader.h"
 
 namespace Engine
@@ -23,11 +24,13 @@ namespace Engine
 	public:
 		GlModel(const GLuint& programId, const std::string& objFilePath, const std::string& mtlBasePath);
 		~GlModel();
+
+		void pushModelMatrix(const Mat4* modelMatrix);		
+		void pushViewMatrix(const Mat4* viewMatrix);
+		void pushPerspectiveMatrix(const Mat4* perspectiveMatrix);
+		void pushOrthographicMatrix(const Mat4* orthographicMatrix);
+		void pushTextureSamplers();
 		
-		void setViewMatrix(const Mat4* viewMatrix);
-		void setModelMatrix(const Mat4* modelMatrix);
-		void setPerspectiveMatrix(const Mat4* perspectiveMatrix);
-		void setOrthographicMatrix(const Mat4* orthographicMatrix);
 		void setPosition(const Vec3& position);
 		void setRotation(const Vec3& rotation);
 		void setScale(const Vec3& scale);
@@ -47,9 +50,13 @@ namespace Engine
 		enum Vao { VaoTriangles, VaoCount };
 		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboIndex, VboCount };
 		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
+		enum Texture { TextureDiffuse, TextureCount };
+		enum TextureSampler { TextureSamplerDiffuse, TextureSamplerCount };
 		
 		GLuint m_vaos[VaoCount];
 		GLuint m_vbos[VboCount];
+		GLuint m_textures[TextureCount];
+		GLuint m_textureSamplers[TextureCount];
 		
 		GLuint m_indexCount;
 #define BUFFER_OFFSET(offset) ((void *)(offset))
