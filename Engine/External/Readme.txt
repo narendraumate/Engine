@@ -18,6 +18,13 @@ http://prideout.net/blog/?p=11
 MemTrack - Modified
 http://www.almostinfinite.com/memtrack.html
 
+stbi - Modified
+http://nothings.org/stb_image.c
+
+StbImage - Modified
+https://github.com/fuerchter/FreeDee/blob/master/src/Renderer/StbImage.cpp
+https://github.com/fuerchter/FreeDee/blob/master/src/Renderer/StbImage.h
+
 tinyobjloader
 https://github.com/syoyo/tinyobjloader/blob/master/tiny_obj_loader.cc
 https://github.com/syoyo/tinyobjloader/blob/master/tiny_obj_loader.h
