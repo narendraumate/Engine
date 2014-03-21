@@ -13,7 +13,6 @@
 #include "GlProgram.h"
 #include "GlShader.h"
 #include "../../../Mathematics/Matrix.h"
-#include "../../../External/objloader/objloader.hpp"
 #include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader.h"
 
@@ -57,9 +56,7 @@ namespace Engine
 		GLuint m_vbos[VboCount];
 		GLuint m_textures[TextureCount];
 		GLuint m_textureSamplers[TextureCount];
-		
 		GLuint m_indexCount;
-#define BUFFER_OFFSET(offset) ((void *)(offset))
 //----------------------------------------------------------------------------//
 	};
 }
