@@ -42,13 +42,16 @@ namespace Engine
 		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
 		g_programId = GlProgram::createProgram(shaders);
 
+		int modelIndex = 1;
+		char* modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
 		g_glModel = new GlModel(g_programId, m_camera.getView(),
-								Utils::singleton()->findFilePath("CokeCan.obj"),
-								Utils::singleton()->findBasePath("CokeCan.mtl"));
+								Utils::singleton()->findFilePath(modelNames[modelIndex]),
+								Utils::singleton()->findBasePath(modelNames[modelIndex]));
 
 		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));
-		
+		g_glModel->setScale(Vec3(1.5f, 1.5f, 1.5f));
+
 		g_glModel->updateViewMatrix();
 		g_glModel->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
 		g_glModel->pushOrthographicMatrix(m_camera.getOrthographicProjection());
@@ -62,9 +65,9 @@ namespace Engine
 	{
 		clearColorBuffer();
 		clearDepthBuffer();
-//		glEnable(GL_CULL_FACE);
-//		glCullFace(GL_BACK);
-//		glFrontFace(GL_CW);	// GL_CW or GL_CCW
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
+		//glFrontFace(GL_CW);	// GL_CW or GL_CCW
 //----------------------------------------------------------------------------//
 		g_glModel->draw();
 //----------------------------------------------------------------------------//
