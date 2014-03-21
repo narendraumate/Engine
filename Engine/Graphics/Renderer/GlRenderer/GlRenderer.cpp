@@ -42,14 +42,14 @@ namespace Engine
 		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
 		g_programId = GlProgram::createProgram(shaders);
 
-		g_glModel = new GlModel(g_programId, 
+		g_glModel = new GlModel(g_programId, m_camera.getView(),
 								Utils::singleton()->findFilePath("CokeCan.obj"),
 								Utils::singleton()->findBasePath("CokeCan.mtl"));
 
 		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 		g_glModel->setRotation(Vec3(45.0f, 45.0f, 0.0f));
 		
-		g_glModel->pushViewMatrix(m_camera.getView());
+		g_glModel->updateViewMatrix();
 		g_glModel->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
 		g_glModel->pushOrthographicMatrix(m_camera.getOrthographicProjection());
 		

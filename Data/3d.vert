@@ -6,6 +6,9 @@ layout( location = 2 ) in vec2 texCoord;
 
 uniform mat4 model;
 uniform mat4 view;
+uniform mat4 modelView;
+uniform mat3 norm;
+
 uniform mat4 perspective;
 uniform mat4 orthographic;
 
@@ -18,6 +21,6 @@ void main()
 	vPosition = position;
 	vNormal = normal;
 	vTexCoord = texCoord;
-	
-	gl_Position = perspective * view * model * vec4(position, 1.0);
+
+	gl_Position = perspective * modelView * vec4(position, 1.0);
 }

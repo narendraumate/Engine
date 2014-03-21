@@ -11,12 +11,15 @@
 namespace Engine
 {
 
-	GlModel::GlModel(const GLuint& programId, const std::string& objFilePath, const std::string& mtlBasePath)
+	GlModel::GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& objFilePath, const std::string& mtlBasePath)
 	:	m_programId(programId)
 	,	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
 	,	m_scale(1.0f, 1.0f, 1.0f)
 	,	m_modelMatrix()
+	,	m_viewMatrixPtr(viewMatrixPtr)
+	,	m_modelViewMatrix()
+	,	m_normMatrix()
 	{
 //----------------------------------------------------------------------------//
 		std::vector<float> positions; 
@@ -125,20 +128,48 @@ namespace Engine
 		glDeleteBuffers(VboCount, m_vbos);
 		glDeleteVertexArrays(VaoCount, m_vaos);
 	}
+
+	void GlModel::draw()
+	{
+//----------------------------------------------------------------------------//
+		glUseProgram(m_programId);
+		//glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		glBindVertexArray(m_vaos[VaoTriangles]);
+		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+		glUseProgram(0);
+//----------------------------------------------------------------------------//
+	}
 	
-	void GlModel::pushModelMatrix(const Mat4* modelMatrix)
+	void GlModel::pushModelMatrix()
 	{
 		glUseProgram(m_programId);
 		GLint modelMatrixLocation = glGetUniformLocation(m_programId, "model");
-		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, (float*)modelMatrix);
+		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, (float*)&m_modelMatrix);
 		glUseProgram(0);
 	}
 
-	void GlModel::pushViewMatrix(const Mat4* viewMatrix)
+	void GlModel::pushViewMatrix()
 	{
 		glUseProgram(m_programId);
 		GLint viewMatrixLocation = glGetUniformLocation(m_programId, "view");
-		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, (float*)viewMatrix);
+		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, (float*)m_viewMatrixPtr);
+		glUseProgram(0);
+	}
+
+	void GlModel::pushModelViewMatrix()
+	{
+		glUseProgram(m_programId);
+		GLint modelViewMatrixLocation = glGetUniformLocation(m_programId, "modelView");
+		glUniformMatrix4fv(modelViewMatrixLocation, 1, GL_FALSE, (float*)&m_modelViewMatrix);
+		glUseProgram(0);
+	}
+
+	void GlModel::pushNormMatrix()
+	{
+		glUseProgram(m_programId);
+		GLint normMatrixLocation = glGetUniformLocation(m_programId, "norm");
+		glUniformMatrix3fv(normMatrixLocation, 1, GL_FALSE, (float*)&m_normMatrix);
 		glUseProgram(0);
 	}
 		
@@ -186,24 +217,46 @@ namespace Engine
 	
 	void GlModel::updateModelMatrix()
 	{
-		// TODO verify this.
+		// TODO verify the multiplication order.
 		m_modelMatrix = Mat4::identity();
 		m_modelMatrix = m_modelMatrix * Mat4::rotateX(m_rotation.x) * Mat4::rotateY(m_rotation.y) * Mat4::rotateZ(m_rotation.z);
 		m_modelMatrix = m_modelMatrix * Mat4::translate(m_position);
 		m_modelMatrix = m_modelMatrix * Mat4::scale(m_scale);
-		pushModelMatrix(&m_modelMatrix);
+		pushModelMatrix();
+
+		updateModelViewMatrix();
 	}
-	
-	void GlModel::draw()
+
+	void GlModel::updateViewMatrix()
 	{
-//----------------------------------------------------------------------------//
-		glUseProgram(m_programId);
-		//glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-		glBindVertexArray(m_vaos[VaoTriangles]);
-		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
-		glUseProgram(0);
-//----------------------------------------------------------------------------//
+		pushViewMatrix();
+
+		updateModelViewMatrix();
 	}
-	
+
+	void GlModel::updateModelViewMatrix()
+	{
+		m_modelViewMatrix = (*m_viewMatrixPtr) * m_modelMatrix;
+		pushModelViewMatrix();
+
+		updateNormMatrix();
+	}
+
+	void GlModel::updateNormMatrix()
+	{
+		// TODO Verify this
+		// Normal Matrix is supposedly Top Left 3x3 of ModelView Matrix
+		m_normMatrix.d00 = m_modelViewMatrix.d00;
+		m_normMatrix.d01 = m_modelViewMatrix.d01;
+		m_normMatrix.d02 = m_modelViewMatrix.d02;
+		m_normMatrix.d10 = m_modelViewMatrix.d10;
+		m_normMatrix.d11 = m_modelViewMatrix.d11;
+		m_normMatrix.d12 = m_modelViewMatrix.d12;
+		m_normMatrix.d20 = m_modelViewMatrix.d20;
+		m_normMatrix.d21 = m_modelViewMatrix.d21;
+		m_normMatrix.d22 = m_modelViewMatrix.d22;
+
+		pushNormMatrix();
+	}
+
 }
