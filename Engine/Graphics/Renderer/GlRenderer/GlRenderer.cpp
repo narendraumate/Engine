@@ -28,7 +28,11 @@ namespace Engine
 		getVideoCardInfo(cardName);
 		getGlVersion(&major, &minor);
 		getGlslVersion(&major, &minor);
+		getGlParameters();
 //----------------------------------------------------------------------------//
+		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
+		glClearDepth(m_clearDepth);
+		glClearStencil(m_clearStencil);
 	}
 
 	GlRenderer::~GlRenderer()
@@ -56,6 +60,11 @@ namespace Engine
 		g_glModel->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
 		g_glModel->pushOrthographicMatrix(m_camera.getOrthographicProjection());
 		
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CCW);	// GL_CW or GL_CCW
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	// GL_FILL or GL_LINE
 //----------------------------------------------------------------------------//
 		return true;
@@ -63,11 +72,7 @@ namespace Engine
 
 	void GlRenderer::run()
 	{
-		clearColorBuffer();
-		clearDepthBuffer();
-		//glEnable(GL_CULL_FACE);
-		//glCullFace(GL_BACK);
-		//glFrontFace(GL_CW);	// GL_CW or GL_CCW
+		clearBuffers();
 //----------------------------------------------------------------------------//
 		g_glModel->draw();
 //----------------------------------------------------------------------------//
@@ -143,9 +148,9 @@ namespace Engine
 
 	void GlRenderer::clearBuffers()
 	{
-		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
-		glClearDepth(m_clearDepth);
-		glClearStencil(m_clearStencil);
+		//glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
+		//glClearDepth(m_clearDepth);
+		//glClearStencil(m_clearStencil);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
@@ -256,6 +261,15 @@ namespace Engine
 			}
 			std::cout << "GL_SHADING_LANGUAGE_VERSION " << verstr << std::endl;
 		}
+	}
+
+	void GlRenderer::getGlParameters()
+	{
+		int maxValue = 0;
+		glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &maxValue);
+		std::cout << "GL_MAX_ELEMENTS_INDICES " << maxValue << std::endl;
+		glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &maxValue);
+		std::cout << "GL_MAX_ELEMENTS_VERTICES " << maxValue << std::endl;
 	}
 }
 

@@ -20,85 +20,21 @@ namespace Engine
 	,	m_viewMatrixPtr(viewMatrixPtr)
 	,	m_modelViewMatrix()
 	,	m_normMatrix()
+	,	m_glModelShapes()
 	{
 //----------------------------------------------------------------------------//
-		std::vector<float> positions; 
-		std::vector<float> normals;
-		std::vector<float> texCoords;
-		std::vector<unsigned int> indices;
-		tinyobj::material_t material;
-		
 		std::vector<tinyobj::shape_t> shapes;
 		std::string error = tinyobj::LoadObj(shapes, objFilePath.c_str(), mtlBasePath.c_str());
 						
 		if (error.empty())
 		{
-			/*int i = 0;
-			for (auto it = shapes.begin(); it != shapes.end(); ++it)
+			glUseProgram(m_programId);
+			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-				positions.insert(positions.end(), it->mesh.positions.begin(), it->mesh.positions.end());
-				normals.insert(normals.end(), it->mesh.normals.begin(), it->mesh.normals.end());
-				texCoords.insert(texCoords.end(), it->mesh.texcoords.begin(), it->mesh.texcoords.end());
-				indices.insert(indices.end(), it->mesh.indices.begin(), it->mesh.indices.end());
-				if (++i == 1) break;
-			}*/
-			
-			int i = 0;
-			std::cout << "Shape "<< i << " "<< shapes[i].name << std::endl;
-			material = shapes[i].material;
-			positions = shapes[i].mesh.positions;
-			normals = shapes[i].mesh.normals;
-			texCoords = shapes[i].mesh.texcoords;
-			indices = shapes[i].mesh.indices;			
-			m_indexCount = indices.size();
-		
-			glGenVertexArrays(VaoCount, m_vaos);
-			glBindVertexArray(m_vaos[VaoTriangles]);		
-		
-			glGenBuffers(VboCount, m_vbos);
-		
-			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboPosition]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(positions[0]) * positions.size(), &positions[0], GL_STATIC_DRAW);
-			glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		
-			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboNormal]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(normals[0]) * normals.size(), &normals[0], GL_STATIC_DRAW);
-			glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, NULL);
-		
-			glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTexCoord]);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords[0]) * texCoords.size(), &texCoords[0], GL_STATIC_DRAW);
-			glVertexAttribPointer(AttributeTexCoord, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-			
-			if (!material.diffuse_texname.empty())
-			{
-				StbImage texture(Utils::singleton()->findFilePath(material.diffuse_texname));
-				texture.flipY();
-				
-				glGenTextures(1, m_textures);
-				glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getSizeX(), texture.getSizeY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &(texture.getPixels()[0]));
-
-				glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-				glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-				glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-				
-				glGenerateMipmap(GL_TEXTURE_2D);
-							
-				glBindTexture(GL_TEXTURE_2D, 0);
+				GlModelShape* glModelShapePtr = new GlModelShape(*it);
+				m_glModelShapes.push_back(glModelShapePtr);
 			}
-			//pushTextureSamplers();//??
-			
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vbos[VboIndex]);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), &indices[0], GL_STATIC_DRAW);
-			//No Vertex Attrib Pointer for Index buffer
-		
-			glEnableVertexAttribArray(AttributePosition);
-			glEnableVertexAttribArray(AttributeNormal);
-			glEnableVertexAttribArray(AttributeTexCoord);
-		
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindVertexArray(0);
+			glUseProgram(0);
 		}
 		else
 		{
@@ -111,24 +47,22 @@ namespace Engine
 	GlModel::~GlModel()
 	{
 //----------------------------------------------------------------------------//
-		glDisableVertexAttribArray(AttributePosition);
-		glDisableVertexAttribArray(AttributeNormal);
-		glDisableVertexAttribArray(AttributeTexCoord);
-		
-		glDeleteTextures(TextureCount, m_textures);
-		glDeleteBuffers(VboCount, m_vbos);
-		glDeleteVertexArrays(VaoCount, m_vaos);
+		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)
+		{
+			delete (*it);
+		}
 //----------------------------------------------------------------------------//
 	}
 
 	void GlModel::draw()
 	{
+		setRotation(Vec3(m_rotation.x + 1, m_rotation.y, m_rotation.z + 1));
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
-		//glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-		glBindVertexArray(m_vaos[VaoTriangles]);
-		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)
+		{
+			(*it)->draw();
+		}
 		glUseProgram(0);
 //----------------------------------------------------------------------------//
 	}

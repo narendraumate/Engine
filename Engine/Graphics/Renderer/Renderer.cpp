@@ -12,10 +12,14 @@ namespace Engine
 {
 
 	Renderer::Renderer(const int& width, const int& height, const char* applicationName)
-	:	m_width(width)
+	:	m_contextObj(0)
+	,	m_width(width)
 	,	m_height(height)
 	,	m_applicationName(strdup(applicationName))
 	,	m_camera(width, height)
+	,	m_clearColor(Color4f(0.5f, 0.5f, 0.5f, 1.0f))
+	,	m_clearDepth(10)
+	,	m_clearStencil(10)
 	{ }
 
 	Renderer::~Renderer()

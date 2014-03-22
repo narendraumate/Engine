@@ -12,8 +12,8 @@
 #include <string>
 #include "GlProgram.h"
 #include "GlShader.h"
+#include "GlModelShape.h"
 #include "../../../Mathematics/Matrix.h"
-#include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader.h"
 
 namespace Engine
@@ -58,17 +58,7 @@ namespace Engine
 		Mat4 m_modelViewMatrix;
 		Mat3 m_normMatrix;
 //----------------------------------------------------------------------------//
-		enum Vao { VaoTriangles, VaoCount };
-		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboIndex, VboCount };
-		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
-		enum Texture { TextureDiffuse, TextureCount };
-		enum TextureSampler { TextureSamplerDiffuse, TextureSamplerCount };
-
-		GLuint m_vaos[VaoCount];
-		GLuint m_vbos[VboCount];
-		GLuint m_textures[TextureCount];
-		GLuint m_textureSamplers[TextureCount];
-		GLuint m_indexCount;
+		vector<GlModelShape*> m_glModelShapes;
 //----------------------------------------------------------------------------//
 	};
 }
