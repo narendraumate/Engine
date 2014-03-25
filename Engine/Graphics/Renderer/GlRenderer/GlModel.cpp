@@ -56,7 +56,7 @@ namespace Engine
 
 	void GlModel::draw()
 	{
-		setRotation(Vec3(m_rotation.x + 1, m_rotation.y, m_rotation.z + 1));
+		setRotation(Vec3(m_rotation.x, m_rotation.y, m_rotation.z));
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
 		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)

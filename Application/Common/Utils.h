@@ -16,6 +16,7 @@
 #define LOCAL_FILE_DIR "Data/"
 #if defined(__APPLE__)
 #define GLOBAL_FILE_DIR "/Users/ardneran/Documents/Projects/GitHub/Engine/Data/"
+#define ASSET_FILE_DIR "/Users/ardneran/Documents/Models/obj/"
 #elif defined(__linux__)
 #define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
 #endif //defined(__linux__)

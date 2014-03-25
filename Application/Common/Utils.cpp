@@ -37,6 +37,7 @@ namespace Engine
 		}
 	}
 
+	// TODO Faster file check
 	std::string Utils::findFilePath(const std::string &strFileName)
 	{
 		std::string strFilePath = LOCAL_FILE_DIR + strFileName;
@@ -48,6 +49,14 @@ namespace Engine
 		}
 
 		strFilePath = GLOBAL_FILE_DIR + strFileName;
+		testFile.open(strFilePath.c_str());
+		if (testFile.is_open())
+		{
+			testFile.close();
+			return strFilePath;
+		}
+
+		strFilePath = ASSET_FILE_DIR + strFileName;
 		testFile.open(strFilePath.c_str());
 		if (testFile.is_open())
 		{

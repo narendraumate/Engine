@@ -13,7 +13,8 @@
 //----------------------------------------------------------------------------//
 #include "GlModel.h"
 GLuint g_programId = 0;
-Engine::GlModel* g_glModel = nullptr;
+//Engine::GlModel* g_glModel = nullptr;
+vector<Engine::GlModel*> g_glModels;
 //----------------------------------------------------------------------------//
 
 namespace Engine
@@ -22,13 +23,13 @@ namespace Engine
 	:	Renderer(width, height, applicationName)
 	{
 //----------------------------------------------------------------------------//
-		int major = 0;
-		int minor = 0;
-		char cardName[128];
-		getVideoCardInfo(cardName);
-		getGlVersion(&major, &minor);
-		getGlslVersion(&major, &minor);
-		getGlParameters();
+		//int major = 0;
+		//int minor = 0;
+		//char cardName[128];
+		//getVideoCardInfo(cardName);
+		//getGlVersion(&major, &minor);
+		//getGlslVersion(&major, &minor);
+		//getGlParameters();
 //----------------------------------------------------------------------------//
 		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
 		glClearDepth(m_clearDepth);
@@ -46,20 +47,52 @@ namespace Engine
 		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
 		g_programId = GlProgram::createProgram(shaders);
 
-		int modelIndex = 1;
-		char* modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
-		g_glModel = new GlModel(g_programId, m_camera.getView(),
+//#define SMALL_MODELS
+#ifdef SMALL_MODELS
+		std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
+
+		for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
+		{
+			g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
 								Utils::singleton()->findFilePath(modelNames[modelIndex]),
-								Utils::singleton()->findBasePath(modelNames[modelIndex]));
+								Utils::singleton()->findBasePath(modelNames[modelIndex])));
+		}
 
-		g_glModel->setPosition(Vec3(0.0f, 0.0f, 0.0f));
-		g_glModel->setRotation(Vec3(30.0f, 30.0f, 0.0f));
-		g_glModel->setScale(Vec3(1.5f, 1.5f, 1.5f));
+		g_glModels[0]->setPosition(Vec3(-5.0f, 0.0f, 0.0f));
+		g_glModels[0]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[0]->setScale(Vec3(1.0f, 1.0f, 1.0f));
 
-		g_glModel->updateViewMatrix();
-		g_glModel->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
-		g_glModel->pushOrthographicMatrix(m_camera.getOrthographicProjection());
-		
+		g_glModels[1]->setPosition(Vec3(-2.5f, 0.0f, 0.0f));
+		g_glModels[1]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[1]->setScale(Vec3(0.5f, 0.5f, 0.5f));
+
+		g_glModels[2]->setPosition(Vec3(2.5f, -2.5f, 0.0f));
+		g_glModels[2]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[2]->setScale(Vec3(0.025f, 0.025f, 0.025f));
+
+		g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
+		g_glModels[3]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
+#else
+		int modelIndex = 4;
+		std::string modelNames[] = { "buddha/buddha.obj", "crytek-sponza/sponza.obj", "hairball/hairball.obj",
+									  "head/head.obj", "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
+		g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
+										 Utils::singleton()->findFilePath(modelNames[modelIndex]),
+										 Utils::singleton()->findBasePath(modelNames[modelIndex])));
+
+		g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
+		g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
+		g_glModels[0]->setScale(Vec3(0.0125f, 0.0125f, 0.0125f));
+#endif
+
+		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)
+		{
+			(*it)->updateViewMatrix();
+			(*it)->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
+			(*it)->pushOrthographicMatrix(m_camera.getOrthographicProjection());
+		}
+
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glEnable(GL_CULL_FACE);
@@ -74,16 +107,19 @@ namespace Engine
 	{
 		clearBuffers();
 //----------------------------------------------------------------------------//
-		g_glModel->draw();
+		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)
+		{
+			(*it)->draw();
+		}
 //----------------------------------------------------------------------------//
 	}
 
 	void GlRenderer::shutdown()
 	{
 //----------------------------------------------------------------------------//
-		if (g_glModel)
+		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)
 		{
-			delete g_glModel;
+			delete (*it);
 		}
 		GlProgram::deleteProgram(g_programId);
 //----------------------------------------------------------------------------//

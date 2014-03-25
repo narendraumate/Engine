@@ -10,6 +10,6 @@ out vec4 fColor;
 
 void main()
 {	
-	//fColor = vec4(vNormal, 1.0);
-	fColor = texture(diffuseTextureSampler, vTexCoord);
+	fColor = vec4(vNormal, 1.0);
+	//fColor = texture(diffuseTextureSampler, vTexCoord);
 }

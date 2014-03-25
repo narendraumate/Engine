@@ -27,9 +27,11 @@ namespace Engine
 		void draw();
 
 	private:
-		enum Ebo { EboIndex, EboCount };
+		enum Ebo { EboTriangles, EboCount };
 		enum Vao { VaoTriangles, VaoCount };
-		enum Vbo { VboPosition, VboNormal, VboTexCoord, VboCount };
+		enum Vbo { VboTriangles, VboCount };
+		enum Tbo { TboTriangles, TboCount };
+		
 		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
 		enum Texture { TextureDiffuse, TextureCount };
 		enum TextureSampler { TextureSamplerDiffuse, TextureSamplerCount };
@@ -37,8 +39,11 @@ namespace Engine
 		GLuint m_ebos[EboCount];
 		GLuint m_vaos[VaoCount];
 		GLuint m_vbos[VboCount];
+
+
 		GLuint m_textures[TextureCount];
 		GLuint m_textureSamplers[TextureCount];
+
 		GLuint m_indexCount;
 	};
 
