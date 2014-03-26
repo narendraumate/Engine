@@ -14,7 +14,7 @@
 #include "GlShader.h"
 #include "GlModelShape.h"
 #include "../../../Mathematics/Matrix.h"
-#include "../../../External/tinyobjloader/tiny_obj_loader.h"
+#include "../../../External/tinyobjloader/tiny_obj_loader_compact.h"
 
 namespace Engine
 {

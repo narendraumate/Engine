@@ -208,6 +208,7 @@ pip-log.txt
 ## User Defined
 #################
 pingme.txt
+*.compact
 *.error
 *.dblite
 Output/
