@@ -209,4 +209,5 @@ pip-log.txt
 #################
 pingme.txt
 *.error
+*.dblite
 Output/
