@@ -36,6 +36,7 @@ solution "Application"
             -- targetname ( "Application" )
 
         configuration "windows"
+            linkoptions { }
             files { }
             excludes { "**/MacOS/**", "**/Linux/**" }
 
@@ -48,4 +49,3 @@ solution "Application"
             linkoptions { "-lGL", "-lGLU" }
 			files { }
             excludes { "**/Windows/**", "**/MacOS/**" }
-
