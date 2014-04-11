@@ -8,7 +8,7 @@
 
 #ifdef _WIN32
 #include <D3DX10math.h>
-#include "Math/Math.h"
+#include "../../Mathematics/Math.h"
 #define Vec3 D3DXVECTOR3
 #define Mat4 D3DXMATRIX
 #define matrixRotationYawPitchRoll D3DXMatrixRotationYawPitchRoll

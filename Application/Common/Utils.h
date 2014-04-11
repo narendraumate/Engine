@@ -19,7 +19,11 @@
 #define ASSET_FILE_DIR "/Users/ardneran/Documents/Models/obj/"
 #elif defined(__linux__)
 #define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
-#endif //defined(__linux__)
+#define ASSET_FILE_DIR "/home/ardneran/Documents/Models/obj/"
+#elif defined(_WIN32)
+#define GLOBAL_FILE_DIR "/Data/" //TODO
+#define ASSET_FILE_DIR "/obj/" //TODO
+#endif //defined(_WIN32)
 
 namespace Engine
 {
