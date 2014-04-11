@@ -1,0 +1,4 @@
+#!/bin/bash
+#TODO FIX THIS
+export ENGINE_PATH=$PWD
+export PATH=$PATH:$ENGINE_PATH
