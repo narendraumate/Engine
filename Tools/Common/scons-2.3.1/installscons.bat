@@ -1,1 +1,1 @@
-python setup.py install --prefix=../../Windows/scons-2.3.1
+python setup.py install --prefix=../../Windows/scons-deploy
