@@ -1,15 +1,18 @@
 Import('env')
+
 import os
 import sys
 
 platform = sys.platform
-
 extensions = ('.h', '.hh', '.hpp', '.c', '.cc', '.cpp')
-
 excludedirs = set()
+
+# HARDCODING BEGINS
 excludedirs |= set(["assimp", "DevIL", "glsw"])
 excludedirs |= set(["src-IL", "src-ILU", "src-ILUT"])
+# HARDCODING ENDS
 
+# platform specific
 if platform == "win32":
     excludedirs |= set(["MacOS", "Linux"])
 elif platform == "darwin":
@@ -18,6 +21,7 @@ elif platform == "darwin":
 elif platform == "linux2":
     excludedirs |= set(["Windows", "MacOS"])
 
+# source Files
 def recursive_glob(pathname):
     # Recursively look for files ending with extensions.
     # Return a list of matching files.
@@ -29,10 +33,12 @@ def recursive_glob(pathname):
                  matches.append(os.path.join(dirpath, filename))
     return matches
 
+# source Files
 def find_files():
     cwd = os.getcwd()
     file_list = []
     file_list = recursive_glob(cwd)
     return file_list
 
+# program
 Program('Application', find_files())
