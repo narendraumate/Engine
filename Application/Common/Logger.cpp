@@ -45,6 +45,9 @@ namespace Engine
 		}
 	}
 
+	void Logger::printInfo()
+	{ }
+
 	void Logger::printInfo(const std::string& file, const std::string& line, const std::string& message)
 	{
 #ifdef PRINT_TO_FILE
@@ -55,5 +58,22 @@ namespace Engine
 		std::cout << file << ":" << line << " " << message << std::endl;
 #endif //PRINT_TO_DISPLAY
 	}
-	
+
+	void Logger::printInfo(const std::string& file, const std::string& line, const char* name, const void* array, const int& size)
+	{
+#ifdef PRINT_TO_FILE
+		m_fstream << file << ":" << line << " " << name << " ";
+		for (int i = 0; i < size; ++i)
+			m_fstream << ((float*)array)[i] << " ";
+		m_fstream << std::endl;
+#endif //PRINT_TO_FILE
+
+#ifdef PRINT_TO_DISPLAY
+		std::cout << file << ":" << line << " " << name << " ";
+		for (int i = 0; i < size; ++i)
+			std::cout << ((float*)array)[i] << " ";
+		std::cout << std::endl;
+#endif //PRINT_TO_DISPLAY
+	}
+
 }

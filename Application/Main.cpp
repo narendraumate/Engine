@@ -16,7 +16,7 @@ Engine::Renderer* g_renderer = NULL;
 
 void initializeMain()
 {
-	//g_logger->print0();
+	Engine::Logger::singleton()->print0();
 
 	// Create the renderer object
 #if defined(__APPLE__) || defined(__linux__)
@@ -45,7 +45,7 @@ bool runMain()
 
 void deinitializeMain()
 {
-	//g_logger->print0();
+	Engine::Logger::singleton()->print0();
 
 	// Shutdown and release the renderer object
 	g_renderer->shutdown();

@@ -2,8 +2,8 @@
 #define _CAMERA_H_
 
 #ifdef __APPLE__
-#include "Matrix.h"
-#include "Vector.h"
+#include "../../Mathematics/Matrix.h"
+#include "../../Mathematics/Vector.h"
 #endif //__APPLE__
 
 #ifdef _WIN32

@@ -24,8 +24,20 @@
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
+
+//#define LOGGER_ON	// TOGGLE LOGGER ONLY HERE!
+
+#ifdef LOGGER_ON
 #define print0() printInfo(__FILE__, TOSTRING(__LINE__), __FUNCTION__)
 #define print1(message) printInfo(__FILE__, TOSTRING(__LINE__), message)
+#define print2(array, size) printInfo(__FILE__, TOSTRING(__LINE__), "", array, size)
+#define print3(name, array, size) printInfo(__FILE__, TOSTRING(__LINE__), name, array, size)
+#else
+#define print0() printInfo();
+#define print1(message) printInfo();
+#define print2(array, size) printInfo();
+#define print3(name, array, size) printInfo();
+#endif //LOGGER_ON
 
 namespace Engine
 {
@@ -39,7 +51,9 @@ namespace Engine
 	public:
 		static Logger* singleton();
 		static void destroySingleton();
+		void printInfo();
 		void printInfo(const std::string& file, const std::string& line, const std::string& message);
+		void printInfo(const std::string& file, const std::string& line, const char* name, const void* array, const int& size);
 
 	private:
 		static Logger* s_instance;
