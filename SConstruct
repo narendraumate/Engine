@@ -1,27 +1,80 @@
 import sys
 
-platform = sys.platform
+# global
+env_build_platform_list = []
 
-common_env = Environment()
+# base
+base_env = Environment()
 
-if platform == "win32":
-    pass
-elif platform == "darwin":
-    common_env.Append(
-        LINKFLAGS=['-framework', 'Cocoa', '-framework', 'OpenGL', '-framework', 'QuartzCore'],
-        FRAMEWORKS=['Cocoa', 'OpenGL', 'QuartzCore']
-	)
-elif platform == "linux2":
-    pass
+base_env.Append(
+	CPPPATH = ['.'],
+)
 
-debug_env = common_env.Clone()
-debug_env.Append(CPPDEFINES=['DEBUG'])
-debug_env.VariantDir('bin/debug', '.', duplicate=0)
+# windows
+windows_env = base_env.Clone()
+windows_env.Append(
+	CCFLAGS = [
+			   '/EHsc'
+			   ],
+	LIBS = [
+			'user32',
+			'gdi32',
+			],
+)
 
-release_env = common_env.Clone()
-release_env.Append(CPPDEFINES=['NDEBUG'])
-release_env.VariantDir('bin/release', '.', duplicate=0)
+windows_env_debug = windows_env.Clone()
+windows_env_release = windows_env.Clone()
+env_build_platform_list.append((windows_env_debug, "debug", "win32"))
+env_build_platform_list.append((windows_env_release, "release", "win32"))
 
-for mode, env in dict(debug=debug_env, release=release_env).iteritems():
-    #env.SConscript('bin/%s/SConscript' % mode, {'env': env})
-    env.SConscript('bin/%s/SConscript' % mode, exports='env')
+# macosx
+macosx_env = base_env.Clone()
+macosx_env.Append(
+	LINKFLAGS = [
+				 '-framework',
+				 'Cocoa',
+				 '-framework',
+				 'OpenGL',
+				 '-framework',
+				 'QuartzCore'
+				 ],
+	FRAMEWORKS = [
+			'Cocoa',
+			'OpenGL',
+			'QuartzCore'
+			],
+)
+
+macosx_env_debug = macosx_env.Clone()
+macosx_env_release = macosx_env.Clone()
+env_build_platform_list.append((macosx_env_debug, "debug", "darwin"))
+env_build_platform_list.append((macosx_env_release, "release", "darwin"))
+
+# linux
+linux_env = base_env.Clone()
+linux_env.Append(
+	LINKFLAGS = [
+				 '-lGL',
+				 '-lGLU'
+				 ],
+)
+
+linux_env_debug = linux_env.Clone()
+linux_env_release = linux_env.Clone()
+env_build_platform_list.append((linux_env_debug, "debug", "linux2"))
+env_build_platform_list.append((linux_env_release, "release", "linux2"))
+
+# common
+for env, build, platform in env_build_platform_list:
+	if build == "debug":
+		env.Append(CPPDEFINES=['DEBUG'])
+		env.VariantDir('bin/debug', '.', duplicate=0)
+	elif build == "release":
+		env.Append(CPPDEFINES=['NDEBUG'])
+		env.VariantDir('bin/release', '.', duplicate=0)
+
+# SConscript
+for environment, build, platform in env_build_platform_list:
+	if platform == sys.platform:
+		print environment, build, platform
+		env.SConscript('bin/%s/SConscript' % build, {'env' : environment})
