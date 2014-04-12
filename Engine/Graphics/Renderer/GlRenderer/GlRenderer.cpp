@@ -43,11 +43,17 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<GLuint> shaders;
-		shaders.push_back(GlShader::loadShader("3d.vert", GL_VERTEX_SHADER));
-		shaders.push_back(GlShader::loadShader("3d.frag", GL_FRAGMENT_SHADER));
+#define PHONG
+#ifdef PHONG
+		shaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
+		shaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
+#else
+		shaders.push_back(GlShader::loadShader("gouraud.vert", GL_VERTEX_SHADER));
+		shaders.push_back(GlShader::loadShader("gouraud.frag", GL_FRAGMENT_SHADER));
+#endif //PHONG
 		g_programId = GlProgram::createProgram(shaders);
 
-//#define SMALL_MODELS
+#define SMALL_MODELS
 #ifdef SMALL_MODELS
 		std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
 
@@ -58,21 +64,22 @@ namespace Engine
 								Utils::singleton()->findBasePath(modelNames[modelIndex])));
 		}
 
-		g_glModels[0]->setPosition(Vec3(-5.0f, 0.0f, 0.0f));
 		g_glModels[0]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[0]->setPosition(Vec3(-5.0f, 0.0f, 0.0f));
 		g_glModels[0]->setScale(Vec3(1.0f, 1.0f, 1.0f));
 
-		g_glModels[1]->setPosition(Vec3(-2.5f, 0.0f, 0.0f));
 		g_glModels[1]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[1]->setPosition(Vec3(-2.5f, 0.0f, 0.0f));
 		g_glModels[1]->setScale(Vec3(0.5f, 0.5f, 0.5f));
 
-		g_glModels[2]->setPosition(Vec3(2.5f, -2.5f, 0.0f));
 		g_glModels[2]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[2]->setPosition(Vec3(2.5f, -2.5f, 0.0f));
 		g_glModels[2]->setScale(Vec3(0.025f, 0.025f, 0.025f));
 
-		g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
 		g_glModels[3]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+		g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
 		g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
+
 #else
 		int modelIndex = 4;
 		std::string modelNames[] = { "buddha/buddha.obj", "crytek-sponza/sponza.obj", "hairball/hairball.obj",

@@ -24,14 +24,14 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_t> shapes;
-		std::string error = tinyobj::LoadObj(shapes, objFilePath.c_str(), mtlBasePath.c_str());
+		std::string error = tinyobj::LoadObjCompact(shapes, objFilePath.c_str(), mtlBasePath.c_str());
 						
 		if (error.empty())
 		{
 			glUseProgram(m_programId);
 			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-				GlModelShape* glModelShapePtr = new GlModelShape(*it);
+				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId);
 				m_glModelShapes.push_back(glModelShapePtr);
 			}
 			glUseProgram(0);
@@ -56,7 +56,7 @@ namespace Engine
 
 	void GlModel::draw()
 	{
-		setRotation(Vec3(m_rotation.x, m_rotation.y, m_rotation.z));
+		setRotation(Vec3(m_rotation.x, m_rotation.y, m_rotation.z));// TODO Why is this needed for small models
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
 		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)
@@ -122,7 +122,7 @@ namespace Engine
 		glUniform1i(diffuseTextureSamplerLocation, m_textureSamplers[TextureSamplerDiffuse]);
 		glUseProgram(0);
 	}*/
-	
+
 	void GlModel::setPosition(const Vec3& position)
 	{
 		m_position = position;
