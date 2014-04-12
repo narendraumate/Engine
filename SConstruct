@@ -14,7 +14,7 @@ base_env.Append(
 windows_env = base_env.Clone()
 windows_env.Append(
 	CCFLAGS = [
-			   '/EHsc'
+			   '/EHsc',
 			   ],
 	LIBS = [
 			'user32',
@@ -36,13 +36,18 @@ macosx_env.Append(
 				 '-framework',
 				 'OpenGL',
 				 '-framework',
-				 'QuartzCore'
+				 'QuartzCore',
 				 ],
 	FRAMEWORKS = [
 			'Cocoa',
 			'OpenGL',
-			'QuartzCore'
+			'QuartzCore',
 			],
+	LIBPATH = [
+			   '/System/Library/Frameworks/Cocoa.framework',
+			   '/System/Library/Frameworks/OpenGL.framework/Libraries',
+			   '/System/Library/Frameworks/QuartzCore.framework/Libraries',
+			   ],
 )
 
 macosx_env_debug = macosx_env.Clone()
@@ -76,5 +81,5 @@ for env, build, platform in env_build_platform_list:
 # SConscript
 for environment, build, platform in env_build_platform_list:
 	if platform == sys.platform:
-		print environment, build, platform
+		# print environment, build, platform
 		env.SConscript('bin/%s/SConscript' % build, {'env' : environment})
