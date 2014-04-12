@@ -1,18 +1,27 @@
-# Define a common build environment
+import sys
+
+platform = sys.platform
+
 common_env = Environment()
 
-# Clone Debug environment
+if platform == "win32":
+    pass
+elif platform == "darwin":
+    common_env.Append(
+        LINKFLAGS=['-framework', 'Cocoa', '-framework', 'OpenGL', '-framework', 'QuartzCore'],
+        FRAMEWORKS=['Cocoa', 'OpenGL', 'QuartzCore']
+	)
+elif platform == "linux2":
+    pass
+
 debug_env = common_env.Clone()
 debug_env.Append(CPPDEFINES=['DEBUG'])
-debug_env.Append(CCFLAGS=['Symbols'])
-debug_env.VariantDir('bin/Debug', '.')
+debug_env.VariantDir('bin/debug', '.', duplicate=0)
 
-# Clone Release environment
 release_env = common_env.Clone()
 release_env.Append(CPPDEFINES=['NDEBUG'])
-release_env.Append(CCFLAGS=['Optimize'])
-release_env.VariantDir('bin/Release', '.')
+release_env.VariantDir('bin/release', '.', duplicate=0)
 
-# Iterate over all build environments and invoke the lower level SConscript files.
-for mode, env in dict(Debug=debug_env, Release=release_env).iteritems():
-    env.SConscript('SConscript', variant_dir=mode, duplicate=False, exports={'env' : env})
+for mode, env in dict(debug=debug_env, release=release_env).iteritems():
+    #env.SConscript('bin/%s/SConscript' % mode, {'env': env})
+    env.SConscript('bin/%s/SConscript' % mode, exports='env')
