@@ -15,4 +15,4 @@ release_env.VariantDir('bin/Release', '.')
 
 # Iterate over all build environments and invoke the lower level SConscript files.
 for mode, env in dict(Debug=debug_env, Release=release_env).iteritems():
-    env.SConscript('SConscript', {'env': env})
+    env.SConscript('SConscript', variant_dir=mode, duplicate=False, exports={'env' : env})
