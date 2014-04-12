@@ -1,7 +1,7 @@
 -- A solution contains projects, and defines the available configurations
 solution "Application"
     configurations { "debug", "release" }
-	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
+	-- defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
 	
 	-- Disable assimp, DevIL, glsw
 	excludes { "**/assimp/**", "**/DevIL/**", "**/glsw/**" }
