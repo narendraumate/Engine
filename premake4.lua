@@ -1,6 +1,6 @@
 -- A solution contains projects, and defines the available configurations
 solution "Application"
-    configurations { "Debug", "Release" }
+    configurations { "debug", "release" }
 	defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
 	
 	-- Disable assimp, DevIL, glsw
@@ -21,18 +21,18 @@ solution "Application"
 		files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
 		files { "**.vert", "**.frag" }
  
-        configuration "Debug"
+        configuration "debug"
             defines { "DEBUG" }
             flags { "Symbols" }
-            targetdir ( "bin/Debug" )
-            objdir ( "obj/Debug" )
+            targetdir ( "bin/debug" )
+            objdir ( "obj/debug" )
             -- targetname ( "Application" )
 
-        configuration "Release"
+        configuration "release"
             defines { "NDEBUG" }
             flags { "Optimize" }
-            targetdir ( "bin/Release" )
-            objdir ( "obj/Release" )
+            targetdir ( "bin/release" )
+            objdir ( "obj/release" )
             -- targetname ( "Application" )
 
         configuration "windows"
