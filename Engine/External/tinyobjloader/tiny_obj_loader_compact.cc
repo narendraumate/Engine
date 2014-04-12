@@ -18,7 +18,7 @@ namespace tinyobj {
 	{
 		//assert(sizeof(float) == sizeof(uint32_t));
 		size_t ssz = 0;
-		const auto sz = sizeof(uint32_t);
+		const size_t sz = sizeof(uint32_t);
 		const uint32_t nMeshes = static_cast<uint32_t>(shapes.size());
 		const uint32_t nMatProperties = 3;
 
@@ -73,7 +73,7 @@ namespace tinyobj {
 	{
 		//assert(sizeof(float) == sizeof(uint32_t));
 		size_t ssz = 0;
-		const auto sz = sizeof(uint32_t);
+		const size_t sz = sizeof(uint32_t);
 
 		std::vector<tinyobj::shape_t> shapes;
 
