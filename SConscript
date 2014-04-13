@@ -1,4 +1,4 @@
-Import('env', 'build', 'platform')
+Import('env', 'config', 'platform')
 
 import os
 import sys

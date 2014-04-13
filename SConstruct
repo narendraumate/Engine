@@ -2,48 +2,34 @@ import os
 import sys
 
 # global
-env_build_platform_list = []
+platform = sys.platform
 
 # base
 base_env = Environment()
 
-# windows
-windows_env = base_env.Clone()
+if platform == 'win32':
+	pass
+elif platform == 'darwin':
+	base_env.Append(FRAMEWORKS = ['Cocoa', 'OpenGL', 'QuartzCore'])
+elif platform == 'linux2':
+	base_env.Append(LINKFLAGS = ['-lGL', '-lGLU'])
 
-windows_env_debug = windows_env.Clone()
-windows_env_release = windows_env.Clone()
-env_build_platform_list.append((windows_env_debug, "debug", "win32"))
-env_build_platform_list.append((windows_env_release, "release", "win32"))
+# debug
+debug_env = base_env.Clone()
+debug_env.Append(CPPDEFINES=['DEBUG'])
+debug_env.Append(CCFLAGS=['-g'])
+debug_env.VariantDir('bin/debug', '.', duplicate=0)
 
-# macosx
-macosx_env = base_env.Clone()
-macosx_env.Append(FRAMEWORKS = ['Cocoa', 'OpenGL', 'QuartzCore'])#
+# release
+release_env = base_env.Clone()
+release_env.Append(CPPDEFINES=['NDEBUG'])
+release_env.Append(CCFLAGS=['-O2'])
+release_env.VariantDir('bin/release', '.', duplicate=0)
 
-macosx_env_debug = macosx_env.Clone()
-macosx_env_release = macosx_env.Clone()
-env_build_platform_list.append((macosx_env_debug, "debug", "darwin"))
-env_build_platform_list.append((macosx_env_release, "release", "darwin"))
+# list
+env_config_list = []
+env_config_list.append((debug_env, 'debug'))
+#env_config_list.append((release_env, 'release')) # TODO Fix multiple environments
 
-# linux
-linux_env = base_env.Clone()
-linux_env.Append(LINKFLAGS = ['-lGL', '-lGLU'])#
-
-linux_env_debug = linux_env.Clone()
-linux_env_release = linux_env.Clone()
-env_build_platform_list.append((linux_env_debug, "debug", "linux2"))
-env_build_platform_list.append((linux_env_release, "release", "linux2"))
-
-# common
-for env, build, platform in env_build_platform_list:
-	env.VariantDir(os.path.join('bin', build), '.', duplicate=0)
-	if build == "debug":
-		env.Append(CPPDEFINES=['DEBUG'])#
-		env.Append(CCFLAGS=['-g'])#
-	elif build == "release":
-		env.Append(CPPDEFINES=['NDEBUG'])#
-		env.Append(CCFLAGS=['-O2'])#
-
-# SConscript
-for env, build, platform in env_build_platform_list:
-	if build == "debug" and platform == sys.platform:
-		env.SConscript('bin/%s/SConscript' % build, exports=['env', 'build', 'platform'])
+for env, config in env_config_list:
+	env.SConscript('bin/%s/SConscript' % config, exports=['env', 'config', 'platform'])
