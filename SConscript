@@ -1,4 +1,4 @@
-Import('env')
+Import('env', 'build', 'platform')
 
 import os
 import sys
@@ -41,4 +41,4 @@ def find_files():
     return file_list
 
 # program
-Program('Application', find_files())
+env.Program('Application', find_files())
