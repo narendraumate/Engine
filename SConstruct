@@ -6,21 +6,8 @@ env_build_platform_list = []
 # base
 base_env = Environment()
 
-base_env.Append(
-	CPPPATH = ['.'],
-)
-
 # windows
 windows_env = base_env.Clone()
-windows_env.Append(
-	CCFLAGS = [
-			   '/EHsc',
-			   ],
-	LIBS = [
-			'user32',
-			'gdi32',
-			],
-)
 
 windows_env_debug = windows_env.Clone()
 windows_env_release = windows_env.Clone()
@@ -30,23 +17,25 @@ env_build_platform_list.append((windows_env_release, "release", "win32"))
 # macosx
 macosx_env = base_env.Clone()
 macosx_env.Append(
-	LINKFLAGS = [
-				 '-framework',
-				 'Cocoa',
-				 '-framework',
-				 'OpenGL',
-				 '-framework',
-				 'QuartzCore',
-				 ],
 	FRAMEWORKS = [
-			'Cocoa',
-			'OpenGL',
-			'QuartzCore',
-			],
+				  'Cocoa',
+				  'OpenGL',
+				  'QuartzCore',
+				  ],
+	LINKFLAGS = [
+				 '-framework', 'Cocoa',
+				 '-framework', 'OpenGL',
+				 '-framework', 'QuartzCore',
+				 ],
+	CPPPATH = [
+			   '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/Cocoa.framework/Headers',
+			   '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/OpenGL.framework/Headers',
+			   '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/System/Library/Frameworks/QuartzCore.framework/Headers',
+			   ],
 	LIBPATH = [
 			   '/System/Library/Frameworks/Cocoa.framework',
-			   '/System/Library/Frameworks/OpenGL.framework/Libraries',
-			   '/System/Library/Frameworks/QuartzCore.framework/Libraries',
+			   '/System/Library/Frameworks/OpenGL.framework',
+			   '/System/Library/Frameworks/QuartzCore.framework',
 			   ],
 )
 

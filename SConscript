@@ -4,7 +4,7 @@ import os
 import sys
 
 platform = sys.platform
-extensions = ('.h', '.hh', '.hpp', '.c', '.cc', '.cpp')
+extensions = ('.c', '.cc', '.cpp')
 excludedirs = set()
 
 # HARDCODING BEGINS
