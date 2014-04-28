@@ -21,6 +21,8 @@ namespace Engine
 	,	m_modelViewMatrix()
 	,	m_normMatrix()
 	,	m_glModelShapes()
+	,	m_objFilePath(objFilePath)
+	,	m_mtlBasePath(mtlBasePath)
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_t> shapes;
@@ -31,7 +33,7 @@ namespace Engine
 			glUseProgram(m_programId);
 			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId);
+				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId, m_mtlBasePath);
 				m_glModelShapes.push_back(glModelShapePtr);
 			}
 			glUseProgram(0);
@@ -115,14 +117,6 @@ namespace Engine
 		glUseProgram(0);
 	}
 	
-	/*void GlModel::pushTextureSamplers()
-	{
-		glUseProgram(m_programId);
-		GLint diffuseTextureSamplerLocation = glGetUniformLocation(m_programId, "diffuseTextureSampler");
-		glUniform1i(diffuseTextureSamplerLocation, m_textureSamplers[TextureSamplerDiffuse]);
-		glUseProgram(0);
-	}*/
-
 	void GlModel::setPosition(const Vec3& position)
 	{
 		m_position = position;

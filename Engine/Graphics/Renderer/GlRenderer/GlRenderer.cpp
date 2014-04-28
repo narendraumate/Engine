@@ -53,7 +53,7 @@ namespace Engine
 #endif //PHONG
 		g_programId = GlProgram::createProgram(shaders);
 
-#define SMALL_MODELS
+//#define SMALL_MODELS
 #ifdef SMALL_MODELS
 		std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
 

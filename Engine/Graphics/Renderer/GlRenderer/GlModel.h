@@ -45,8 +45,6 @@ namespace Engine
 		void pushModelViewMatrix();
 		void pushNormMatrix();
 
-		//void pushTextureSamplers();
-
 		GLuint m_programId;
 
 		Vec3 m_position;
@@ -60,6 +58,8 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		vector<GlModelShape*> m_glModelShapes;
 //----------------------------------------------------------------------------//
+		std::string m_objFilePath;
+		std::string m_mtlBasePath;
 	};
 }
 #endif /* defined(__Application__GlModel__) */

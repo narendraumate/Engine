@@ -20,7 +20,7 @@ uniform vec3 specular;
 //uniform vec3 emission;
 uniform float shininess;
 //uniform float ior;
-uniform sampler2D diffuseTextureSampler;
+uniform sampler2D diffuseTexture;
 
 void main()
 {
@@ -46,7 +46,7 @@ void main()
 
 	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * specular;
 
-	vColor = ambient_ + diffuse_ + specular_;
+	vColor = ambient_ + diffuse_ + specular_ + texture(diffuseTexture, texCoord).rgb;
 
 	gl_Position = perspective * P;
 }

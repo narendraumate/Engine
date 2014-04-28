@@ -14,6 +14,7 @@ uniform mat4 perspective;
 out vec3 vN;
 out vec3 vL;
 out vec3 vV;
+out vec2 vT;
 
 uniform vec3 ambient;
 uniform vec3 diffuse;
@@ -38,6 +39,8 @@ void main()
 	vL = normalize(light_position - P.xyz);
 
 	vV = normalize(-P.xyz);
+
+	vT = texCoord;
 
 	gl_Position = perspective * P;
 }

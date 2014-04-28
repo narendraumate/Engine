@@ -22,20 +22,14 @@ namespace Engine
 	class GlModelShape
 	{
 	public:
-		GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId);
+		GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, const std::string& mtlBasePath);
 		~GlModelShape();
 
 		void draw();
-		/*void pushTextureBuffers()
-		{
-			//glUseProgram(m_programId);
-			//GLint diffuseTextureBufferLocation = glGetUniformLocation(m_programId, "diffuseTextureBuffer");
-			//glUniform1i(diffuseTextureBufferLocation, m_textureBuffers[TextureBufferDiffuse]);
-			//glUseProgram(0);
-		}*/
 
 	private:
 		GLuint m_programId;
+		std::string m_mtlBasePath;
 
 		enum Ebo { EboTriangles, EboCount };
 		enum Vao { VaoTriangles, VaoCount };
@@ -44,7 +38,6 @@ namespace Engine
 		
 		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
 		enum Texture { TextureDiffuse, TextureCount };
-		enum TextureSampler { TextureSamplerDiffuse, TextureSamplerCount };
 
 		GLuint m_ebos[EboCount];
 		GLuint m_vaos[VaoCount];
@@ -52,10 +45,10 @@ namespace Engine
 		GLuint m_tbos[TboCount];
 
 		GLuint m_textures[TextureCount];
-		GLuint m_textureSamplers[TextureCount];
 
 		GLuint m_indexCount;
 
+		void pushTextureSamplers();
 		void pushMaterialParameters(const tinyobj::material_t& material);
 	};
 

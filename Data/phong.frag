@@ -3,6 +3,7 @@
 in vec3 vN;
 in vec3 vL;
 in vec3 vV;
+in vec2 vT;
 
 out vec4 fColor;
 
@@ -13,7 +14,7 @@ uniform vec3 specular;
 //uniform vec3 emission;
 uniform float shininess;
 //uniform float ior;
-uniform sampler2D diffuseTextureSampler;
+uniform sampler2D diffuseTexture;
 
 void main()
 {
@@ -28,5 +29,5 @@ void main()
 
 	vec3 specular_ = pow(max(dot(R, vV), 0.0), specular_power) * specular;
 
-	fColor = vec4(ambient_ + diffuse_ + specular_, 1.0);
+	fColor = vec4(ambient_ + diffuse_ + specular_ + texture(diffuseTexture, vT).rgb, 1.0);
 }

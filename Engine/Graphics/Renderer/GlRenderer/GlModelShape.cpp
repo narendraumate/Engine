@@ -12,8 +12,9 @@
 
 namespace Engine
 {
-	GlModelShape::GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId)
+	GlModelShape::GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, const std::string& mtlBasePath)
 	:	m_programId(programId)
+	,	m_mtlBasePath(mtlBasePath)
 	{
 		std::vector<float> positions;
 		std::vector<float> normals;
@@ -21,7 +22,7 @@ namespace Engine
 		std::vector<unsigned int> indices;
 		tinyobj::material_t material;
 
-		std::cout << "shape " << shape.name << std::endl;
+		//std::cout << "shape " << shape.name << std::endl;
 
 		material = shape.material;
 		positions = shape.mesh.positions;
@@ -60,7 +61,7 @@ namespace Engine
 		// Ambient TODO
 		if (!material.ambient_texname.empty())
 		{
-			cout << "ambient_texname " << material.ambient_texname << endl;
+			//cout << "ambient_texname " << material.ambient_texname << endl;
 		}
 
 		// Diffuse
@@ -68,7 +69,7 @@ namespace Engine
 		{
 			cout << "diffuse_texname " << material.diffuse_texname << endl;
 
-			StbImage texture(Utils::singleton()->findFilePath(material.diffuse_texname));
+			StbImage texture(m_mtlBasePath + material.diffuse_texname);
 			texture.flipY();
 #define TEXTURE_2D
 #ifdef TEXTURE_2D
@@ -98,23 +99,24 @@ namespace Engine
 		// Specular TODO
 		if (!material.specular_texname.empty())
 		{
-			cout << "specular_texname " << material.specular_texname << endl;
+			//cout << "specular_texname " << material.specular_texname << endl;
 		}
 
 		// Normal TODO
 		if (!material.normal_texname.empty())
 		{
-			cout << "normal_texname " << material.normal_texname << endl;
+			//cout << "normal_texname " << material.normal_texname << endl;
 		}
 
-		//pushTextureSamplers();//??
-		//pushTextureBuffers();//??
+		glActiveTexture(GL_TEXTURE0);
+		pushTextureSamplers();//?
 		pushMaterialParameters(material);
 
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
 		glEnableVertexAttribArray(AttributeTexCoord);
 
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -134,6 +136,7 @@ namespace Engine
 
 	void GlModelShape::draw()
 	{
+		glEnable(GL_TEXTURE_2D);
 		glBindVertexArray(m_vaos[VaoTriangles]);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
@@ -141,6 +144,7 @@ namespace Engine
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
+		glDisable(GL_TEXTURE_2D);
 	}
 
 	void GlModelShape::pushMaterialParameters(const tinyobj::material_t& material)
@@ -149,32 +153,43 @@ namespace Engine
 
 		GLint ambientLocation = glGetUniformLocation(m_programId, "ambient");
 		glUniform3fv(ambientLocation, 1, material.ambient);
-		Logger::singleton()->print3("ambient", material.ambient, 3);
+		//Logger::singleton()->print3("ambient", material.ambient, 3);
 
 		GLint diffuseLocation = glGetUniformLocation(m_programId, "diffuse");
 		glUniform3fv(diffuseLocation, 1, material.diffuse);
-		Logger::singleton()->print3("diffuse", material.diffuse, 3);
+		//Logger::singleton()->print3("diffuse", material.diffuse, 3);
 
 		GLint specularLocation = glGetUniformLocation(m_programId, "specular");
 		glUniform3fv(specularLocation, 1, material.specular);
-		Logger::singleton()->print3("specular", material.specular, 3);
+		//Logger::singleton()->print3("specular", material.specular, 3);
 
 		GLint transmittanceLocation = glGetUniformLocation(m_programId, "transmittance");
 		glUniform3fv(transmittanceLocation, 1, material.transmittance);
-		Logger::singleton()->print3("transmittance", material.transmittance, 3);
+		//Logger::singleton()->print3("transmittance", material.transmittance, 3);
 
 		GLint emissionLocation = glGetUniformLocation(m_programId, "emission");
 		glUniform3fv(emissionLocation, 1, material.emission);
-		Logger::singleton()->print3("emission", material.emission, 3);
+		//Logger::singleton()->print3("emission", material.emission, 3);
 
 		GLint shininessLocation = glGetUniformLocation(m_programId, "shininess");
 		glUniform1f(shininessLocation, material.shininess);
-		Logger::singleton()->print3("shininess", &material.shininess, 1);
+		//Logger::singleton()->print3("shininess", &material.shininess, 1);
 
 		GLint iorLocation = glGetUniformLocation(m_programId, "ior");
 		glUniform1f(iorLocation, material.ior);
-		Logger::singleton()->print3("ior", &material.ior, 1);
+		//Logger::singleton()->print3("ior", &material.ior, 1);
 
 		glUseProgram(0);
 	}
+
+	void GlModelShape::pushTextureSamplers()
+	{
+		glUseProgram(m_programId);
+
+		GLint diffuseTextureLocation = glGetUniformLocation(m_programId, "diffuseTexture");
+		glUniform1i(diffuseTextureLocation, 0);//m_textures[TextureDiffuse]);
+
+		glUseProgram(0);
+	}
+
 }
