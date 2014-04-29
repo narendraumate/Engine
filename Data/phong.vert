@@ -23,7 +23,6 @@ uniform vec3 specular;
 //uniform vec3 emission;
 uniform float shininess;
 //uniform float ior;
-uniform sampler2D diffuseTextureSampler;
 
 void main()
 {
