@@ -58,58 +58,41 @@ namespace Engine
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
 		glVertexAttribPointer(AttributeTexCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
 
+#define TEXTURE_2D
+
+#ifdef TEXTURE_2D
+		glGenTextures(TextureCount, m_textures);
+#endif
+
 		// Ambient TODO
 		if (!material.ambient_texname.empty())
 		{
-			//cout << "ambient_texname " << material.ambient_texname << endl;
+			cout << "ambient_texname " << material.ambient_texname << endl;
+			loadTexture(GL_TEXTURE0, material.ambient_texname);
 		}
 
 		// Diffuse
 		if (!material.diffuse_texname.empty())
 		{
 			cout << "diffuse_texname " << material.diffuse_texname << endl;
-
-			StbImage texture(m_mtlBasePath + material.diffuse_texname);
-			texture.flipY();
-#define TEXTURE_2D
-#ifdef TEXTURE_2D
-			glGenTextures(TextureCount, m_textures);
-			glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getSizeX(), texture.getSizeY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &(texture.getPixels()[0]));
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-#else
-			glGenBuffers(TboCount, m_tbos);
-			glBindBuffer(GL_TEXTURE_BUFFER, m_tbos[TboTriangles]);
-			glBufferData(GL_TEXTURE_BUFFER, texture.getSizeX() * texture.getSizeY(), &(texture.getPixels()[0]), GL_STATIC_DRAW);
-
-			glGenTextures(TextureCount, m_textures);
-			glBindTexture(GL_TEXTURE_BUFFER, m_textures[TextureDiffuse]);
-			glTexBuffer(GL_TEXTURE_BUFFER, GL_RGBA, m_tbos[TboTriangles]);
-#endif
+			loadTexture(GL_TEXTURE1, material.diffuse_texname);
 		}
 
 		// Specular TODO
 		if (!material.specular_texname.empty())
 		{
-			//cout << "specular_texname " << material.specular_texname << endl;
+			cout << "specular_texname " << material.specular_texname << endl;
+			loadTexture(GL_TEXTURE2, material.specular_texname);
 		}
 
 		// Normal TODO
 		if (!material.normal_texname.empty())
 		{
-			//cout << "normal_texname " << material.normal_texname << endl;
+			cout << "normal_texname " << material.normal_texname << endl;
+			loadTexture(GL_TEXTURE3, material.normal_texname);
 		}
 
-		glActiveTexture(GL_TEXTURE0);
-		pushTextureSamplers();//?
+		pushTextureSamplers();
 		pushMaterialParameters(material);
 
 		glEnableVertexAttribArray(AttributePosition);
@@ -186,10 +169,34 @@ namespace Engine
 	{
 		glUseProgram(m_programId);
 
-		GLint diffuseTextureLocation = glGetUniformLocation(m_programId, "diffuseTexture");
-		glUniform1i(diffuseTextureLocation, 0);//m_textures[TextureDiffuse]);
+		glUniform1i(glGetUniformLocation(m_programId, "ambientTextureSampler"), 0);
+		glUniform1i(glGetUniformLocation(m_programId, "diffuseTextureSampler"), 1);
+		glUniform1i(glGetUniformLocation(m_programId, "specularTextureSampler"), 2);
+		glUniform1i(glGetUniformLocation(m_programId, "normalTextureSampler"), 3);
 
 		glUseProgram(0);
+	}
+
+	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName)
+	{
+		StbImage texture(m_mtlBasePath + textureName);
+		texture.flipY();
+
+#ifdef TEXTURE_2D
+		glActiveTexture(textureIndex);
+
+		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getSizeX(), texture.getSizeY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &(texture.getPixels()[0]));
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(0);
+#endif
 	}
 
 }

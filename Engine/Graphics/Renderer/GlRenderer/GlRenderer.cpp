@@ -43,7 +43,7 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<GLuint> shaders;
-#define PHONG
+//#define PHONG // TODO Fix Phong
 #ifdef PHONG
 		shaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		shaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
