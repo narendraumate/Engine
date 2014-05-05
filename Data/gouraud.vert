@@ -28,13 +28,14 @@ void main()
 {
 	// Light Properties
 	vec3 light_position = vec3(10.0, 10.0, 10.0);
-	float specular_power = 128.0;	//	Same as shininess?
 
-	vec4 P = modelView * vec4(position, 1.0);
+	float specular_power = 128.0;	//	Same as shininess?
 
 	//vec3 N = normalize(mat3(modelView) * normal);
 	// OR
 	vec3 N = normalize(norm * normal);
+
+	vec4 P = modelView * vec4(position, 1.0);
 
 	vec3 L = normalize(light_position - P.xyz);
 
