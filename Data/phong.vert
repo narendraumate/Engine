@@ -16,14 +16,6 @@ out vec3 vL;
 out vec3 vV;
 out vec2 vT;
 
-uniform vec3 ambient;
-uniform vec3 diffuse;
-uniform vec3 specular;
-//uniform vec3 transmittance;
-//uniform vec3 emission;
-uniform float shininess;
-//uniform float ior;
-
 void main()
 {
 	// Light Properties

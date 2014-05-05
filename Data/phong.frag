@@ -17,6 +17,7 @@ uniform float shininess;
 uniform sampler2D ambientTextureSampler;
 uniform sampler2D diffuseTextureSampler;
 uniform sampler2D specularTextureSampler;
+uniform sampler2D normalTextureSampler;
 
 void main()
 {
