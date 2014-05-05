@@ -59,7 +59,7 @@ namespace Engine
 
 	void GlModel::draw()
 	{
-		setRotation(Vec3(m_rotation.x, m_rotation.y, m_rotation.z));// TODO Why is this needed for small models
+		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z)); // TODO Why is this needed for small models
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
 		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)

@@ -43,7 +43,7 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<GLuint> shaders;
-//#define PHONG // TODO Fix Phong
+//#define PHONG // TODO Fix Gouraud
 #ifdef PHONG
 		shaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		shaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
@@ -53,7 +53,7 @@ namespace Engine
 #endif //PHONG
 		g_programId = GlProgram::createProgram(shaders);
 
-//#define SMALL_MODELS
+#define SMALL_MODELS
 #ifdef SMALL_MODELS
 		std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
 
@@ -90,7 +90,7 @@ namespace Engine
 
 		g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 		g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
-		g_glModels[0]->setScale(Vec3(0.0125f, 0.0125f, 0.0125f));
+		g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
 #endif
 
 		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)

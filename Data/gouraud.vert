@@ -40,7 +40,7 @@ void main()
 
 	vec3 V = normalize(-P.xyz);
 
-	vec3 R = reflect(-L, N);
+	vec3 R = normalize(reflect(-L, N));
 
 	vec3 ambient_ = ambient + texture(ambientTextureSampler, texCoord).rgb;
 
