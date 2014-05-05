@@ -13,7 +13,7 @@
 //----------------------------------------------------------------------------//
 #include "GlModel.h"
 GLuint g_programId = 0;
-//Engine::GlModel* g_glModel = nullptr;
+//Engine::GlModel* g_glModel = NULL;
 vector<Engine::GlModel*> g_glModels;
 //----------------------------------------------------------------------------//
 

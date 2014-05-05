@@ -13,6 +13,7 @@
 #include "GlProgram.h"
 #include "GlShader.h"
 #include "GlModelShape.h"
+#include "../Common/TextureManager.h"
 #include "../../../Mathematics/Matrix.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader_compact.h"
 
@@ -60,6 +61,8 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		std::string m_objFilePath;
 		std::string m_mtlBasePath;
+
+		TextureManager m_textureManager;
 	};
 }
 #endif /* defined(__Application__GlModel__) */

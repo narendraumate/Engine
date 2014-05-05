@@ -93,7 +93,7 @@ namespace Engine
 		// Initialize the buffer to read the shader source file into
 		// Not sure if I should add 1
 		buffer = new char[fileSize];
-		if (buffer == nullptr)
+		if (buffer == NULL)
 		{
 			fin.close();
 			return 0;

@@ -12,6 +12,7 @@
 #include <iostream>
 #include "GlProgram.h"
 #include "GlShader.h"
+#include "../Common/TextureManager.h"
 #include "../../../../Application/Common/Logger.h"
 #include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader_compact.h"
@@ -22,14 +23,14 @@ namespace Engine
 	class GlModelShape
 	{
 	public:
-		GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, const std::string& mtlBasePath);
+		GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, TextureManager* textureManager);
 		~GlModelShape();
 
 		void draw();
 
 	private:
 		GLuint m_programId;
-		std::string m_mtlBasePath;
+		TextureManager* m_textureManager;
 
 		enum Ebo { EboTriangles, EboCount };
 		enum Vao { VaoTriangles, VaoCount };

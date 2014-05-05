@@ -12,9 +12,9 @@
 
 namespace Engine
 {
-	GlModelShape::GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, const std::string& mtlBasePath)
+	GlModelShape::GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, TextureManager* textureManager)
 	:	m_programId(programId)
-	,	m_mtlBasePath(mtlBasePath)
+	,	m_textureManager(textureManager)
 	{
 		std::vector<float> positions;
 		std::vector<float> normals;
@@ -67,14 +67,14 @@ namespace Engine
 		// Ambient TODO
 		if (!material.ambient_texname.empty())
 		{
-			cout << "ambient_texname " << material.ambient_texname << endl;
+			//cout << "ambient_texname " << material.ambient_texname << endl;
 			loadTexture(GL_TEXTURE0, material.ambient_texname);
 		}
 
 		// Diffuse
 		if (!material.diffuse_texname.empty())
 		{
-			cout << "diffuse_texname " << material.diffuse_texname << endl;
+			//cout << "diffuse_texname " << material.diffuse_texname << endl;
 			loadTexture(GL_TEXTURE1, material.diffuse_texname);
 		}
 
@@ -179,14 +179,14 @@ namespace Engine
 
 	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName)
 	{
-		StbImage texture(m_mtlBasePath + textureName);
-		texture.flipY();
+
+		m_textureManager->loadTexture(textureName);
 
 #ifdef TEXTURE_2D
 		glActiveTexture(textureIndex);
 
 		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.getSizeX(), texture.getSizeY(), 0, GL_RGBA, GL_UNSIGNED_BYTE, &(texture.getPixels()[0]));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);

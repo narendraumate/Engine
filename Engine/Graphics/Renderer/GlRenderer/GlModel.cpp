@@ -23,6 +23,7 @@ namespace Engine
 	,	m_glModelShapes()
 	,	m_objFilePath(objFilePath)
 	,	m_mtlBasePath(mtlBasePath)
+	,	m_textureManager(mtlBasePath)
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_t> shapes;
@@ -33,7 +34,7 @@ namespace Engine
 			glUseProgram(m_programId);
 			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId, m_mtlBasePath);
+				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId, &m_textureManager);
 				m_glModelShapes.push_back(glModelShapePtr);
 			}
 			glUseProgram(0);
