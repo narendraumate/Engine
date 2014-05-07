@@ -19,7 +19,7 @@ out vec2 vT;
 void main()
 {
 	// Light Properties
-	vec3 light_position = vec3(10.0, 10.0, 10.0);
+	vec3 light_position = vec3(0.0, 10.0, 10.0);
 
 	vec4 P = modelView * vec4(position, 1.0);
 

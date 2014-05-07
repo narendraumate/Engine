@@ -28,7 +28,7 @@ uniform sampler2D normalTextureSampler;
 void main()
 {
 	// Light Properties
-	vec3 light_position = vec3(10.0, 10.0, 10.0);
+	vec3 light_position = vec3(0.0, 10.0, 10.0);
 
 	float specular_power = 128.0;	//	Same as shininess?
 
