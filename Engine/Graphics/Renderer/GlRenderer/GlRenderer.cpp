@@ -49,9 +49,9 @@ namespace Engine
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
 
-		int index = 1;
+		int programIndex = 1;
 
-		switch (index) {
+		switch (programIndex) {
 			case 0:
 				g_programId = GlProgram::createProgram(gouraudShaders);
 				break;
@@ -64,46 +64,58 @@ namespace Engine
 				break;
 		}
 
-#define SMALL_MODELS
-#ifdef SMALL_MODELS
-		std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
+		int modelArrayIndex = 1;
 
-		for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
-		{
-			g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
-								Utils::singleton()->findFilePath(modelNames[modelIndex]),
-								Utils::singleton()->findBasePath(modelNames[modelIndex])));
+		switch (modelArrayIndex) {
+			case 0:
+			{
+
+				std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
+
+				for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
+				{
+					g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
+													 Utils::singleton()->findFilePath(modelNames[modelIndex]),
+													 Utils::singleton()->findBasePath(modelNames[modelIndex])));
+				}
+
+				g_glModels[0]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+				g_glModels[0]->setPosition(Vec3(-5.0f, 0.0f, 0.0f));
+				g_glModels[0]->setScale(Vec3(1.0f, 1.0f, 1.0f));
+
+				g_glModels[1]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+				g_glModels[1]->setPosition(Vec3(-2.5f, 0.0f, 0.0f));
+				g_glModels[1]->setScale(Vec3(0.5f, 0.5f, 0.5f));
+
+				g_glModels[2]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+				g_glModels[2]->setPosition(Vec3(2.5f, -2.5f, 0.0f));
+				g_glModels[2]->setScale(Vec3(0.025f, 0.025f, 0.025f));
+
+				g_glModels[3]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
+				g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
+				g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
+			}
+				break;
+
+			case 1:
+			{
+				int modelIndex = 6;
+				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
+					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
+					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
+				g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
+												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
+												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
+
+				g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
+				g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
+				g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
+			}
+				break;
+
+			default:
+				break;
 		}
-
-		g_glModels[0]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
-		g_glModels[0]->setPosition(Vec3(-5.0f, 0.0f, 0.0f));
-		g_glModels[0]->setScale(Vec3(1.0f, 1.0f, 1.0f));
-
-		g_glModels[1]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
-		g_glModels[1]->setPosition(Vec3(-2.5f, 0.0f, 0.0f));
-		g_glModels[1]->setScale(Vec3(0.5f, 0.5f, 0.5f));
-
-		g_glModels[2]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
-		g_glModels[2]->setPosition(Vec3(2.5f, -2.5f, 0.0f));
-		g_glModels[2]->setScale(Vec3(0.025f, 0.025f, 0.025f));
-
-		g_glModels[3]->setRotation(Vec3(30.0f, 30.0f, 0.0f));
-		g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
-		g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
-
-#else
-		int modelIndex = 6;
-		std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
-									 "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
-									 "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
-		g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
-										 Utils::singleton()->findFilePath(modelNames[modelIndex]),
-										 Utils::singleton()->findBasePath(modelNames[modelIndex])));
-
-		g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
-		g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
-		g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
-#endif
 
 		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)
 		{
@@ -269,13 +281,13 @@ namespace Engine
 #endif //defined(__linux__)
 //----------------------------------------------------------------------------//
 	}
-	
+
 	void GlRenderer::getVideoCardInfo(char* cardName)
 	{
 		strncpy(cardName, (const char *)glGetString(GL_RENDERER), 128);
 		std::cout << cardName << std::endl;
 	}
-	
+
 	void GlRenderer::getGlVersion(int *major, int *minor)
 	{
 		const char *verstr = (const char *) glGetString(GL_VERSION);
@@ -286,7 +298,7 @@ namespace Engine
 		}
 		std::cout << "GL_VERSION " << verstr << std::endl;
 	}
-	
+
 	void GlRenderer::getGlslVersion(int *major, int *minor)
 	{
 		int gl_major, gl_minor;
