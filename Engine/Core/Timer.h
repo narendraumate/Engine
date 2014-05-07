@@ -12,9 +12,12 @@
 // Reference - High Resolution Timer
 // http://www.songho.ca/misc/timer/timer.html
 
-#ifdef _WIN32   // Windows system specific
+#if defined(__APPLE__)
+#include <sys/time.h>
+#elif defined(_WIN32)
 #include <windows.h>
-#else		  // Unix based system specific
+#elif defined(__linux__)
+#include <cstddef>
 #include <sys/time.h>
 #endif
 
