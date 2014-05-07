@@ -42,16 +42,27 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
-		std::vector<GLuint> shaders;
-//#define PHONG // TODO Fix Gouraud
-#ifdef PHONG
-		shaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
-		shaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
-#else
-		shaders.push_back(GlShader::loadShader("gouraud.vert", GL_VERTEX_SHADER));
-		shaders.push_back(GlShader::loadShader("gouraud.frag", GL_FRAGMENT_SHADER));
-#endif //PHONG
-		g_programId = GlProgram::createProgram(shaders);
+		std::vector<GLuint> gouraudShaders;
+		std::vector<GLuint> phongShaders;
+		gouraudShaders.push_back(GlShader::loadShader("gouraud.vert", GL_VERTEX_SHADER));
+		gouraudShaders.push_back(GlShader::loadShader("gouraud.frag", GL_FRAGMENT_SHADER));
+		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
+		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
+
+		int index = 1;
+
+		switch (index) {
+			case 0:
+				g_programId = GlProgram::createProgram(gouraudShaders);
+				break;
+
+			case 1:
+				g_programId = GlProgram::createProgram(phongShaders);
+				break;
+
+			default:
+				break;
+		}
 
 #define SMALL_MODELS
 #ifdef SMALL_MODELS
@@ -81,9 +92,10 @@ namespace Engine
 		g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
 
 #else
-		int modelIndex = 4;
-		std::string modelNames[] = { "buddha/buddha.obj", "crytek-sponza/sponza.obj", "hairball/hairball.obj",
-									  "head/head.obj", "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
+		int modelIndex = 6;
+		std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
+									 "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
+									 "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
 		g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
 										 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 										 Utils::singleton()->findBasePath(modelNames[modelIndex])));
