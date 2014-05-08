@@ -12,7 +12,7 @@ if platform == 'win32':
 elif platform == 'darwin':
 	base_env.Append(FRAMEWORKS = ['Cocoa', 'OpenGL', 'QuartzCore'])
 elif platform == 'linux2':
-	base_env.Append(LINKFLAGS = ['-lGL', '-lGLU'])
+	base_env.Append(LIBS = ['-lGL', '-lGLU'])
 
 # debug
 debug_env = base_env.Clone()
