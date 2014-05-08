@@ -17,7 +17,7 @@
 #elif defined(_WIN32)
 #include <windows.h>
 #elif defined(__linux__)
-#include <cstddef>
+#define NULL 0
 #include <sys/time.h>
 #endif
 

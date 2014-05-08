@@ -9,6 +9,12 @@
 #ifndef __Application__tiny_obj_loader_compact__
 #define __Application__tiny_obj_loader_compact__
 
+#if defined(__linux__)
+#include <stdint.h>
+#include <cstddef>
+#include <cstring>
+#endif // (__linux__)
+
 #include <fstream>
 #include "tiny_obj_loader.h"
 

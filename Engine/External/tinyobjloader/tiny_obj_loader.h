@@ -6,12 +6,6 @@
 #ifndef _TINY_OBJ_LOADER_H
 #define _TINY_OBJ_LOADER_H
 
-#if defined(__linux__)
-#include <stdint.h>
-#include <cstddef>
-#include <cstring>
-#endif // (__linux__)
-
 #include <string>
 #include <vector>
 #include <map>
