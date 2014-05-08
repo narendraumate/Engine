@@ -30,7 +30,7 @@ namespace Engine
 			char* shaderString = loadShaderSourceFile(strFilename.c_str());
 			//std::cout << shaderString << std::endl;
 			GLuint shader = glCreateShader(shaderType);
-			glShaderSource(shader, 1, &shaderString, NULL);
+			glShaderSource(shader, 1, const_cast<const GLchar**>(&shaderString), NULL);
 			glCompileShader(shader);
 			delete [] shaderString;
 			

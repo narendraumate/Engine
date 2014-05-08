@@ -11,7 +11,11 @@
 
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
-#endif //defined(__APPLE__)
+#elif defined(__linux__)
+#define GL_GLEXT_PROTOTYPES
+#include <GL/gl.h> // sudo apt-get install mesa-common-dev mesa-utils freeglut3 freeglut3-dev
+#include <GL/glx.h>
+#endif // defined(__linux__)
 
 #include <map>
 #include <sstream>

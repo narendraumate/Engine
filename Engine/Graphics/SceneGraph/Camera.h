@@ -1,10 +1,10 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
-#ifdef __APPLE__
+#if defined(__APPLE__) || defined(__linux__)
 #include "../../Mathematics/Matrix.h"
 #include "../../Mathematics/Vector.h"
-#endif //__APPLE__
+#endif //__APPLE__ || defined(__linux__)
 
 #ifdef _WIN32
 #include <D3DX10math.h>
