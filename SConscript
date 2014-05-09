@@ -4,7 +4,7 @@ import os
 import sys
 
 platform = sys.platform
-extensions = ('.c', '.cc', '.cpp')
+srcextensions = ('.c', '.cc', '.cpp')
 excludedirs = set()
 
 # HARDCODING BEGINS
@@ -16,13 +16,13 @@ excludedirs |= set(["src-IL", "src-ILU", "src-ILUT"])
 if platform == "win32":
     excludedirs |= set(["MacOS", "Linux"])
 elif platform == "darwin":
-    extensions += ('.m', '.mm')
+    srcextensions += ('.m', '.mm')
     excludedirs |= set(["Windows", "Linux"])
 elif platform == "linux2":
     excludedirs |= set(["Windows", "MacOS"])
 
-# source Files
-def recursive_glob(pathname):
+# recursive search
+def recursive_glob(pathname, extensions):
     # Recursively look for files ending with extensions.
     # Return a list of matching files.
     matches = []
@@ -33,12 +33,24 @@ def recursive_glob(pathname):
                  matches.append(os.path.join(dirpath, filename))
     return matches
 
-# source Files
-def find_files():
+# find files
+def find_files(extensions):
     cwd = os.getcwd()
-    file_list = []
-    file_list = recursive_glob(cwd)
-    return file_list
+    filenames = []
+    filenames = recursive_glob(cwd, extensions)
+    return filenames
 
-# program
-env.Program('Application', find_files())
+# generate obj files
+srcfilenames = find_files(srcextensions)
+objfilenames = []
+cwd = os.getcwd()
+
+for srcfilename in srcfilenames:
+    objfilepath = srcfilename.replace(cwd, '').rsplit(".", 1)[0] + env['OBJSUFFIX']
+    objfilename = '#/obj/%s/%s' % (config, objfilepath)
+    objfilenames.append(objfilename)
+    env.Object(source=srcfilename, target=objfilename)
+
+# generate bin files
+target = env.Program('#/bin/%s/Application' % config, objfilenames)
+
