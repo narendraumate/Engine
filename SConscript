@@ -3,24 +3,7 @@ Import('env', 'config', 'platform')
 import os
 import sys
 
-platform = sys.platform
-srcextensions = ('.c', '.cc', '.cpp')
-excludedirs = set()
-
-# HARDCODING BEGINS
-excludedirs |= set(["assimp", "DevIL", "glsw"])
-excludedirs |= set(["src-IL", "src-ILU", "src-ILUT"])
-# HARDCODING ENDS
-
-# platform specific
-if platform == "win32":
-    excludedirs |= set(["MacOS", "Linux"])
-elif platform == "darwin":
-    srcextensions += ('.m', '.mm')
-    excludedirs |= set(["Windows", "Linux"])
-elif platform == "linux2":
-    excludedirs |= set(["Windows", "MacOS"])
-
+###############################################################################
 # recursive search
 def recursive_glob(pathname, extensions):
     # Recursively look for files ending with extensions.
@@ -34,23 +17,46 @@ def recursive_glob(pathname, extensions):
     return matches
 
 # find files
-def find_files(extensions):
-    cwd = os.getcwd()
+def find_files(cwd, extensions):
     filenames = []
     filenames = recursive_glob(cwd, extensions)
     return filenames
+###############################################################################
+platform = sys.platform
+srcextensions = ('.c', '.cc', '.cpp', '.m', '.mm')
+objextensions = ('.o', '.obj')
+excludedirs = set()
+
+# HARDCODING BEGINS
+excludedirs |= set(['assimp', 'DevIL', 'glsw'])
+excludedirs |= set(['src-IL', 'src-ILU', 'src-ILUT'])
+# HARDCODING ENDS
+
+# platform specific
+if platform == 'win32':
+    excludedirs |= set(['MacOS', 'Linux'])
+elif platform == 'darwin':
+    excludedirs |= set(['Windows', 'Linux'])
+elif platform == 'linux2':
+    excludedirs |= set(['Windows', 'MacOS'])
+###############################################################################
+
+# find root directory
+root = os.getcwd()
+
+# find src files
+srcfilenames = find_files(root, srcextensions)
+
+# for return purposes
+objects = []
 
 # generate obj files
-srcfilenames = find_files(srcextensions)
-objfilenames = []
-cwd = os.getcwd()
-
 for srcfilename in srcfilenames:
-    objfilepath = srcfilename.replace(cwd, '').rsplit(".", 1)[0] + env['OBJSUFFIX']
-    objfilename = '#/obj/%s/%s' % (config, objfilepath)
-    objfilenames.append(objfilename)
-    env.Object(source=srcfilename, target=objfilename)
+    objfilepath = srcfilename.replace(root, '').rsplit('.', 1)[0] + env['OBJSUFFIX']
+    objfilename = '#obj/%s/%s' % (config, objfilepath)
+    object = env.Object(source=srcfilename, target=objfilename)
+    objects.append(object)
 
-# generate bin files
-target = env.Program('#/bin/%s/Application' % config, objfilenames)
+# return all compiled objects
+Return('objects')
 
