@@ -18,7 +18,7 @@
 #define GLOBAL_FILE_DIR "/Users/ardneran/Documents/Projects/GitHub/Engine/Data/"
 #define ASSET_FILE_DIR "/Users/ardneran/Documents/Models/obj/"
 #elif defined(__linux__)
-#define GLOBAL_FILE_DIR "/home/ardneran/Documents/Engine/Data/"
+#define GLOBAL_FILE_DIR "/home/ardneran/Documents/Projects/GitHub/Engine/Data/"
 #define ASSET_FILE_DIR "/home/ardneran/Documents/Models/obj/"
 #elif defined(_WIN32)
 #define GLOBAL_FILE_DIR "/Data/" //TODO
