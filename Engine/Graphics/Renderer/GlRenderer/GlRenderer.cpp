@@ -23,13 +23,15 @@ namespace Engine
 	:	Renderer(width, height, applicationName)
 	{
 //----------------------------------------------------------------------------//
-		//int major = 0;
-		//int minor = 0;
-		//char cardName[128];
-		//getVideoCardInfo(cardName);
-		//getGlVersion(&major, &minor);
-		//getGlslVersion(&major, &minor);
-		//getGlParameters();
+#if defined(__linux__)
+		int major = 0;
+		int minor = 0;
+		char cardName[128];
+		getVideoCardInfo(cardName);
+		getGlVersion(&major, &minor);
+		getGlslVersion(&major, &minor);
+		getGlParameters();
+#endif // defined(__linux__)
 //----------------------------------------------------------------------------//
 		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
 		glClearDepth(m_clearDepth);
