@@ -99,7 +99,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 6;
+				int modelIndex = 0;
 				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
 					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
 					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
@@ -109,7 +109,16 @@ namespace Engine
 
 				g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 				g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
-				g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
+
+				if (modelIndex == 0)//house
+				{
+					g_glModels[0]->setPosition(Vec3(0, -1, 0));
+					g_glModels[0]->setScale(Vec3(0.09f, 0.09f, 0.09f));
+				}
+				else if (modelIndex == 6)//rungholt
+				{
+					g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
+				}
 			}
 				break;
 

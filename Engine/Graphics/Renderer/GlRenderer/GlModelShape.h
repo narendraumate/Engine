@@ -37,8 +37,8 @@ namespace Engine
 		enum Vbo { VboTriangles, VboCount };
 		enum Tbo { TboTriangles, TboCount };
 		
-		enum Attribute { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
-		enum Texture { TextureDiffuse, TextureCount };
+		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
+		enum TextureType { TextureAmbient, TextureDiffuse, TextureSpecular, TextureNormal, TextureCount };
 
 		GLuint m_ebos[EboCount];
 		GLuint m_vaos[VaoCount];
@@ -51,7 +51,7 @@ namespace Engine
 		void pushMaterialParameters(const tinyobj::material_t& material);
 		void pushTextureSamplers();
 
-		void loadTexture(const GLenum& textureIndex, const std::string& textureName);
+		void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 	};
 
 }

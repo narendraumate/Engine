@@ -68,28 +68,28 @@ namespace Engine
 		if (!material.ambient_texname.empty())
 		{
 			//cout << "ambient_texname " << material.ambient_texname << endl;
-			loadTexture(GL_TEXTURE0, material.ambient_texname);
+			loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
 		}
 
 		// Diffuse
 		if (!material.diffuse_texname.empty())
 		{
 			//cout << "diffuse_texname " << material.diffuse_texname << endl;
-			loadTexture(GL_TEXTURE1, material.diffuse_texname);
+			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
 		}
 
 		// Specular TODO
 		if (!material.specular_texname.empty())
 		{
 			cout << "specular_texname " << material.specular_texname << endl;
-			loadTexture(GL_TEXTURE2, material.specular_texname);
+			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
 		// Normal TODO
 		if (!material.normal_texname.empty())
 		{
 			cout << "normal_texname " << material.normal_texname << endl;
-			loadTexture(GL_TEXTURE3, material.normal_texname);
+			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
 		}
 
 		pushTextureSamplers();
@@ -119,15 +119,23 @@ namespace Engine
 
 	void GlModelShape::draw()
 	{
-		glEnable(GL_TEXTURE_2D);
 		glBindVertexArray(m_vaos[VaoTriangles]);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_textures[TextureAmbient]);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_textures[TextureSpecular]);
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
+		glActiveTexture(0);
+
 		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);//??
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
-		glDisable(GL_TEXTURE_2D);
 	}
 
 	void GlModelShape::pushMaterialParameters(const tinyobj::material_t& material)
@@ -177,7 +185,7 @@ namespace Engine
 		glUseProgram(0);
 	}
 
-	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName)
+	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType)
 	{
 
 		m_textureManager->loadTexture(textureName);
@@ -185,7 +193,13 @@ namespace Engine
 #ifdef TEXTURE_2D
 		glActiveTexture(textureIndex);
 
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
+
+		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureAmbient]);
+		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureSpecular]);
+		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
