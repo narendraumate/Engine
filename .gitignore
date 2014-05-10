@@ -212,4 +212,5 @@ pingme.txt
 *.error
 *.dblite
 *.log
+*.kdev*
 Output/
