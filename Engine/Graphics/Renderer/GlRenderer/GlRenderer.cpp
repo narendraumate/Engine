@@ -13,7 +13,6 @@
 //----------------------------------------------------------------------------//
 #include "GlModel.h"
 GLuint g_programId = 0;
-//Engine::GlModel* g_glModel = NULL;
 vector<Engine::GlModel*> g_glModels;
 //----------------------------------------------------------------------------//
 
@@ -24,6 +23,7 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 #if defined(__linux__)
+		// gl calls need a valid context
 		int major = 0;
 		int minor = 0;
 		char cardName[128];

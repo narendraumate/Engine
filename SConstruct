@@ -14,7 +14,7 @@ elif platform == 'darwin':
 	base_env.Append(FRAMEWORKS = ['Cocoa', 'OpenGL', 'QuartzCore'])
 elif platform == 'linux2':
 	base_env.Append(LINKFLAGS = ['-L/usr/lib/nvidia-319/']) # hack for ubuntu 13.10 with nvidia-319
-	base_env.Append(LIBS = ['-lGL', '-lGLU'])
+	base_env.Append(LIBS = ['-lGL', '-lGLU', '-lX11'])
 
 # debug
 debug_env = base_env.Clone()

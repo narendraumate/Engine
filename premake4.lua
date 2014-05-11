@@ -46,6 +46,6 @@ solution "Application"
 			excludes { "**/Windows/**", "**/Linux/**" }
 
 		configuration "linux"
-			linkoptions { "-lGL", "-lGLU", "-L/usr/lib/nvidia-319/" }
+			linkoptions { "-lGL", "-lGLU", "-lX11", "-L/usr/lib/nvidia-319/" } -- hack for ubuntu 13.10 with nvidia-319
 			files { }
 			excludes { "**/Windows/**", "**/MacOS/**" }
