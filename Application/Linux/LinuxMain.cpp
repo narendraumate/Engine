@@ -3,62 +3,15 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-Window createWindow( Display *dpy, GLXContext *ctx, unsigned int width, unsigned int height )
-{
-	int attrib[] = { GLX_RGBA,
-		GLX_RED_SIZE, 1,
-		GLX_GREEN_SIZE, 1,
-		GLX_BLUE_SIZE, 1,
-		GLX_DOUBLEBUFFER,
-		None };
-	int scrnum;
-	XSetWindowAttributes attr;
-	unsigned long mask;
-	Window root;
-	Window win;
-	XVisualInfo *visinfo;
+#include <unistd.h> // TODO Remove
 
-	//printf("DefaultScreen\n");
-	scrnum = DefaultScreen( dpy );
-	//printf("RootWindow\n");
-	root = RootWindow( dpy, scrnum );
+static int attributeList[] = { GLX_RGBA, None };
 
-	//printf("glXChooseVisual\n");
-	visinfo = glXChooseVisual( dpy, scrnum, attrib );
-	if (!visinfo) {
-		//printf("Error: couldn't get an RGB, Double-buffered visual\n");
-		//exit(1);
-		return win;
-	}
-
-	/* window attributes */
-	attr.background_pixel = 0;
-	attr.border_pixel = 0;
-	//printf("XCreateColormap\n");
-	attr.colormap = XCreateColormap( dpy, root, visinfo->visual, AllocNone);
-	attr.event_mask = StructureNotifyMask | ExposureMask;
-	mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
-
-	//printf("XCreateWindow\n");
-	win = XCreateWindow( dpy, root, 0, 0, width, height,
-						0, visinfo->depth, InputOutput,
-						visinfo->visual, mask, &attr );
-
-	//printf("glXCreateContext\n");
-	*ctx = glXCreateContext( dpy, visinfo, NULL, True );
-	if (!(*ctx)) {
-		//printf("Error: glXCreateContext failed\n");
-		//exit(1);
-		return win;
-	}
-
-	//printf("glXMakeCurrent\n");
-	glXMakeCurrent( dpy, win, *ctx );
-
-	return win;
+static Bool WaitForNotify(Display *d, XEvent *e, char *arg) {
+	return (e->type == MapNotify) && (e->xmap.window == (Window)arg);
 }
 
-int main( int argc, char *argv[] )
+int main()
 {
 	char applicationName[] = "Renderer";
 	int applicationWidth = 1280;
@@ -69,23 +22,47 @@ int main( int argc, char *argv[] )
 	getSettings()->setTitle(applicationName);
 
 	Display *dpy;
-	GLXContext ctx;
+	XVisualInfo *vi;
+	Colormap cmap;
+	XSetWindowAttributes swa;
 	Window win;
+	GLXContext cx;
+	XEvent event;
+	/* get a connection */
+	dpy = XOpenDisplay(0);
+	/* get an appropriate visual */
+	vi = glXChooseVisual(dpy, DefaultScreen(dpy), attributeList);
+	/* create a GLX context */
+	cx = glXCreateContext(dpy, vi, 0, GL_FALSE);
+	/* create a color map */
+	cmap = XCreateColormap(dpy, RootWindow(dpy, vi->screen),
+	 vi->visual, AllocNone);
+	/* create a window */
+	swa.colormap = cmap;
+	swa.border_pixel = 0;
+	swa.event_mask = StructureNotifyMask;
+	win = XCreateWindow(dpy, RootWindow(dpy, vi->screen), 0, 0, applicationWidth, applicationHeight,
+						0, vi->depth, InputOutput, vi->visual,
+						CWBorderPixel|CWColormap|CWEventMask, &swa);
+	XMapWindow(dpy, win);
+	XIfEvent(dpy, &event, WaitForNotify, (char*)win);
+	/* connect the context to the window */
+	glXMakeCurrent(dpy, win, cx);
 
-	//printf("XOpenDisplay\n");
-	dpy = XOpenDisplay(NULL);
-
-	win = createWindow( dpy, &ctx, applicationWidth, applicationHeight );
-
+#if defined(WORKING_SAMPLE)
+	/* New Loop */
 	initializeMain();
-
-	getRenderer()->setContextObj(ctx);
-
-	XMapWindow( dpy, win );
-
 	while(runMain());
-
 	deinitializeMain();
+#else
+	/* Original Loop */
+	while (1)
+	{
+		glClearColor(0.5,0.5,0.5,1);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glFlush();
+	}
+#endif // (WORKING_SAMPLE)
 
 	return 0;
 }

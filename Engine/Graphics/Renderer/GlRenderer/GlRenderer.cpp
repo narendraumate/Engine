@@ -288,7 +288,7 @@ namespace Engine
 #elif defined(_WIN32)
         //TODO
 #elif defined(__linux___)
-        //TODO
+        glFlush();
 #endif //defined(__linux__)
 //----------------------------------------------------------------------------//
 	}
