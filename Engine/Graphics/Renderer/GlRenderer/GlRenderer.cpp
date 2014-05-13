@@ -51,7 +51,7 @@ namespace Engine
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
 
-		int programIndex = 1;
+		int programIndex = 0;
 
 		switch (programIndex) {
 			case 0:

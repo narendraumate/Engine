@@ -46,9 +46,7 @@ namespace Engine
 
 		glGenBuffers(VboCount, m_vbos);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
-		glBufferData(GL_ARRAY_BUFFER,
-					 sizeOfPositions + sizeOfNormals + sizeOfTexCoords,
-					 NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexCoords, NULL, GL_STATIC_DRAW);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfPositions, &positions[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions, sizeOfNormals, &normals[0]);
@@ -81,14 +79,14 @@ namespace Engine
 		// Specular TODO
 		if (!material.specular_texname.empty())
 		{
-			cout << "specular_texname " << material.specular_texname << endl;
+			//cout << "specular_texname " << material.specular_texname << endl;
 			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
 		// Normal TODO
 		if (!material.normal_texname.empty())
 		{
-			cout << "normal_texname " << material.normal_texname << endl;
+			//cout << "normal_texname " << material.normal_texname << endl;
 			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
 		}
 
@@ -132,7 +130,7 @@ namespace Engine
 		glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
 		glActiveTexture(0);
 
-		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);//??
+		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -194,11 +192,6 @@ namespace Engine
 		glActiveTexture(textureIndex);
 
 		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
-
-		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureAmbient]);
-		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
-		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureSpecular]);
-		//glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
 
