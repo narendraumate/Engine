@@ -20,10 +20,14 @@ namespace Engine
 	,	m_viewMatrixPtr(viewMatrixPtr)
 	,	m_modelViewMatrix()
 	,	m_normMatrix()
-	,	m_glModelShapes()
 	,	m_objFilePath(objFilePath)
 	,	m_mtlBasePath(mtlBasePath)
 	,	m_textureManager(mtlBasePath)
+#ifdef SEPARATE_VBO
+	,	m_glModelShapes()
+#else
+	,	m_glModelData(programId, &m_textureManager)
+#endif // SEPARATE_VBO
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_t> shapes;
@@ -34,9 +38,17 @@ namespace Engine
 			glUseProgram(m_programId);
 			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-				GlModelShape* glModelShapePtr = new GlModelShape(*it, m_programId, &m_textureManager);
-				m_glModelShapes.push_back(glModelShapePtr);
+#ifdef SEPARATE_VBO
+				m_glModelShapes.push_back(new GlModelShape(*it, m_programId, &m_textureManager));
+#else
+				m_glModelData.addShape(*it);
+#endif // SEPARATE_VBO
 			}
+#ifdef SEPARATE_VBO
+			// Do Nothing
+#else
+			m_glModelData.combine();
+#endif // SEPARATE_VBO
 			glUseProgram(0);
 		}
 		else
@@ -50,10 +62,12 @@ namespace Engine
 	GlModel::~GlModel()
 	{
 //----------------------------------------------------------------------------//
+#ifdef SEPARATE_VBO
 		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)
 		{
 			delete (*it);
 		}
+#endif // SEPARATE_VBO
 //----------------------------------------------------------------------------//
 	}
 
@@ -62,10 +76,14 @@ namespace Engine
 		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z)); // TODO Why is this needed for small models
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
+#ifdef SEPARATE_VBO
 		for (std::vector<GlModelShape*>::iterator it = m_glModelShapes.begin(); it != m_glModelShapes.end(); ++it)
 		{
 			(*it)->draw();
 		}
+#else
+		m_glModelData.draw();
+#endif // SEPARATE_VBO
 		glUseProgram(0);
 //----------------------------------------------------------------------------//
 	}

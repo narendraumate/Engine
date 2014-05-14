@@ -12,6 +12,7 @@
 #include <string>
 #include "GlProgram.h"
 #include "GlShader.h"
+#include "GlModelData.h"
 #include "GlModelShape.h"
 #include "../Common/TextureManager.h"
 #include "../../../Mathematics/Matrix.h"
@@ -56,13 +57,19 @@ namespace Engine
 		const Mat4* m_viewMatrixPtr;
 		Mat4 m_modelViewMatrix;
 		Mat3 m_normMatrix;
-//----------------------------------------------------------------------------//
-		vector<GlModelShape*> m_glModelShapes;
-//----------------------------------------------------------------------------//
+
 		std::string m_objFilePath;
 		std::string m_mtlBasePath;
 
 		TextureManager m_textureManager;
+//----------------------------------------------------------------------------//
+#define SEPARATE_VBO
+#ifdef SEPARATE_VBO
+		vector<GlModelShape*> m_glModelShapes;
+#else
+		GlModelData m_glModelData;
+#endif // SEPARATE_VBO
+//----------------------------------------------------------------------------//
 	};
 }
 #endif /* defined(__Application__GlModel__) */
