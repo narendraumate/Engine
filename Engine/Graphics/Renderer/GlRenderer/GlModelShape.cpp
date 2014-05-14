@@ -16,24 +16,24 @@ namespace Engine
 	:	m_programId(programId)
 	,	m_textureManager(textureManager)
 	{
+		tinyobj::material_t material;
 		std::vector<float> positions;
 		std::vector<float> normals;
-		std::vector<float> texCoords;
+		std::vector<float> texcoords;
 		std::vector<unsigned int> indices;
-		tinyobj::material_t material;
 
 		//std::cout << "shape " << shape.name << std::endl;
 
 		material = shape.material;
 		positions = shape.mesh.positions;
 		normals = shape.mesh.normals;
-		texCoords = shape.mesh.texcoords;
+		texcoords = shape.mesh.texcoords;
 		indices = shape.mesh.indices;
-		m_indexCount = indices.size();
+		m_indexCount = shape.mesh.indices.size();
 
 		unsigned int sizeOfPositions = sizeof(positions[0]) * positions.size();
 		unsigned int sizeOfNormals = sizeof(normals[0]) * normals.size();
-		unsigned int sizeOfTexCoords = sizeof(texCoords[0]) * texCoords.size();
+		unsigned int sizeOfTexcoords = sizeof(texcoords[0]) * texcoords.size();
 		unsigned int sizeOfIndices = sizeof(indices[0]) * indices.size();
 
 		glGenBuffers(EboCount, m_ebos);
@@ -46,11 +46,11 @@ namespace Engine
 
 		glGenBuffers(VboCount, m_vbos);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
-		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexCoords, NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords, NULL, GL_STATIC_DRAW);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfPositions, &positions[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions, sizeOfNormals, &normals[0]);
-		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals, sizeOfTexCoords, &texCoords[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals, sizeOfTexcoords, &texcoords[0]);
 
 		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
