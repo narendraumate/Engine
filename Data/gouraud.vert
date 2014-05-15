@@ -28,9 +28,9 @@ uniform sampler2D normalTextureSampler;
 void main()
 {
 	// Light Properties
-	vec3 light_position = vec3(0.0, 10.0, 10.0);
+	vec3 light_position = vec3(0.0, 10.0, 0.0);
 
-	float specular_power = 128.0;	//	Same as shininess?
+	float specular_power = 32.0;	//	Same as shininess?
 
 	//vec3 N = normalize(mat3(modelView) * normal);
 	// OR
@@ -44,11 +44,11 @@ void main()
 
 	vec3 R = normalize(reflect(-L, N));
 
-	vec3 ambient_ = ambient + texture(ambientTextureSampler, texcoord).rgb;
+	vec3 ambient_ = /*ambient + */texture(ambientTextureSampler, texcoord).rgb;
 
-	vec3 diffuse_ = max(dot(N, L), 0.0) * (diffuse + texture(diffuseTextureSampler, texcoord).rgb);
+	vec3 diffuse_ = max(dot(N, L), 0.0) * (/*diffuse + */texture(diffuseTextureSampler, texcoord).rgb);
 
-	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * (specular + texture(specularTextureSampler, texcoord).rgb);
+	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * (/*specular + */texture(specularTextureSampler, texcoord).rgb);
 
 	vColor = ambient_ + diffuse_ + specular_;
 
