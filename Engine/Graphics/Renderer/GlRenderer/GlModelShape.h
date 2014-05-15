@@ -37,7 +37,7 @@ namespace Engine
 		enum Vbo { VboTriangles, VboCount };
 		enum Tbo { TboTriangles, TboCount };
 		
-		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexCoord, AttributeCount };
+		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeCount };
 		enum TextureType { TextureAmbient, TextureDiffuse, TextureSpecular, TextureNormal, TextureCount };
 
 		GLuint m_ebos[EboCount];

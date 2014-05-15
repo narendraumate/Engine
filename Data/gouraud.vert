@@ -2,7 +2,7 @@
 
 layout( location = 0 ) in vec3 position;
 layout( location = 1 ) in vec3 normal;
-layout( location = 2 ) in vec2 texCoord;
+layout( location = 2 ) in vec2 texcoord;
 
 //uniform mat4 model;
 //uniform mat4 view;
@@ -44,11 +44,11 @@ void main()
 
 	vec3 R = normalize(reflect(-L, N));
 
-	vec3 ambient_ = ambient + texture(ambientTextureSampler, texCoord).rgb;
+	vec3 ambient_ = ambient + texture(ambientTextureSampler, texcoord).rgb;
 
-	vec3 diffuse_ = max(dot(N, L), 0.0) * (diffuse + texture(diffuseTextureSampler, texCoord).rgb);
+	vec3 diffuse_ = max(dot(N, L), 0.0) * (diffuse + texture(diffuseTextureSampler, texcoord).rgb);
 
-	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * (specular + texture(specularTextureSampler, texCoord).rgb);
+	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * (specular + texture(specularTextureSampler, texcoord).rgb);
 
 	vColor = ambient_ + diffuse_ + specular_;
 

@@ -54,7 +54,7 @@ namespace Engine
 
 		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
-		glVertexAttribPointer(AttributeTexCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
+		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
 
 #define TEXTURE_2D
 
@@ -95,7 +95,7 @@ namespace Engine
 
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
-		glEnableVertexAttribArray(AttributeTexCoord);
+		glEnableVertexAttribArray(AttributeTexcoord);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -107,7 +107,7 @@ namespace Engine
 	{
 		glDisableVertexAttribArray(AttributePosition);
 		glDisableVertexAttribArray(AttributeNormal);
-		glDisableVertexAttribArray(AttributeTexCoord);
+		glDisableVertexAttribArray(AttributeTexcoord);
 
 		glDeleteTextures(TextureCount, m_textures);
 		glDeleteBuffers(VboCount, m_vbos);
