@@ -51,7 +51,7 @@ namespace Engine
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
 
-		int programIndex = 0;
+		int programIndex = 1;
 
 		switch (programIndex) {
 			case 0:
@@ -101,10 +101,11 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 0;
+				int modelIndex = 9;
 				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
 					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
-					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj" };
+					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj", "person-a/person-a.obj",
+											 "person-b/person-b.obj", "person-c/person-c.obj"};
 				g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
@@ -120,6 +121,21 @@ namespace Engine
 				else if (modelIndex == 6)//rungholt
 				{
 					g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
+				}
+				else if (modelIndex == 8)//person-a
+				{
+					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
+					g_glModels[0]->setScale(Vec3(1.6f, 1.6f, 1.6f));
+				}
+				else if (modelIndex == 9)//person-b
+				{
+					g_glModels[0]->setPosition(Vec3(0, -3, 0));
+					g_glModels[0]->setScale(Vec3(0.085f, 0.085f, 0.085f));
+				}
+				else if (modelIndex == 10)//person-c
+				{
+					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
+					g_glModels[0]->setScale(Vec3(4.5f, 4.5f, 4.5f));
 				}
 			}
 				break;

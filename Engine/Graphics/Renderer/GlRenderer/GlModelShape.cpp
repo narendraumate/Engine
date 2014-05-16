@@ -56,43 +56,9 @@ namespace Engine
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
 		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
 
-#define TEXTURE_2D
-
-#ifdef TEXTURE_2D
 		glGenTextures(TextureCount, m_textures);
-#endif
-
-		// Ambient TODO
-		if (!material.ambient_texname.empty())
-		{
-			//cout << "ambient_texname " << material.ambient_texname << endl;
-			loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
-		}
-
-		// Diffuse
-		if (!material.diffuse_texname.empty())
-		{
-			//cout << "diffuse_texname " << material.diffuse_texname << endl;
-			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
-		}
-
-		// Specular TODO
-		if (!material.specular_texname.empty())
-		{
-			//cout << "specular_texname " << material.specular_texname << endl;
-			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
-		}
-
-		// Normal TODO
-		if (!material.normal_texname.empty())
-		{
-			//cout << "normal_texname " << material.normal_texname << endl;
-			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
-		}
-
-		pushTextureSamplers();
-		pushMaterialParameters(material);
-
+		pushMaterial(material);
+		
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
 		glEnableVertexAttribArray(AttributeTexcoord);
@@ -136,6 +102,52 @@ namespace Engine
 		glBindVertexArray(0);
 	}
 
+	void GlModelShape::pushMaterial(const tinyobj::material_t& material)
+	{
+		// Ambient TODO
+		if (!material.ambient_texname.empty())
+		{
+			cout << "ambient_texname " << material.ambient_texname << endl;
+			loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
+		}
+
+		// Diffuse
+		if (!material.diffuse_texname.empty())
+		{
+			cout << "diffuse_texname " << material.diffuse_texname << endl;
+			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
+		}
+
+		// Specular TODO
+		if (!material.specular_texname.empty())
+		{
+			cout << "specular_texname " << material.specular_texname << endl;
+			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
+		}
+
+		// Normal TODO
+		if (!material.normal_texname.empty())
+		{
+			cout << "normal_texname " << material.normal_texname << endl;
+			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
+		}
+
+		pushTextureSamplers();
+		pushMaterialParameters(material);
+	}
+
+	void GlModelShape::pushTextureSamplers()
+	{
+		glUseProgram(m_programId);
+
+		glUniform1i(glGetUniformLocation(m_programId, "ambientTextureSampler"), 0);
+		glUniform1i(glGetUniformLocation(m_programId, "diffuseTextureSampler"), 1);
+		glUniform1i(glGetUniformLocation(m_programId, "specularTextureSampler"), 2);
+		glUniform1i(glGetUniformLocation(m_programId, "normalTextureSampler"), 3);
+
+		glUseProgram(0);
+	}
+
 	void GlModelShape::pushMaterialParameters(const tinyobj::material_t& material)
 	{
 		glUseProgram(m_programId);
@@ -171,24 +183,10 @@ namespace Engine
 		glUseProgram(0);
 	}
 
-	void GlModelShape::pushTextureSamplers()
-	{
-		glUseProgram(m_programId);
-
-		glUniform1i(glGetUniformLocation(m_programId, "ambientTextureSampler"), 0);
-		glUniform1i(glGetUniformLocation(m_programId, "diffuseTextureSampler"), 1);
-		glUniform1i(glGetUniformLocation(m_programId, "specularTextureSampler"), 2);
-		glUniform1i(glGetUniformLocation(m_programId, "normalTextureSampler"), 3);
-
-		glUseProgram(0);
-	}
-
 	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType)
 	{
-
 		m_textureManager->loadTexture(textureName);
 
-#ifdef TEXTURE_2D
 		glActiveTexture(textureIndex);
 
 		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
@@ -203,7 +201,6 @@ namespace Engine
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(0);
-#endif
 	}
 
 }

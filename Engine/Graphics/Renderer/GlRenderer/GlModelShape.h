@@ -48,9 +48,9 @@ namespace Engine
 
 		GLuint m_indexCount;
 
-		void pushMaterialParameters(const tinyobj::material_t& material);
+		void pushMaterial(const tinyobj::material_t& material);
 		void pushTextureSamplers();
-
+		void pushMaterialParameters(const tinyobj::material_t& material);
 		void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 	};
 
