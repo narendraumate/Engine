@@ -13,18 +13,40 @@
 
 namespace tinyobj {
 
+	void writeString(std::ostream& stream, const std::string& str)
+	{
+		size_t sz = sizeof(uint32_t);
+		size_t ssz = str.size() + 1;
+		char* cstr = new char[ssz];
+		strcpy(cstr, str.c_str());
+		stream.write((const char*)&ssz, sz);
+		stream.write((const char*)cstr, ssz);
+		delete [] cstr;
+	}
+
+	void readString(std::istream& stream, std::string& str)
+	{
+		size_t sz = sizeof(uint32_t);
+		size_t ssz = 0;
+		stream.read((char*)&ssz, sz);
+		char* cstr = new char[ssz];
+		stream.read((char*)cstr, ssz);
+		str = cstr;
+		delete [] cstr;
+	}
+
 	void write(std::ostream& stream, const std::vector<tinyobj::shape_t> &shapes)
 	{
 		assert(sizeof(float) == sizeof(uint32_t));
-		size_t ssz = 0;
+		//size_t ssz = 0;
 		const size_t sz = sizeof(uint32_t);
-		const uint32_t nMeshes = static_cast<uint32_t>(shapes.size());
+		const uint32_t nShapes = static_cast<uint32_t>(shapes.size());
 		const uint32_t nMatProperties = 3;
 
-		stream.write((const char*)&nMeshes, sz);
+		stream.write((const char*)&nShapes, sz);
 		stream.write((const char*)&nMatProperties, sz);
 
-		for (size_t i = 0 ; i < nMeshes ; ++i) {
+		for (size_t i = 0 ; i < nShapes ; ++i) {
 			const uint32_t nPositions = (uint32_t)shapes[i].mesh.positions.size();
 			const uint32_t nNormals   = (uint32_t)shapes[i].mesh.normals.size();
 			const uint32_t nTexcoords = (uint32_t)shapes[i].mesh.texcoords.size();
@@ -49,24 +71,12 @@ namespace tinyobj {
 			stream.write((const char*)&shapes[i].material.dissolve, sz);
 			stream.write((const char*)&shapes[i].material.illum, sizeof(int));
 
-			ssz = shapes[i].name.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].name), ssz);
-			ssz = shapes[i].material.name.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].material.name), ssz);
-			ssz = shapes[i].material.ambient_texname.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].material.ambient_texname), ssz);
-			ssz = shapes[i].material.diffuse_texname.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].material.diffuse_texname), ssz);
-			ssz = shapes[i].material.specular_texname.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].material.specular_texname), ssz);
-			ssz = shapes[i].material.normal_texname.size() + 1;
-			stream.write((const char*)&ssz, sz);
-			stream.write((const char*)&(shapes[i].material.normal_texname), ssz);
+			writeString(stream, shapes[i].name);
+			writeString(stream, shapes[i].material.name);
+			writeString(stream, shapes[i].material.ambient_texname);
+			writeString(stream, shapes[i].material.diffuse_texname);
+			writeString(stream, shapes[i].material.specular_texname);
+			writeString(stream, shapes[i].material.normal_texname);
 
 			const uint32_t nUnknownParameters = (uint32_t)shapes[i].material.unknown_parameter.size();
 			stream.write((const char*)&nUnknownParameters, sz);//TODO
@@ -76,15 +86,15 @@ namespace tinyobj {
 	void read(std::istream& stream, std::vector<tinyobj::shape_t> &shapes)
 	{
 		assert(sizeof(float) == sizeof(uint32_t));
-		size_t ssz = 0;
+		//size_t ssz = 0;
 		const size_t sz = sizeof(uint32_t);
 
-		uint32_t nMeshes = 0;
+		uint32_t nShapes = 0;
 		uint32_t nMatProperties = 0;
-		stream.read((char*)&nMeshes, sz);
+		stream.read((char*)&nShapes, sz);
 		stream.read((char*)&nMatProperties, sz);
-		shapes.resize(nMeshes);
-		for (size_t i = 0 ; i < nMeshes ; ++i) {
+		shapes.resize(nShapes);
+		for (size_t i = 0 ; i < nShapes ; ++i) {
 			uint32_t nPositions = 0, nNormals = 0, nTexcoords = 0, nIndices = 0;
 			stream.read((char*)&nPositions, sz);
 			stream.read((char*)&nNormals,   sz);
@@ -110,25 +120,19 @@ namespace tinyobj {
 			stream.read((char*)&shapes[i].material.dissolve, sz);
 			stream.read((char*)&shapes[i].material.illum, sizeof(int));
 
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].name), ssz);
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].material.name), ssz);
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].material.ambient_texname), ssz);
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].material.diffuse_texname), ssz);
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].material.specular_texname), ssz);
-			stream.read((char*)&ssz, sz);
-			stream.read((char*)&(shapes[i].material.normal_texname), ssz);
+			readString(stream, shapes[i].name);
+			readString(stream, shapes[i].material.name);
+			readString(stream, shapes[i].material.ambient_texname);
+			readString(stream, shapes[i].material.diffuse_texname);
+			readString(stream, shapes[i].material.specular_texname);
+			readString(stream, shapes[i].material.normal_texname);
 
 			uint32_t nUnknownParameters = 0;
 			stream.read((char*)&nUnknownParameters, sz);//TODO
 		}
 	}
 
-	void printInfo(const std::vector<tinyobj::shape_t>& shapes)
+	void printInfo(const std::vector<tinyobj::shape_t>& shapes, const std::string& filename)
 	{
 		std::cout << "# of shapes : " << shapes.size() << std::endl;
 
@@ -174,22 +178,19 @@ namespace tinyobj {
 		}
 	}
 
-	std::string LoadObjCompact(
-							   std::vector<shape_t>& shapes,
-							   const char* filename,
-							   const char* mtl_basepath)
+	std::string LoadObjCompact(std::vector<shape_t>& shapes, const char* filename, const char* mtl_basepath)
 	{
 		std::string returnString("");
 
 		std::string compactFilename(filename);
 		compactFilename.append(".compact");
 
-		std::ifstream ifs(compactFilename);
+		std::ifstream ifs(compactFilename, std::ios::in | std::ios::binary);
 
 		if (ifs)
 		{
 			read(ifs, shapes);
-			//printInfo(shapes);
+			//printInfo(shapes, compactFilename + ".r");
 		}
 		else
 		{
@@ -197,9 +198,9 @@ namespace tinyobj {
 
 			if (returnString.empty())
 			{
-				std::ofstream ofs(compactFilename);
+				std::ofstream ofs(compactFilename, std::ios::out | std::ios::binary);
 				write(ofs, shapes);
-				//printInfo(shapes);
+				//printInfo(shapes, compactFilename + ".w");
 				ofs.close();
 			}
 			else
