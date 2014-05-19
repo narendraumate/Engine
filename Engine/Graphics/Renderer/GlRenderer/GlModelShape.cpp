@@ -107,28 +107,28 @@ namespace Engine
 		// Ambient TODO
 		if (!material.ambient_texname.empty())
 		{
-			cout << "ambient_texname " << material.ambient_texname << endl;
+			//cout << "ambient_texname " << material.ambient_texname << endl;
 			loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
 		}
 
 		// Diffuse
 		if (!material.diffuse_texname.empty())
 		{
-			cout << "diffuse_texname " << material.diffuse_texname << endl;
+			//cout << "diffuse_texname " << material.diffuse_texname << endl;
 			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
 		}
 
 		// Specular TODO
 		if (!material.specular_texname.empty())
 		{
-			cout << "specular_texname " << material.specular_texname << endl;
+			//cout << "specular_texname " << material.specular_texname << endl;
 			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
 		// Normal TODO
 		if (!material.normal_texname.empty())
 		{
-			cout << "normal_texname " << material.normal_texname << endl;
+			//cout << "normal_texname " << material.normal_texname << endl;
 			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
 		}
 
