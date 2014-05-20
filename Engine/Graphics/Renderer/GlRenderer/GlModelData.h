@@ -47,15 +47,24 @@ private:
 
 	GLuint m_indexCount;
 
-	////void pushMaterialParameters(const tinyobj::material_t& material);
+	void pushMaterial(const tinyobj::material_t& material);
 	void pushTextureSamplers();
-
-	////void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
+	void pushMaterialParameters(const tinyobj::material_t& material);
+	void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 //----------------------------------------------------------------------------//
-	std::vector<float> positions;
-	std::vector<float> normals;
-	std::vector<float> texcoords;
-	std::vector<unsigned int> indices;
+	vector<tinyobj::material_t> materials;
+	vector<float> positions;
+	vector<float> normals;
+	vector<float> texcoords;
+	vector<unsigned int> indices;
+
+	vector<unsigned int> shapeBeginIndices;
+	vector<unsigned int> shapeEndIndices;
+
+	unsigned int sizeOfPositions;
+	unsigned int sizeOfNormals;
+	unsigned int sizeOfTexcoords;
+	unsigned int sizeOfIndices;
 //----------------------------------------------------------------------------//
 };
 
