@@ -11,13 +11,15 @@
 
 #if defined(__linux__)
 #include <cstddef>
+#include <cstring>
+#else
+#include <string>
 #endif // (__linux__)
 
 #include <assert.h>
 #include <fstream>
 #include <iostream>
 #include <stdint.h>
-#include <string>
 #include "tiny_obj_loader.h"
 
 namespace tinyobj {

@@ -185,7 +185,7 @@ namespace tinyobj {
 		std::string compactFilename(filename);
 		compactFilename.append(".compact");
 
-		std::ifstream ifs(compactFilename, std::ios::in | std::ios::binary);
+		std::ifstream ifs(compactFilename);
 
 		if (ifs)
 		{
@@ -198,7 +198,7 @@ namespace tinyobj {
 
 			if (returnString.empty())
 			{
-				std::ofstream ofs(compactFilename, std::ios::out | std::ios::binary);
+				std::ofstream ofs(compactFilename);
 				write(ofs, shapes);
 				//printInfo(shapes, compactFilename + ".w");
 				ofs.close();
