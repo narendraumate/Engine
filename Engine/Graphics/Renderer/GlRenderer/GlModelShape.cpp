@@ -76,8 +76,8 @@ namespace Engine
 		glDisableVertexAttribArray(AttributeTexcoord);
 
 		glDeleteTextures(TextureCount, m_textures);
-		glDeleteBuffers(VboCount, m_vbos);
 		glDeleteVertexArrays(VaoCount, m_vaos);
+		glDeleteBuffers(VboCount, m_vbos);
 		glDeleteBuffers(EboCount, m_ebos);
 	}
 

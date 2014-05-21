@@ -36,19 +36,16 @@ namespace Engine
 		if (error.empty())
 		{
 			glUseProgram(m_programId);
+
+#ifdef SEPARATE_VBO
 			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
 			{
-#ifdef SEPARATE_VBO
 				m_glModelShapes.push_back(new GlModelShape(*it, m_programId, &m_textureManager));
-#else
-				m_glModelData.addShape(*it);
-#endif // SEPARATE_VBO
 			}
-#ifdef SEPARATE_VBO
-			// Do Nothing
 #else
-			m_glModelData.combine();
+			m_glModelData.initialize(shapes);
 #endif // SEPARATE_VBO
+
 			glUseProgram(0);
 		}
 		else
@@ -67,6 +64,8 @@ namespace Engine
 		{
 			delete (*it);
 		}
+#else
+		m_glModelData.deinitialize();
 #endif // SEPARATE_VBO
 //----------------------------------------------------------------------------//
 	}
