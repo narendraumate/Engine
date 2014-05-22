@@ -23,8 +23,9 @@ public:
 	GlModelData(const GLuint& programId, TextureManager* textureManager);
 	~GlModelData();
 
-	void addShape(const tinyobj::shape_t& shape);
-	void combine();
+	void initialize(const vector<tinyobj::shape_t>& shapes);
+	void deinitialize();
+
 	void draw();
 
 private:

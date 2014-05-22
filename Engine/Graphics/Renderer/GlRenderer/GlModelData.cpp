@@ -14,36 +14,48 @@ GlModelData::GlModelData(const GLuint& programId, TextureManager* textureManager
 :	m_programId(programId)
 ,	m_textureManager(textureManager)
 {
+	sizeOfPositions = 0;
+	sizeOfNormals = 0;
+	sizeOfTexcoords = 0;
+	sizeOfIndices = 0;
 	m_indexCount = 0;
 }
 
 GlModelData::~GlModelData()
 {
-	glDisableVertexAttribArray(AttributePosition);
-	glDisableVertexAttribArray(AttributeNormal);
-	glDisableVertexAttribArray(AttributeTexcoord);
-
-	glDeleteTextures(TextureCount, m_textures);
-	glDeleteBuffers(VboCount, m_vbos);
-	glDeleteVertexArrays(VaoCount, m_vaos);
-	glDeleteBuffers(EboCount, m_ebos);
+	sizeOfPositions = 0;
+	sizeOfNormals = 0;
+	sizeOfTexcoords = 0;
+	sizeOfIndices = 0;
+	m_indexCount = 0;
 }
 
-void GlModelData::addShape(const tinyobj::shape_t& shape)
+void GlModelData::initialize(const vector<tinyobj::shape_t>& shapes)
 {
-	materials.push_back(shape.material);
-	positions.insert(positions.end(), shape.mesh.positions.begin(), shape.mesh.positions.end());
-	normals.insert(normals.end(), shape.mesh.normals.begin(), shape.mesh.normals.end());
-	texcoords.insert(texcoords.end(), shape.mesh.texcoords.begin(), shape.mesh.texcoords.end());
-	indices.insert(indices.end(), shape.mesh.indices.begin(), shape.mesh.indices.end());
+	for (vector<tinyobj::shape_t>::const_iterator shape = shapes.begin(); shape != shapes.end(); ++shape)
+	{
+		materials.push_back(shape->material);
+		positions.insert(positions.end(), shape->mesh.positions.begin(), shape->mesh.positions.end());
+		normals.insert(normals.end(), shape->mesh.normals.begin(), shape->mesh.normals.end());
+		texcoords.insert(texcoords.end(), shape->mesh.texcoords.begin(), shape->mesh.texcoords.end());
 
-	shapeBeginIndices.push_back(m_indexCount);
-	m_indexCount += shape.mesh.indices.size();
-	shapeEndIndices.push_back(m_indexCount - 1);
-}
+		//indices.insert(indices.end(), shape->mesh.indices.begin(), shape->mesh.indices.end());
 
-void GlModelData::combine()
-{
+		int shapeMeshIndexOffset = 0;
+		if (indices.begin() != indices.end())
+		{
+			shapeMeshIndexOffset = *max_element(indices.begin(), indices.end()) + 1;
+		}
+		for (std::vector<unsigned int>::const_iterator shapeMeshIndex = shape->mesh.indices.begin(); shapeMeshIndex != shape->mesh.indices.end(); ++shapeMeshIndex)
+		{
+			indices.push_back(*shapeMeshIndex + shapeMeshIndexOffset);
+		}
+
+		shapeBeginIndices.push_back(m_indexCount);
+		m_indexCount += shape->mesh.indices.size();
+		shapeEndIndices.push_back(m_indexCount - 1);
+	}
+
 	sizeOfPositions = sizeof(positions[0]) * positions.size();
 	sizeOfNormals = sizeof(normals[0]) * normals.size();
 	sizeOfTexcoords = sizeof(texcoords[0]) * texcoords.size();
@@ -65,21 +77,38 @@ void GlModelData::combine()
 	glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions, sizeOfNormals, &normals[0]);
 	glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals, sizeOfTexcoords, &texcoords[0]);
 
+	glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+	glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
+	glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
+
 	glGenTextures(TextureCount, m_textures);
-	////
+	//pushMaterial(material);
 
 	glEnableVertexAttribArray(AttributePosition);
 	glEnableVertexAttribArray(AttributeNormal);
 	glEnableVertexAttribArray(AttributeTexcoord);
 
-	glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-	glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
-	glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
-
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	positions.clear();
+	normals.clear();
+	texcoords.clear();
+	indices.clear();
+}
+
+void GlModelData::deinitialize()
+{
+	glDisableVertexAttribArray(AttributePosition);
+	glDisableVertexAttribArray(AttributeNormal);
+	glDisableVertexAttribArray(AttributeTexcoord);
+
+	glDeleteTextures(TextureCount, m_textures);
+	glDeleteVertexArrays(VaoCount, m_vaos);
+	glDeleteBuffers(VboCount, m_vbos);
+	glDeleteBuffers(EboCount, m_ebos);
 }
 
 void GlModelData::draw()
@@ -91,9 +120,15 @@ void GlModelData::draw()
 #if defined(ONE_GROUP)
 	for (int materialIndex = 0; materialIndex < materials.size(); ++materialIndex)
 	{
-		////cout << "material: " << materialIndex << "\tstart: "<< shapeBeginIndices[materialIndex] << "\tcount: " << shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1 << endl;
-		glDrawElements(GL_TRIANGLES, shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1, GL_UNSIGNED_INT, BUFFER_OFFSET(shapeBeginIndices[materialIndex]));
-		break;
+		if (m_ebos[EboTriangles] != 0)
+		{
+			glDrawElements(GL_TRIANGLES, shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1, GL_UNSIGNED_INT, BUFFER_OFFSET(shapeBeginIndices[materialIndex]));
+		}
+		else
+		{
+			glDrawArrays(GL_TRIANGLES, shapeBeginIndices[materialIndex], shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1);
+		}
+		if (materialIndex == 1) break;
 	}
 #else
 #endif
