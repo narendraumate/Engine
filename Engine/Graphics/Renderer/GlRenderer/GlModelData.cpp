@@ -51,9 +51,9 @@ void GlModelData::initialize(const vector<tinyobj::shape_t>& shapes)
 			indices.push_back(*shapeMeshIndex + shapeMeshIndexOffset);
 		}
 
-		shapeBeginIndices.push_back(m_indexCount);
+		shapeIndexStart.push_back(m_indexCount);
+		shapeIndexCount.push_back(shape->mesh.indices.size());
 		m_indexCount += shape->mesh.indices.size();
-		shapeEndIndices.push_back(m_indexCount - 1);
 	}
 
 	sizeOfPositions = sizeof(positions[0]) * positions.size();
@@ -113,28 +113,32 @@ void GlModelData::deinitialize()
 
 void GlModelData::draw()
 {
-	glBindVertexArray(m_vaos[VaoTriangles]);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 
 #define ONE_GROUP
 #if defined(ONE_GROUP)
-	for (int materialIndex = 0; materialIndex < materials.size(); ++materialIndex)
+	for (int materialIndex = 0; materialIndex < /*materials.size()*/ 1; ++materialIndex)
 	{
+		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
+		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
+		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
+
+		glBindVertexArray(m_vaos[VaoTriangles]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
+
 		if (m_ebos[EboTriangles] != 0)
 		{
-			glDrawElements(GL_TRIANGLES, shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1, GL_UNSIGNED_INT, BUFFER_OFFSET(shapeBeginIndices[materialIndex]));
+			glDrawElements(GL_TRIANGLES, shapeIndexCount[materialIndex], GL_UNSIGNED_INT, BUFFER_OFFSET(shapeIndexStart[materialIndex]));
 		}
 		else
 		{
-			glDrawArrays(GL_TRIANGLES, shapeBeginIndices[materialIndex], shapeEndIndices[materialIndex] - shapeBeginIndices[materialIndex] + 1);
+			glDrawArrays(GL_TRIANGLES, shapeIndexStart[materialIndex], shapeIndexCount[materialIndex]);
 		}
-		if (materialIndex == 1) break;
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
 #else
 #endif
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
 }
 ///*
 void GlModelData::pushMaterial(const tinyobj::material_t& material)

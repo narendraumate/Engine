@@ -59,8 +59,8 @@ private:
 	vector<float> texcoords;
 	vector<unsigned int> indices;
 
-	vector<unsigned int> shapeBeginIndices;
-	vector<unsigned int> shapeEndIndices;
+	vector<unsigned int> shapeIndexStart;
+	vector<unsigned int> shapeIndexCount;
 
 	unsigned int sizeOfPositions;
 	unsigned int sizeOfNormals;
