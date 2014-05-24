@@ -46,10 +46,14 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		std::vector<GLuint> gouraudShaders;
 		std::vector<GLuint> phongShaders;
+		std::vector<GLuint> smoothShaders;
+
 		gouraudShaders.push_back(GlShader::loadShader("gouraud.vert", GL_VERTEX_SHADER));
 		gouraudShaders.push_back(GlShader::loadShader("gouraud.frag", GL_FRAGMENT_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
+		smoothShaders.push_back(GlShader::loadShader("smooth.vert", GL_VERTEX_SHADER));
+		smoothShaders.push_back(GlShader::loadShader("smooth.frag", GL_FRAGMENT_SHADER));
 
 		int programIndex = 1;
 
@@ -60,6 +64,10 @@ namespace Engine
 
 			case 1:
 				g_programId = GlProgram::createProgram(phongShaders);
+				break;
+
+			case 2:
+				g_programId = GlProgram::createProgram(smoothShaders);
 				break;
 
 			default:
