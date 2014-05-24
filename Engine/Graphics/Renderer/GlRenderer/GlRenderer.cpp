@@ -101,7 +101,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 9;
+				int modelIndex = 0;
 				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
 					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
 					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj", "person-a/person-a.obj",

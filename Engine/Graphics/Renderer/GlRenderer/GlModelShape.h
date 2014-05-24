@@ -35,7 +35,6 @@ namespace Engine
 		enum Ebo { EboTriangles, EboCount };
 		enum Vao { VaoTriangles, VaoCount };
 		enum Vbo { VboTriangles, VboCount };
-		enum Tbo { TboTriangles, TboCount };
 		
 		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeCount };
 		enum TextureType { TextureAmbient, TextureDiffuse, TextureSpecular, TextureNormal, TextureCount };
