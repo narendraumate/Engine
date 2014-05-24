@@ -32,7 +32,6 @@ void GlModelData::initialize(const vector<tinyobj::shape_t>& shapes)
 	{
 		shapeMeshIndexOffset = positions.size() / 3;
 
-		materials.push_back(shape->material);
 		positions.insert(positions.end(), shape->mesh.positions.begin(), shape->mesh.positions.end());
 		normals.insert(normals.end(), shape->mesh.normals.begin(), shape->mesh.normals.end());
 		texcoords.insert(texcoords.end(), shape->mesh.texcoords.begin(), shape->mesh.texcoords.end());
@@ -104,9 +103,9 @@ void GlModelData::draw()
 	glBindVertexArray(m_vaos[VaoTriangles]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 
-	for (int materialIndex = 0; materialIndex < materials.size(); ++materialIndex)
+	for (int shapeIndex = 0; shapeIndex < shapeIndexStart.size(); ++shapeIndex)
 	{
-		glDrawElements(GL_TRIANGLES, shapeIndexCount[materialIndex], GL_UNSIGNED_INT, BUFFER_OFFSET(shapeIndexStart[materialIndex]));
+		glDrawElements(GL_TRIANGLES, shapeIndexCount[shapeIndex], GL_UNSIGNED_INT, BUFFER_OFFSET(shapeIndexStart[shapeIndex]));
 	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

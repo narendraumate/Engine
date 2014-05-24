@@ -51,8 +51,6 @@ private:
 	void pushMaterialParameters(const tinyobj::material_t& material);
 	void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 //----------------------------------------------------------------------------//
-	vector<tinyobj::material_t> materials;
-	
 	vector<unsigned int> shapeIndexStart;
 	vector<unsigned int> shapeIndexCount;
 //----------------------------------------------------------------------------//
