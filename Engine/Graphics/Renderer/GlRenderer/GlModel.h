@@ -63,7 +63,7 @@ namespace Engine
 
 		TextureManager m_textureManager;
 //----------------------------------------------------------------------------//
-#define SEPARATE_VBO
+//#define SEPARATE_VBO
 #ifdef SEPARATE_VBO
 		vector<GlModelShape*> m_glModelShapes;
 #else
