@@ -48,26 +48,26 @@ namespace Engine
 		std::vector<GLuint> phongShaders;
 		std::vector<GLuint> smoothShaders;
 
+		smoothShaders.push_back(GlShader::loadShader("smooth.vert", GL_VERTEX_SHADER));
+		smoothShaders.push_back(GlShader::loadShader("smooth.frag", GL_FRAGMENT_SHADER));
 		gouraudShaders.push_back(GlShader::loadShader("gouraud.vert", GL_VERTEX_SHADER));
 		gouraudShaders.push_back(GlShader::loadShader("gouraud.frag", GL_FRAGMENT_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
-		smoothShaders.push_back(GlShader::loadShader("smooth.vert", GL_VERTEX_SHADER));
-		smoothShaders.push_back(GlShader::loadShader("smooth.frag", GL_FRAGMENT_SHADER));
 
 		int programIndex = 1;
 
 		switch (programIndex) {
 			case 0:
-				g_programId = GlProgram::createProgram(gouraudShaders);
+				g_programId = GlProgram::createProgram(smoothShaders);
 				break;
 
 			case 1:
-				g_programId = GlProgram::createProgram(phongShaders);
+				g_programId = GlProgram::createProgram(gouraudShaders);
 				break;
 
 			case 2:
-				g_programId = GlProgram::createProgram(smoothShaders);
+				g_programId = GlProgram::createProgram(phongShaders);
 				break;
 
 			default:
@@ -109,7 +109,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 0;
+				int modelIndex = 6;
 				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
 					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
 					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj", "person-a/person-a.obj",
