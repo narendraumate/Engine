@@ -178,7 +178,7 @@ namespace tinyobj {
 		}
 	}
 
-	std::string LoadObjCompact(std::vector<shape_t>& shapes, const char* filename, const char* mtl_basepath)
+	std::string LoadObjCompact(std::vector<shape_t>& shapes, const char* filename, const char* mtl_basepath, const bool& enable_compact)
 	{
 		std::string returnString("");
 
@@ -187,7 +187,7 @@ namespace tinyobj {
 
 		std::ifstream ifs(compactFilename.c_str());
 
-		if (ifs)
+		if (enable_compact && ifs)
 		{
 			read(ifs, shapes);
 			//printInfo(shapes, compactFilename + ".r");

@@ -26,7 +26,8 @@ namespace tinyobj {
 	std::string LoadObjCompact(
 						std::vector<shape_t>& shapes,   // [output]
 						const char* filename,
-						const char* mtl_basepath = NULL);
+						const char* mtl_basepath = NULL,
+						const bool& enable_compact = true);
 }
 
 #endif /* defined(__Application__tiny_obj_loader_compact__) */
