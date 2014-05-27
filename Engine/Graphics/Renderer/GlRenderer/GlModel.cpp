@@ -32,7 +32,7 @@ namespace Engine
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_t> shapes;
 		std::string error = tinyobj::LoadObjCompact(shapes, objFilePath.c_str(), mtlBasePath.c_str());
-						
+
 		if (error.empty())
 		{
 			glUseProgram(m_programId);
@@ -72,7 +72,13 @@ namespace Engine
 
 	void GlModel::draw()
 	{
-		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z)); // TODO Why is this needed for small models
+		// TODO Why is this needed for small models
+//#define ROTATE
+#if defined(ROTATE_MODEL)
+		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z));
+#else
+		setRotation(Vec3(m_rotation.x, m_rotation.y, m_rotation.z));
+#endif // (ROTATE_MODEL)
 //----------------------------------------------------------------------------//
 		glUseProgram(m_programId);
 #ifdef SEPARATE_VBO
