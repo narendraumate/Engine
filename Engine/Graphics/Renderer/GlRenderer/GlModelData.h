@@ -44,15 +44,21 @@ private:
 	GLuint m_vaos[VaoCount];
 	GLuint m_vbos[VboCount];
 
-	GLuint m_textures[TextureCount];
-
 	void pushMaterial(const tinyobj::material_t& material);
 	void pushTextureSamplers();
 	void pushMaterialParameters(const tinyobj::material_t& material);
-	void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
+	GLuint loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 //----------------------------------------------------------------------------//
 	vector<unsigned int> shapeIndexStart;
 	vector<unsigned int> shapeIndexCount;
+
+	struct GlTextureCollection
+	{
+		GLuint m_textures[TextureCount] = {0, 0, 0, 0};
+	};
+	vector<GlTextureCollection> textureCollections;
+
+	vector<tinyobj::material_t> materials;
 //----------------------------------------------------------------------------//
 };
 
