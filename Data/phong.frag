@@ -17,7 +17,6 @@ uniform float shininess;
 uniform sampler2D ambientTextureSampler;
 uniform sampler2D diffuseTextureSampler;
 uniform sampler2D specularTextureSampler;
-uniform sampler2D normalTextureSampler;
 
 void main()
 {
@@ -26,11 +25,11 @@ void main()
 
 	vec3 R = reflect(-vL, vN);
 
-	vec3 ambient_ = /*ambient +*/ texture(ambientTextureSampler, vT).rgb;
+	vec3 ambient_ = ambient + texture(ambientTextureSampler, vT).rgb;
 
-	vec3 diffuse_ = max(dot(vN, vL), 0.0) * (/*diffuse +*/ texture(diffuseTextureSampler, vT).rgb);
+	vec3 diffuse_ = max(dot(vN, vL), 0.0) * (diffuse + texture(diffuseTextureSampler, vT).rgb);
 
-	vec3 specular_ = pow(max(dot(R, vV), 0.0), specular_power) * (/*specular +*/ texture(specularTextureSampler, vT).rgb);
+	vec3 specular_ = pow(max(dot(R, vV), 0.0), specular_power) * (specular + texture(specularTextureSampler, vT).rgb);
 
 	fColor = vec4(ambient_ + diffuse_ + specular_, 1.0);
 }

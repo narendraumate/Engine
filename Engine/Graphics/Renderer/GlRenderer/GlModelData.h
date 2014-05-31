@@ -12,11 +12,14 @@
 #include <iostream>
 #include "GlProgram.h"
 #include "GlShader.h"
+#include "../../../Mathematics/Vector.h"
 #include "../Common/TextureManager.h"
 #include "../../../../Application/Common/Logger.h"
 #include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinyobjloader/tiny_obj_loader_compact.h"
 
+namespace Engine
+{
 class GlModelData
 {
 public:
@@ -37,7 +40,7 @@ private:
 	enum Vbo { VboTriangles, VboCount };
 	enum Tbo { TboTriangles, TboCount };
 
-	enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeCount };
+	enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeTangent, AttributeBitangent, AttributeCount };
 	enum TextureType { TextureAmbient, TextureDiffuse, TextureSpecular, TextureNormal, TextureCount };
 
 	GLuint m_ebos[EboCount];
@@ -48,6 +51,7 @@ private:
 	void pushTextureSamplers();
 	void pushMaterialParameters(const tinyobj::material_t& material);
 	GLuint loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
+	void computeTangentBasis(const vector<float>& positions, const vector<float>& normals, const vector<float>& texcoords, vector<float>& tangents, vector<float>& bitangents);
 //----------------------------------------------------------------------------//
 	vector<unsigned int> shapeIndexStart;
 	vector<unsigned int> shapeIndexCount;
@@ -61,5 +65,5 @@ private:
 	vector<tinyobj::material_t> materials;
 //----------------------------------------------------------------------------//
 };
-
+}
 #endif /* defined(__Application__GlModelData__) */
