@@ -73,7 +73,7 @@ namespace Engine
 	void GlModel::draw()
 	{
 		// TODO Why is this needed for small models
-//#define ROTATE
+#define ROTATE_MODEL
 #if defined(ROTATE_MODEL)
 		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z));
 #else
