@@ -51,7 +51,7 @@ private:
 	void pushTextureSamplers();
 	void pushMaterialParameters(const tinyobj::material_t& material);
 	GLuint loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
-	void computeTangentBasis(const vector<float>& positions, const vector<float>& normals, const vector<float>& texcoords, vector<float>& tangents, vector<float>& bitangents);
+	void computeTangentBasis(const vector<unsigned int>& indices, const vector<float>& positions, const vector<float>& normals, const vector<float>& texcoords, vector<float>& tangents, vector<float>& bitangents);
 //----------------------------------------------------------------------------//
 	vector<unsigned int> shapeIndexStart;
 	vector<unsigned int> shapeIndexCount;

@@ -56,7 +56,7 @@ namespace Engine
 			pushMaterial(shape->material);
 		}
 
-		computeTangentBasis(positions, normals, texcoords, tangents, bitangents);
+		computeTangentBasis(indices, positions, normals, texcoords, tangents, bitangents);
 
 		pushTextureSamplers();
 
@@ -88,8 +88,8 @@ namespace Engine
 		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
 		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
-		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTangents));
-		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTangents + sizeOfBitangents));
+		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
+		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
 
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
@@ -231,43 +231,40 @@ namespace Engine
 
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		return texture;
 	}
 
-	void GlModelData::computeTangentBasis(const vector<float>& positions,
+	void GlModelData::computeTangentBasis(const vector<unsigned int>& indices,
+										  const vector<float>& positions,
 										  const vector<float>& normals,
 										  const vector<float>& texcoords,
 										  vector<float>& tangents,
 										  vector<float>& bitangents)
 	{
-		if (tangents.size())
+		if (texcoords.size())
 		{
 			for (unsigned int i = 0, j = 0; i < positions.size(); i += 9, j += 6)
 			{
 				// Shortcuts for vertices
-				Vec3 v0(positions[i  ], positions[i+1], positions[i+2]);
-				Vec3 v1(positions[i+3], positions[i+4], positions[i+5]);
-				Vec3 v2(positions[i+6], positions[i+7], positions[i+8]);
+				Vec3* v0 = (Vec3*)&positions[i  ];
+				Vec3* v1 = (Vec3*)&positions[i+3];
+				Vec3* v2 = (Vec3*)&positions[i+6];
 
 				// Shortcuts for UVs
-				Vec2 uv0(texcoords[j  ], texcoords[j+1]);
-				Vec2 uv1(texcoords[j+2], texcoords[j+3]);
-				Vec2 uv2(texcoords[j+4], texcoords[j+5]);
+				Vec2* uv0 = (Vec2*)&texcoords[j  ];
+				Vec2* uv1 = (Vec2*)&texcoords[j+2];
+				Vec2* uv2 = (Vec2*)&texcoords[j+4];
 
 				// Edges of the triangle : postion delta
-				Vec3 deltaPos1 = v1-v0;
-				Vec3 deltaPos2 = v2-v0;
+				Vec3 deltaPos1 = *v1-*v0;
+				Vec3 deltaPos2 = *v2-*v0;
 
 				// UV delta
-				Vec2 deltaUV1 = uv1-uv0;
-				Vec2 deltaUV2 = uv2-uv0;
+				Vec2 deltaUV1 = *uv1-*uv0;
+				Vec2 deltaUV2 = *uv2-*uv0;
 
 				float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
 				Vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
@@ -309,6 +306,5 @@ namespace Engine
 				}
 			}
 		}
-	}
-	
+	}	
 }
