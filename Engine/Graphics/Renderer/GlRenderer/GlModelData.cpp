@@ -88,8 +88,8 @@ namespace Engine
 		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
 		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
-		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
-		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
+		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
+		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
 
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
@@ -244,19 +244,22 @@ namespace Engine
 										  vector<float>& tangents,
 										  vector<float>& bitangents)
 	{
+		tangents.resize(positions.size());
+		bitangents.resize(positions.size());
+
 		if (texcoords.size())
 		{
-			for (unsigned int i = 0, j = 0; i < positions.size(); i += 9, j += 6)
+			for (unsigned int k = 0; k < indices.size(); k += 3)
 			{
 				// Shortcuts for vertices
-				Vec3* v0 = (Vec3*)&positions[i  ];
-				Vec3* v1 = (Vec3*)&positions[i+3];
-				Vec3* v2 = (Vec3*)&positions[i+6];
+				Vec3* v0 = (Vec3*)&positions[3 * indices[k  ]];
+				Vec3* v1 = (Vec3*)&positions[3 * indices[k+1]];
+				Vec3* v2 = (Vec3*)&positions[3 * indices[k+2]];
 
 				// Shortcuts for UVs
-				Vec2* uv0 = (Vec2*)&texcoords[j  ];
-				Vec2* uv1 = (Vec2*)&texcoords[j+2];
-				Vec2* uv2 = (Vec2*)&texcoords[j+4];
+				Vec2* uv0 = (Vec2*)&texcoords[2 * indices[k  ]];
+				Vec2* uv1 = (Vec2*)&texcoords[2 * indices[k+1]];
+				Vec2* uv2 = (Vec2*)&texcoords[2 * indices[k+2]];
 
 				// Edges of the triangle : postion delta
 				Vec3 deltaPos1 = *v1-*v0;
@@ -272,14 +275,14 @@ namespace Engine
 
 				// Set the same tangent for all three vertices of the triangle.
 				// They will be merged later, in vboindexer.cpp
-				tangents.push_back(tangent.x); tangents.push_back(tangent.y); tangents.push_back(tangent.z);
-				tangents.push_back(tangent.x); tangents.push_back(tangent.y); tangents.push_back(tangent.z);
-				tangents.push_back(tangent.x); tangents.push_back(tangent.y); tangents.push_back(tangent.z);
+				tangents[3 * indices[k  ]    ] = tangent.x; tangents[3 * indices[k  ] + 1] = tangent.y; tangents[3 * indices[k  ] + 2] = tangent.z;
+				tangents[3 * indices[k+1]    ] = tangent.x; tangents[3 * indices[k+1] + 1] = tangent.y; tangents[3 * indices[k+1] + 2] = tangent.z;
+				tangents[3 * indices[k+2]    ] = tangent.x; tangents[3 * indices[k+2] + 1] = tangent.y; tangents[3 * indices[k+2] + 2] = tangent.z;
 
 				// Same thing for binormals
-				bitangents.push_back(bitangent.x); bitangents.push_back(bitangent.y); bitangents.push_back(bitangent.z);
-				bitangents.push_back(bitangent.x); bitangents.push_back(bitangent.y); bitangents.push_back(bitangent.z);
-				bitangents.push_back(bitangent.x); bitangents.push_back(bitangent.y); bitangents.push_back(bitangent.z);
+				bitangents[3 * indices[k  ]    ] = bitangent.x; bitangents[3 * indices[k  ] + 1] = bitangent.y; bitangents[3 * indices[k  ] + 2] = bitangent.z;
+				bitangents[3 * indices[k+1]    ] = bitangent.x; bitangents[3 * indices[k+1] + 1] = bitangent.y; bitangents[3 * indices[k+1] + 2] = bitangent.z;
+				bitangents[3 * indices[k+2]    ] = bitangent.x; bitangents[3 * indices[k+2] + 1] = bitangent.y; bitangents[3 * indices[k+2] + 2] = bitangent.z;
 			}
 
 			// See "Going Further"
