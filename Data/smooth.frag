@@ -16,14 +16,9 @@ out vec4 fColor;
 
 void main()
 {
-	fColor = texture(ambientTextureSampler, vTexcoord);
-	fColor = texture(diffuseTextureSampler, vTexcoord);
-	fColor = texture(specularTextureSampler, vTexcoord);
-	fColor = texture(normalTextureSampler, vTexcoord);
-
-	fColor = vec4(vNormal, 1.0);
-	fColor = vec4(vTangent, 1.0);
-	fColor = vec4(vBitangent, 1.0);
-
-	fColor = vec4(normalize(vTangentToWorld * ((texture(normalTextureSampler, vTexcoord)).rgb * 2.0 - 1.0)), 1.0);
+	vec4 ambient = texture(ambientTextureSampler, vTexcoord);
+	vec4 diffuse = texture(diffuseTextureSampler, vTexcoord);
+	vec4 specular = texture(specularTextureSampler, vTexcoord);
+	vec4 normal = vec4(normalize(vTangentToWorld * ((texture(normalTextureSampler, vTexcoord)).rgb * 2.0 - 1.0)), 0.0);
+	fColor = (ambient + diffuse + specular/* + normal*/);
 }
