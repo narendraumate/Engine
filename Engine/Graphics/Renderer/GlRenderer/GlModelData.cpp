@@ -21,7 +21,7 @@ namespace Engine
 	GlModelData::~GlModelData()
 	{ }
 
-	void GlModelData::initialize(const vector<tinyobj::shape_t>& shapes)
+	void GlModelData::initialize(const vector<tinyobj::shape_c_t>& shapes_c)
 	{
 		vector<float> positions;
 		vector<float> normals;
@@ -33,13 +33,15 @@ namespace Engine
 		int indexCount = 0;
 		int shapeMeshIndexOffset = 0;
 
-		for (vector<tinyobj::shape_t>::const_iterator shape = shapes.begin(); shape != shapes.end(); ++shape)
+		for (vector<tinyobj::shape_c_t>::const_iterator shape = shapes_c.begin(); shape != shapes_c.end(); ++shape)
 		{
 			shapeMeshIndexOffset = positions.size() / 3;
 
 			positions.insert(positions.end(), shape->mesh.positions.begin(), shape->mesh.positions.end());
 			normals.insert(normals.end(), shape->mesh.normals.begin(), shape->mesh.normals.end());
 			texcoords.insert(texcoords.end(), shape->mesh.texcoords.begin(), shape->mesh.texcoords.end());
+			tangents.insert(tangents.end(), shape->mesh.tangents.begin(), shape->mesh.tangents.end());
+			bitangents.insert(bitangents.end(), shape->mesh.bitangents.begin(), shape->mesh.bitangents.end());
 
 			// Offset new shape indices by previously pushed unique indices
 			for (std::vector<unsigned int>::const_iterator shapeMeshIndex = shape->mesh.indices.begin(); shapeMeshIndex != shape->mesh.indices.end(); ++shapeMeshIndex)
@@ -55,8 +57,6 @@ namespace Engine
 			materials.push_back(shape->material);
 			pushMaterial(shape->material);
 		}
-
-		computeTangentBasis(indices, positions, normals, texcoords, tangents, bitangents);
 
 		pushTextureSamplers();
 
@@ -237,77 +237,4 @@ namespace Engine
 		return texture;
 	}
 
-	void GlModelData::computeTangentBasis(const vector<unsigned int>& indices,
-										  const vector<float>& positions,
-										  const vector<float>& normals,
-										  const vector<float>& texcoords,
-										  vector<float>& tangents,
-										  vector<float>& bitangents)
-	{
-		tangents.resize(positions.size());
-		bitangents.resize(positions.size());
-
-		if (texcoords.size())
-		{
-			for (unsigned int k = 0; k < indices.size(); k += 3)
-			{
-				// Shortcuts for vertices
-				Vec3* v0 = (Vec3*)&positions[3 * indices[k  ]];
-				Vec3* v1 = (Vec3*)&positions[3 * indices[k+1]];
-				Vec3* v2 = (Vec3*)&positions[3 * indices[k+2]];
-
-				// Shortcuts for UVs
-				Vec2* uv0 = (Vec2*)&texcoords[2 * indices[k  ]];
-				Vec2* uv1 = (Vec2*)&texcoords[2 * indices[k+1]];
-				Vec2* uv2 = (Vec2*)&texcoords[2 * indices[k+2]];
-
-				// Edges of the triangle : postion delta
-				Vec3 deltaPos1 = *v1-*v0;
-				Vec3 deltaPos2 = *v2-*v0;
-
-				// UV delta
-				Vec2 deltaUV1 = *uv1-*uv0;
-				Vec2 deltaUV2 = *uv2-*uv0;
-
-				float r = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV1.y * deltaUV2.x);
-				Vec3 tangent = (deltaPos1 * deltaUV2.y   - deltaPos2 * deltaUV1.y)*r;
-				Vec3 bitangent = (deltaPos2 * deltaUV1.x   - deltaPos1 * deltaUV2.x)*r;
-
-				// Set the same tangent for all three vertices of the triangle.
-				// They will be merged later, in vboindexer.cpp
-				tangents[3 * indices[k  ]    ] = tangent.x; tangents[3 * indices[k  ] + 1] = tangent.y; tangents[3 * indices[k  ] + 2] = tangent.z;
-				tangents[3 * indices[k+1]    ] = tangent.x; tangents[3 * indices[k+1] + 1] = tangent.y; tangents[3 * indices[k+1] + 2] = tangent.z;
-				tangents[3 * indices[k+2]    ] = tangent.x; tangents[3 * indices[k+2] + 1] = tangent.y; tangents[3 * indices[k+2] + 2] = tangent.z;
-
-				// Same thing for binormals
-				bitangents[3 * indices[k  ]    ] = bitangent.x; bitangents[3 * indices[k  ] + 1] = bitangent.y; bitangents[3 * indices[k  ] + 2] = bitangent.z;
-				bitangents[3 * indices[k+1]    ] = bitangent.x; bitangents[3 * indices[k+1] + 1] = bitangent.y; bitangents[3 * indices[k+1] + 2] = bitangent.z;
-				bitangents[3 * indices[k+2]    ] = bitangent.x; bitangents[3 * indices[k+2] + 1] = bitangent.y; bitangents[3 * indices[k+2] + 2] = bitangent.z;
-			}
-
-			// See "Going Further"
-			if (normals.size())
-			{
-				for (unsigned int i = 0; i < positions.size(); i += 3)
-				{
-					Vec3 n(normals[i], normals[i+1], normals[i+2]);
-					Vec3 t(tangents[i], tangents[i+1], tangents[i+2]);
-					Vec3 b(bitangents[i], bitangents[i+1], bitangents[i+2]);
-
-					// Gram-Schmidt orthogonalize
-					t = (t - n * dot(n, t)).normal();
-
-					// Calculate handedness
-					if (dot(cross(n, t), b) < 0.0f)
-					{
-						t = t * -1.0f;
-					}
-
-					tangents[i  ] = t.x;
-					tangents[i+1] = t.y;
-					tangents[i+2] = t.z;
-				}
-			}
-		}
-	}	
 }

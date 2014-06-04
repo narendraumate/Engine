@@ -30,20 +30,20 @@ namespace Engine
 #endif // SEPARATE_VBO
 	{
 //----------------------------------------------------------------------------//
-		std::vector<tinyobj::shape_t> shapes;
-		std::string error = tinyobj::LoadObjCompact(shapes, objFilePath.c_str(), mtlBasePath.c_str());
+		std::vector<tinyobj::shape_c_t> shapes_c;
+		std::string error = tinyobj::LoadObjCompact(shapes_c, objFilePath.c_str(), mtlBasePath.c_str());
 
 		if (error.empty())
 		{
 			glUseProgram(m_programId);
 
 #ifdef SEPARATE_VBO
-			for (std::vector<tinyobj::shape_t>::iterator it = shapes.begin(); it != shapes.end(); ++it)
+			for (std::vector<tinyobj::shape_c_t>::iterator it = shapes_c.begin(); it != shapes_c.end(); ++it)
 			{
 				m_glModelShapes.push_back(new GlModelShape(*it, m_programId, &m_textureManager));
 			}
 #else
-			m_glModelData.initialize(shapes);
+			m_glModelData.initialize(shapes_c);
 #endif // SEPARATE_VBO
 
 			glUseProgram(0);

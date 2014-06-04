@@ -12,7 +12,7 @@
 
 namespace Engine
 {
-	GlModelShape::GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, TextureManager* textureManager)
+	GlModelShape::GlModelShape(const tinyobj::shape_c_t& shape_c, const GLuint& programId, TextureManager* textureManager)
 	:	m_programId(programId)
 	,	m_textureManager(textureManager)
 	{
@@ -20,20 +20,26 @@ namespace Engine
 		std::vector<float> positions;
 		std::vector<float> normals;
 		std::vector<float> texcoords;
+		std::vector<float> tangents;
+		std::vector<float> bitangents;
 		std::vector<unsigned int> indices;
 
 		//std::cout << "shape " << shape.name << std::endl;
 
-		material = shape.material;
-		positions = shape.mesh.positions;
-		normals = shape.mesh.normals;
-		texcoords = shape.mesh.texcoords;
-		indices = shape.mesh.indices;
-		m_indexCount = shape.mesh.indices.size();
+		material = shape_c.material;
+		positions = shape_c.mesh.positions;
+		normals = shape_c.mesh.normals;
+		texcoords = shape_c.mesh.texcoords;
+		tangents = shape_c.mesh.tangents;
+		bitangents = shape_c.mesh.bitangents;
+		indices = shape_c.mesh.indices;
+		m_indexCount = shape_c.mesh.indices.size();
 
 		unsigned int sizeOfPositions = sizeof(positions[0]) * positions.size();
 		unsigned int sizeOfNormals = sizeof(normals[0]) * normals.size();
 		unsigned int sizeOfTexcoords = sizeof(texcoords[0]) * texcoords.size();
+		unsigned int sizeOfTangents = sizeof(tangents[0]) * tangents.size();
+		unsigned int sizeOfBitangents = sizeof(bitangents[0]) * bitangents.size();
 		unsigned int sizeOfIndices = sizeof(indices[0]) * indices.size();
 
 		glGenBuffers(EboCount, m_ebos);
@@ -46,15 +52,19 @@ namespace Engine
 
 		glGenBuffers(VboCount, m_vbos);
 		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
-		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords, NULL, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents + sizeOfBitangents, NULL, GL_STATIC_DRAW);
 
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfPositions, &positions[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions, sizeOfNormals, &normals[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals, sizeOfTexcoords, &texcoords[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords, sizeOfTangents, &tangents[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents, sizeOfBitangents, &bitangents[0]);
 
 		glVertexAttribPointer(AttributePosition, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
 		glVertexAttribPointer(AttributeNormal, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions));
 		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
+		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
+		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
 
 		glGenTextures(TextureCount, m_textures);
 		pushMaterial(material);
@@ -62,6 +72,8 @@ namespace Engine
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
 		glEnableVertexAttribArray(AttributeTexcoord);
+		glEnableVertexAttribArray(AttributeTangent);
+		glEnableVertexAttribArray(AttributeBitangent);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -79,6 +91,8 @@ namespace Engine
 		glDisableVertexAttribArray(AttributePosition);
 		glDisableVertexAttribArray(AttributeNormal);
 		glDisableVertexAttribArray(AttributeTexcoord);
+		glDisableVertexAttribArray(AttributeTangent);
+		glDisableVertexAttribArray(AttributeBitangent);
 
 		glDeleteTextures(TextureCount, m_textures);
 		glDeleteVertexArrays(VaoCount, m_vaos);
@@ -197,11 +211,6 @@ namespace Engine
 		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);

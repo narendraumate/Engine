@@ -23,7 +23,7 @@ namespace Engine
 	class GlModelShape
 	{
 	public:
-		GlModelShape(const tinyobj::shape_t& shape, const GLuint& programId, TextureManager* textureManager);
+		GlModelShape(const tinyobj::shape_c_t& shape, const GLuint& programId, TextureManager* textureManager);
 		~GlModelShape();
 
 		void draw();
@@ -36,7 +36,7 @@ namespace Engine
 		enum Vao { VaoTriangles, VaoCount };
 		enum Vbo { VboTriangles, VboCount };
 		
-		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeCount };
+		enum AttributeType { AttributePosition, AttributeNormal, AttributeTexcoord, AttributeTangent, AttributeBitangent, AttributeCount };
 		enum TextureType { TextureAmbient, TextureDiffuse, TextureSpecular, TextureNormal, TextureCount };
 
 		GLuint m_ebos[EboCount];

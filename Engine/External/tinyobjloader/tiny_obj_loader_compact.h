@@ -20,11 +20,30 @@
 #include <fstream>
 #include <iostream>
 #include <stdint.h>
+#include "../../Mathematics/Vector.h"
 #include "tiny_obj_loader.h"
 
 namespace tinyobj {
+
+	typedef struct
+	{
+		std::vector<float>          positions;
+		std::vector<float>          normals;
+		std::vector<float>          texcoords;
+		std::vector<float>          tangents;
+		std::vector<float>          bitangents;
+		std::vector<unsigned int>   indices;
+	} mesh_c_t;
+
+	typedef struct
+	{
+		std::string  name;
+		material_t   material;
+		mesh_c_t     mesh;
+	} shape_c_t;
+
 	std::string LoadObjCompact(
-						std::vector<shape_t>& shapes,   // [output]
+						std::vector<shape_c_t>& shapes,   // [output]
 						const char* filename,
 						const char* mtl_basepath = NULL,
 						const bool& enable_compact = true);
