@@ -19,7 +19,7 @@ uniform vec3 ambient;
 uniform vec3 diffuse;
 uniform vec3 specular;
 //uniform vec3 transmittance;
-//uniform vec3 emission;
+uniform vec3 emission;
 uniform float shininess;
 //uniform float ior;
 uniform sampler2D ambientTextureSampler;
@@ -29,10 +29,7 @@ uniform sampler2D normalTextureSampler;
 
 void main()
 {
-	// Light Properties
-	vec3 light_position = vec3(0.0, 0.0, 5.0);
-
-	float specular_power = 32.0;	//	Same as shininess?
+	vec3 eyePosition = vec3(0.0, 0.0, 0.0);
 
 	//vec3 N = normalize(mat3(modelView) * normal);
 	// OR
@@ -43,19 +40,36 @@ void main()
 
 	vec4 P = modelView * vec4(position, 1.0);
 
-	vec3 L = normalize(light_position - P.xyz);
+	vec3 L = normalize(eyePosition - P.xyz);
 
 	vec3 V = normalize(-P.xyz);
 
 	vec3 R = normalize(reflect(-L, N));
 
-	vec3 ambient_ = /*ambient + */texture(ambientTextureSampler, texcoord).rgb;
+	vec3 emission_ = emission;
 
-	vec3 diffuse_ = max(dot(N, L), 0.0) * (/*diffuse + */texture(diffuseTextureSampler, texcoord).rgb);
+	vec3 ambient_ = ambient * texture(ambientTextureSampler, texcoord).rgb;
 
-	vec3 specular_ = pow(max(dot(R, V), 0.0), specular_power) * (/*specular + */texture(specularTextureSampler, texcoord).rgb);
+	float diffuseLight = max(dot(N, L), 0.0);
 
-	vColor = (ambient_ + diffuse_ + specular_);
+	vec3 diffuse_ = diffuseLight * diffuse * texture(diffuseTextureSampler, texcoord).rgb;
+
+	float specularLight = 0.0;
+
+	if (diffuseLight <= 0)
+	{
+		specularLight = 0.0;
+	}
+	else
+	{
+		specularLight = pow(max(dot(R, V), 0.0), shininess);
+	}
+
+	vec3 specular_ = specularLight * specular * texture(specularTextureSampler, texcoord).rgb;
+
+	vColor = (emission_ + ambient_ + diffuse_ + specular_);
 
 	gl_Position = perspective * P;
 }
+//http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter05.html
+//Example 5-3. The C5E3f_basicLight Fragment Program

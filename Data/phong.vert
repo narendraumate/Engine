@@ -23,8 +23,7 @@ out vec2 vT;
 
 void main()
 {
-	// Light Properties
-	vec3 light_position = vec3(0.0, 0.0, 5.0);
+	vec3 eyePosition = vec3(0.0, 0.0, 0.0);
 
 	//vN = normalize(mat3(modelView) * normal);
 	// OR
@@ -35,7 +34,7 @@ void main()
 
 	vec4 P = modelView * vec4(position, 1.0);
 
-	vL = normalize(light_position - P.xyz);
+	vL = normalize(eyePosition - P.xyz);
 
 	vV = normalize(-P.xyz);
 
