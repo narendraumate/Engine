@@ -44,9 +44,9 @@ namespace Engine
 	bool GlRenderer::initialize()
 	{
 //----------------------------------------------------------------------------//
+		std::vector<GLuint> smoothShaders;
 		std::vector<GLuint> gouraudShaders;
 		std::vector<GLuint> phongShaders;
-		std::vector<GLuint> smoothShaders;
 
 		smoothShaders.push_back(GlShader::loadShader("smooth.vert", GL_VERTEX_SHADER));
 		smoothShaders.push_back(GlShader::loadShader("smooth.frag", GL_FRAGMENT_SHADER));
@@ -55,7 +55,7 @@ namespace Engine
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
 
-		int programIndex = 1;
+		int programIndex = 2;
 
 		switch (programIndex) {
 			case 0:
@@ -79,7 +79,6 @@ namespace Engine
 		switch (modelArrayIndex) {
 			case 0:
 			{
-
 				std::string modelNames[] = { "cube.obj", "coke.obj", "teapot.obj", "dragon.obj" };
 
 				for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
@@ -109,7 +108,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 6;
+				int modelIndex = 0;
 				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
 					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
 					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj", "person-a/person-a.obj",
@@ -132,8 +131,14 @@ namespace Engine
 				}
 				else if (modelIndex == 8)//person-a
 				{
+//define WHOLE
+#if defined (WHOLE)
 					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
 					g_glModels[0]->setScale(Vec3(1.6f, 1.6f, 1.6f));
+#else
+					g_glModels[0]->setPosition(Vec3(0, -30, 0));
+					g_glModels[0]->setScale(Vec3(6.5f, 6.5f, 6.5f));
+#endif //defined(WHOLE)
 				}
 				else if (modelIndex == 9)//person-b
 				{
@@ -142,8 +147,14 @@ namespace Engine
 				}
 				else if (modelIndex == 10)//person-c
 				{
-					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
-					g_glModels[0]->setScale(Vec3(4.5f, 4.5f, 4.5f));
+//#define WHOLE
+#if defined(WHOLE)
+					g_glModels[0]->setPosition(Vec3(0, -5, 0));
+					g_glModels[0]->setScale(Vec3(0.05f, 0.05f, 0.05f));
+#else
+					g_glModels[0]->setPosition(Vec3(0, -75, 0));
+					g_glModels[0]->setScale(Vec3(0.5f, 0.5f, 0.5f));
+#endif //defined(WHOLE)
 				}
 			}
 				break;
