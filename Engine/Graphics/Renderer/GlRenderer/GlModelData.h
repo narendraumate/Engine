@@ -57,7 +57,7 @@ private:
 
 	struct GlTextureCollection
 	{
-		GLuint m_textures[TextureCount] = {0, 0, 0, 0};
+		GLuint m_textures[TextureCount];
 	};
 	vector<GlTextureCollection> textureCollections;
 
