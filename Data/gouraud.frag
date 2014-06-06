@@ -1,10 +1,15 @@
+//
+// http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter05.html
+// C2E2f_passthrough
+//
+
 #version 410 core
 
-in vec3 vColor;
+in vec4 vColor;
 
 out vec4 fColor;
 
 void main()
 {
-	fColor = (vec4(vColor, 1.0));
+	fColor = vColor;
 }

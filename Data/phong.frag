@@ -1,10 +1,13 @@
+//
+// http://http.developer.nvidia.com/CgTutorial/cg_tutorial_chapter05.html
+// C5E3f_basicLight
+//
+
 #version 410 core
 
-in vec3 vN;
-in vec3 vL;
-in vec3 vV;
-in vec3 vR;
-in vec2 vT;
+in vec4 vPosition;
+in vec3 vNormal;
+in vec2 vTexcoord;
 
 out vec4 fColor;
 
@@ -21,26 +24,38 @@ uniform sampler2D specularTextureSampler;
 
 void main()
 {
+	vec3 eyePosition = vec3(0.0, 0.0, 30.0);
+
+	vec3 P = vPosition.xyz;
+
+	vec3 N = normalize(vNormal);
+
 	vec3 emission_ = emission;
 
-	vec3 ambient_ = ambient * texture(ambientTextureSampler, vT).rgb;
+	vec3 ambient_ = ambient * texture(ambientTextureSampler, vTexcoord).rgb;
 
-	float diffuseLight = max(dot(vN, vL), 0.0);
+	vec3 L = normalize(eyePosition - P);
 
-	vec3 diffuse_ = diffuseLight * diffuse * texture(diffuseTextureSampler, vT).rgb;
+	float diffuseLight = max(dot(N, L), 0);
+
+	vec3 diffuse_ = diffuse * texture(diffuseTextureSampler, vTexcoord).rgb * diffuseLight;
+
+	vec3 V = normalize(eyePosition - P);
+
+	vec3 H = normalize(L + V);
 
 	float specularLight = 0.0;
 
-	if (diffuseLight <= 0)
+	if (diffuseLight <= 0.0)
 	{
 		specularLight = 0.0;
 	}
 	else
 	{
-		specularLight = pow(max(dot(vR, vV), 0.0), shininess);
+		specularLight = pow(max(dot(N, H), 0), shininess);
 	}
 
-	vec3 specular_ = specularLight * specular * texture(specularTextureSampler, vT).rgb;
+	vec3 specular_ = specular * texture(specularTextureSampler, vTexcoord).rgb * specularLight;
 
-	fColor = (vec4(emission_ + ambient_ + diffuse_ + specular_, 1.0));
+	fColor = vec4(emission_ + ambient_ + diffuse_ + specular_, 1);
 }
