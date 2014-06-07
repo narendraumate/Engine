@@ -1,13 +1,13 @@
 //
-//  tiny_obj_loader_compact.h
+//  tiny_model_loader_compact.h
 //  Application
 //
 //  Created by Narendra Umate on 3/26/14.
 //
 //
 
-#ifndef __Application__tiny_obj_loader_compact__
-#define __Application__tiny_obj_loader_compact__
+#ifndef __Application__tiny_model_loader_compact__
+#define __Application__tiny_model_loader_compact__
 
 #if defined(__linux__)
 #include <cstddef>
@@ -21,6 +21,7 @@
 #include <iostream>
 #include <stdint.h>
 #include "../../Mathematics/Vector.h"
+#include "tiny_mesh_loader.h"
 #include "tiny_obj_loader.h"
 
 namespace tinyobj {
@@ -42,11 +43,10 @@ namespace tinyobj {
 		mesh_c_t     mesh;
 	} shape_c_t;
 
-	std::string LoadObjCompact(
-						std::vector<shape_c_t>& shapes,   // [output]
-						const char* filename,
-						const char* mtl_basepath = NULL,
-						const bool& enable_compact = true);
+	std::string LoadModelCompact(std::vector<shape_c_t>& shapes,   // [output]
+								 const char* filename,
+								 const char* mtl_basepath = NULL,
+								 const bool& enable_compact = true);
 }
 
-#endif /* defined(__Application__tiny_obj_loader_compact__) */
+#endif /* defined(__Application__tiny_model_loader_compact__) */

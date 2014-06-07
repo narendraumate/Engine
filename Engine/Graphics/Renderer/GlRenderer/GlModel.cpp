@@ -31,7 +31,7 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_c_t> shapes_c;
-		std::string error = tinyobj::LoadObjCompact(shapes_c, objFilePath.c_str(), mtlBasePath.c_str());
+		std::string error = tinyobj::LoadModelCompact(shapes_c, objFilePath.c_str(), mtlBasePath.c_str());
 
 		if (error.empty())
 		{

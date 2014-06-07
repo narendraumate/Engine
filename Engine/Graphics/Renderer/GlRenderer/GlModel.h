@@ -16,7 +16,7 @@
 #include "GlModelShape.h"
 #include "../Common/TextureManager.h"
 #include "../../../Mathematics/Matrix.h"
-#include "../../../External/tinyobjloader/tiny_obj_loader_compact.h"
+#include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
 
 namespace Engine
 {

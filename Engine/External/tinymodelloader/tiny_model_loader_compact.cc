@@ -1,12 +1,12 @@
 //
-//  tiny_obj_loader_compact.cc
+//  tiny_model_loader_compact.cc
 //  Application
 //
 //  Created by Narendra Umate on 3/26/14.
 //
 //
 
-#include "tiny_obj_loader_compact.h"
+#include "tiny_model_loader_compact.h"
 
 // Read Write Compact Obj Wrapper with Tangents and Bitangents
 // http://swarminglogic.com/jotting/2013_10_gamedev01
@@ -281,7 +281,7 @@ namespace tinyobj {
 		return shapes_c;
 	}
 
-	std::string LoadObjCompact(std::vector<shape_c_t>& shapes_c, const char* filename, const char* mtl_basepath, const bool& enable_compact)
+	std::string LoadModelCompact(std::vector<shape_c_t>& shapes_c, const char* filename, const char* mtl_basepath, const bool& enable_compact)
 	{
 		std::string returnString("");
 
@@ -298,7 +298,13 @@ namespace tinyobj {
 		else
 		{
 			std::vector<shape_t> shapes;
-			std::string returnString = LoadObj(shapes, filename, mtl_basepath);
+
+			if (strstr(filename, ".obj"))
+				returnString = LoadObj(shapes, filename, mtl_basepath);
+			else if (strstr(filename, ".mesh"))
+				returnString = LoadMesh(shapes, filename);
+			else
+				returnString = "Model format not supported";
 
 			if (returnString.empty())
 			{

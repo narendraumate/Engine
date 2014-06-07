@@ -108,17 +108,19 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 0;
-				std::string modelNames[] = { "rungholt/house.obj", "lost-empire/lost_empire.obj", "buddha/buddha.obj",
-					                         "crytek-sponza/sponza.obj", "hairball/hairball.obj", "head/head.obj",
-					                         "rungholt/rungholt.obj", "san-miguel/san-miguel.obj", "person-a/person-a.obj",
-											 "person-b/person-b.obj", "person-c/person-c.obj"};
+				int modelIndex = 11;
+				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
+					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
+					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
+											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/person-a/Bayonetta.mesh" };
 				g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
 
 				g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
 				g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
+
+				//#define WHOLE
 
 				if (modelIndex == 0)//house
 				{
@@ -131,7 +133,6 @@ namespace Engine
 				}
 				else if (modelIndex == 8)//person-a
 				{
-//define WHOLE
 #if defined (WHOLE)
 					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
 					g_glModels[0]->setScale(Vec3(1.6f, 1.6f, 1.6f));
@@ -142,12 +143,16 @@ namespace Engine
 				}
 				else if (modelIndex == 9)//person-b
 				{
-					g_glModels[0]->setPosition(Vec3(0, -3, 0));
-					g_glModels[0]->setScale(Vec3(0.085f, 0.085f, 0.085f));
+#if defined (WHOLE)
+					g_glModels[0]->setPosition(Vec3(0, -10, 0));
+					g_glModels[0]->setScale(Vec3(0.20f, 0.20f, 0.20f));
+#else
+					g_glModels[0]->setPosition(Vec3(0, -0.5, 0));
+					g_glModels[0]->setScale(Vec3(0.06f, 0.06f, 0.06f));
+#endif //defined(WHOLE)
 				}
 				else if (modelIndex == 10)//person-c
 				{
-//#define WHOLE
 #if defined(WHOLE)
 					g_glModels[0]->setPosition(Vec3(0, -5, 0));
 					g_glModels[0]->setScale(Vec3(0.05f, 0.05f, 0.05f));
