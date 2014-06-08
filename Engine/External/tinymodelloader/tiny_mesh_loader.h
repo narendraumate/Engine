@@ -10,10 +10,7 @@
 #define Application_tiny_mesh_loader_h
 
 #if defined(__linux__)
-#include <cstddef>
-#include <cstring>
-#else
-#include <string>
+#include <stdint.h>
 #endif // (__linux__)
 
 #include <iostream>
