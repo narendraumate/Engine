@@ -11,7 +11,7 @@
 namespace Engine
 {
 
-	GlModel::GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& objFilePath, const std::string& mtlBasePath)
+	GlModel::GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& modelFilePath, const std::string& modelBasePath)
 	:	m_programId(programId)
 	,	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
@@ -20,9 +20,9 @@ namespace Engine
 	,	m_viewMatrixPtr(viewMatrixPtr)
 	,	m_modelViewMatrix()
 	,	m_normMatrix()
-	,	m_objFilePath(objFilePath)
-	,	m_mtlBasePath(mtlBasePath)
-	,	m_textureManager(mtlBasePath)
+	,	m_modelFilePath(modelFilePath)
+	,	m_modelBasePath(modelBasePath)
+	,	m_textureManager(modelBasePath)
 #ifdef SEPARATE_VBO
 	,	m_glModelShapes()
 #else
@@ -31,7 +31,7 @@ namespace Engine
 	{
 //----------------------------------------------------------------------------//
 		std::vector<tinyobj::shape_c_t> shapes_c;
-		std::string error = tinyobj::LoadModelCompact(shapes_c, objFilePath.c_str(), mtlBasePath.c_str());
+		std::string error = tinyobj::LoadModelCompact(shapes_c, modelFilePath.c_str(), modelBasePath.c_str(), false);
 
 		if (error.empty())
 		{
@@ -73,7 +73,7 @@ namespace Engine
 	void GlModel::draw()
 	{
 		// TODO Why is this needed for small models
-//#define ROTATE_MODEL
+#define ROTATE_MODEL
 #if defined(ROTATE_MODEL)
 		setRotation(Vec3(m_rotation.x, m_rotation.y + 0.5f, m_rotation.z));
 #else

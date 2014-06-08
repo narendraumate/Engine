@@ -228,14 +228,14 @@ namespace tinyobj {
 
 				// Set the same tangent for all three vertices of the triangle.
 				// They will be merged later, in vboindexer.cpp
-				tangents[3 * indices[k  ]    ] = tangent.x; tangents[3 * indices[k  ] + 1] = tangent.y; tangents[3 * indices[k  ] + 2] = tangent.z;
-				tangents[3 * indices[k+1]    ] = tangent.x; tangents[3 * indices[k+1] + 1] = tangent.y; tangents[3 * indices[k+1] + 2] = tangent.z;
-				tangents[3 * indices[k+2]    ] = tangent.x; tangents[3 * indices[k+2] + 1] = tangent.y; tangents[3 * indices[k+2] + 2] = tangent.z;
+				tangents[3 * indices[k  ]] = tangent.x; tangents[3 * indices[k  ] + 1] = tangent.y; tangents[3 * indices[k  ] + 2] = tangent.z;
+				tangents[3 * indices[k+1]] = tangent.x; tangents[3 * indices[k+1] + 1] = tangent.y; tangents[3 * indices[k+1] + 2] = tangent.z;
+				tangents[3 * indices[k+2]] = tangent.x; tangents[3 * indices[k+2] + 1] = tangent.y; tangents[3 * indices[k+2] + 2] = tangent.z;
 
 				// Same thing for binormals
-				bitangents[3 * indices[k  ]    ] = bitangent.x; bitangents[3 * indices[k  ] + 1] = bitangent.y; bitangents[3 * indices[k  ] + 2] = bitangent.z;
-				bitangents[3 * indices[k+1]    ] = bitangent.x; bitangents[3 * indices[k+1] + 1] = bitangent.y; bitangents[3 * indices[k+1] + 2] = bitangent.z;
-				bitangents[3 * indices[k+2]    ] = bitangent.x; bitangents[3 * indices[k+2] + 1] = bitangent.y; bitangents[3 * indices[k+2] + 2] = bitangent.z;
+				bitangents[3 * indices[k  ]] = bitangent.x; bitangents[3 * indices[k  ] + 1] = bitangent.y; bitangents[3 * indices[k  ] + 2] = bitangent.z;
+				bitangents[3 * indices[k+1]] = bitangent.x; bitangents[3 * indices[k+1] + 1] = bitangent.y; bitangents[3 * indices[k+1] + 2] = bitangent.z;
+				bitangents[3 * indices[k+2]] = bitangent.x; bitangents[3 * indices[k+2] + 1] = bitangent.y; bitangents[3 * indices[k+2] + 2] = bitangent.z;
 			}
 
 			// See "Going Further"
@@ -281,7 +281,7 @@ namespace tinyobj {
 		return shapes_c;
 	}
 
-	std::string LoadModelCompact(std::vector<shape_c_t>& shapes_c, const char* filename, const char* mtl_basepath, const bool& enable_compact)
+	std::string LoadModelCompact(std::vector<shape_c_t>& shapes_c, const char* filename, const char* model_basepath, const bool& enable_compact)
 	{
 		std::string returnString("");
 
@@ -300,7 +300,7 @@ namespace tinyobj {
 			std::vector<shape_t> shapes;
 
 			if (strstr(filename, ".obj"))
-				returnString = LoadObj(shapes, filename, mtl_basepath);
+				returnString = LoadObj(shapes, filename, model_basepath);
 			else if (strstr(filename, ".mesh"))
 				returnString = LoadMesh(shapes, filename);
 			else

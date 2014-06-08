@@ -45,7 +45,7 @@ namespace tinyobj {
 
 	std::string LoadModelCompact(std::vector<shape_c_t>& shapes,   // [output]
 								 const char* filename,
-								 const char* mtl_basepath = NULL,
+								 const char* model_basepath = NULL,
 								 const bool& enable_compact = true);
 }
 

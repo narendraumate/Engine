@@ -23,7 +23,7 @@ namespace Engine
 	class GlModel
 	{
 	public:
-		GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& objFilePath, const std::string& mtlBasePath);
+		GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& modelFilePath, const std::string& modelBasePath);
 		~GlModel();
 
 		void draw();
@@ -58,8 +58,8 @@ namespace Engine
 		Mat4 m_modelViewMatrix;
 		Mat3 m_normMatrix;
 
-		std::string m_objFilePath;
-		std::string m_mtlBasePath;
+		std::string m_modelFilePath;
+		std::string m_modelBasePath;
 
 		TextureManager m_textureManager;
 //----------------------------------------------------------------------------//

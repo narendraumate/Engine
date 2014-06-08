@@ -9,6 +9,8 @@
 #ifndef Application_tiny_mesh_loader_h
 #define Application_tiny_mesh_loader_h
 
+#include <iostream>
+#include <fstream>
 #include "tiny_obj_loader.h"
 
 namespace tinyobj {
