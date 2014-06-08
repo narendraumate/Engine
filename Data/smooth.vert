@@ -6,13 +6,9 @@ layout( location = 2 ) in vec2 texcoord;
 layout( location = 3 ) in vec3 tangent;
 layout( location = 4 ) in vec3 bitangent;
 
-//uniform mat4 model;
-//uniform mat4 view;
-uniform mat4 modelView;
 uniform mat3 norm;
-
-uniform mat4 perspective;
-uniform mat4 orthographic;
+uniform mat4 modelViewPerspective;
+//uniform mat4 modelViewOrthographic;
 
 uniform sampler2D normalTextureSampler;
 
@@ -22,10 +18,10 @@ out vec2 vTexcoord;
 
 void main()
 {
-	gl_Position = perspective * modelView * vec4(position, 1.0);
+	gl_Position = modelViewPerspective * vec4(position, 1.0);
 	vPosition = gl_Position.xyz;
 	vTexcoord = texcoord;
-#define USE_NORMALS
+
 #if defined (USE_NORMALS)
 	vNormal = normalize(norm * normal);
 #else

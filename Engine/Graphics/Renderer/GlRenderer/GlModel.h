@@ -14,6 +14,7 @@
 #include "GlShader.h"
 #include "GlModelData.h"
 #include "GlModelShape.h"
+#include "../../SceneGraph/Camera.h"
 #include "../Common/TextureManager.h"
 #include "../../../Mathematics/Matrix.h"
 #include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
@@ -23,15 +24,17 @@ namespace Engine
 	class GlModel
 	{
 	public:
-		GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& modelFilePath, const std::string& modelBasePath);
+		GlModel(const GLuint& programId, const Camera* cameraPtr, const std::string& modelFilePath, const std::string& modelBasePath);
 		~GlModel();
 
 		void draw();
 
 		void updateViewMatrix();
 
-		void pushPerspectiveMatrix(const Mat4* perspectiveMatrix);
-		void pushOrthographicMatrix(const Mat4* orthographicMatrix);
+		void pushPerspectiveMatrix();
+		void pushModelViewPerspectiveMatrix();
+		void pushOrthographicMatrix();
+		void pushModelViewOrthographicMatrix();
 
 		void setPosition(const Vec3& position);
 		void setRotation(const Vec3& rotation);
@@ -41,6 +44,8 @@ namespace Engine
 		void updateModelMatrix();
 		void updateModelViewMatrix();
 		void updateNormMatrix();
+		void updateModelViewPerspectiveMatrix();
+		void updateModelViewOrthographicMatrix();
 
 		void pushModelMatrix();
 		void pushViewMatrix();
@@ -54,7 +59,7 @@ namespace Engine
 		Vec3 m_scale;
 
 		Mat4 m_modelMatrix;
-		const Mat4* m_viewMatrixPtr;
+		const Camera* m_cameraPtr;
 		Mat4 m_modelViewMatrix;
 		Mat3 m_normMatrix;
 

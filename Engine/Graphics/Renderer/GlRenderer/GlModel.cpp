@@ -11,13 +11,13 @@
 namespace Engine
 {
 
-	GlModel::GlModel(const GLuint& programId, const Mat4* viewMatrixPtr, const std::string& modelFilePath, const std::string& modelBasePath)
+	GlModel::GlModel(const GLuint& programId, const Camera* cameraPtr, const std::string& modelFilePath, const std::string& modelBasePath)
 	:	m_programId(programId)
 	,	m_position(0.0f, 0.0f, 0.0f)
 	,	m_rotation(0.0f, 0.0f, 0.0f)
 	,	m_scale(1.0f, 1.0f, 1.0f)
 	,	m_modelMatrix()
-	,	m_viewMatrixPtr(viewMatrixPtr)
+	,	m_cameraPtr(cameraPtr)
 	,	m_modelViewMatrix()
 	,	m_normMatrix()
 	,	m_modelFilePath(modelFilePath)
@@ -95,26 +95,26 @@ namespace Engine
 	
 	void GlModel::pushModelMatrix()
 	{
-		glUseProgram(m_programId);
-		GLint modelMatrixLocation = glGetUniformLocation(m_programId, "model");
-		glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, (float*)&m_modelMatrix);
-		glUseProgram(0);
+		////glUseProgram(m_programId);
+		////GLint modelMatrixLocation = glGetUniformLocation(m_programId, "model");
+		////glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, (float*)&m_modelMatrix);
+		////glUseProgram(0);
 	}
 
 	void GlModel::pushViewMatrix()
 	{
-		glUseProgram(m_programId);
-		GLint viewMatrixLocation = glGetUniformLocation(m_programId, "view");
-		glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, (float*)m_viewMatrixPtr);
-		glUseProgram(0);
+		////glUseProgram(m_programId);
+		////GLint viewMatrixLocation = glGetUniformLocation(m_programId, "view");
+		////glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, (float*)m_cameraPtr->getView());
+		////glUseProgram(0);
 	}
 
 	void GlModel::pushModelViewMatrix()
 	{
-		glUseProgram(m_programId);
-		GLint modelViewMatrixLocation = glGetUniformLocation(m_programId, "modelView");
-		glUniformMatrix4fv(modelViewMatrixLocation, 1, GL_FALSE, (float*)&m_modelViewMatrix);
-		glUseProgram(0);
+		////glUseProgram(m_programId);
+		////GLint modelViewMatrixLocation = glGetUniformLocation(m_programId, "modelView");
+		////glUniformMatrix4fv(modelViewMatrixLocation, 1, GL_FALSE, (float*)&m_modelViewMatrix);
+		////glUseProgram(0);
 	}
 
 	void GlModel::pushNormMatrix()
@@ -124,20 +124,38 @@ namespace Engine
 		glUniformMatrix3fv(normMatrixLocation, 1, GL_FALSE, (float*)&m_normMatrix);
 		glUseProgram(0);
 	}
-		
-	void GlModel::pushPerspectiveMatrix(const Mat4* perspectiveMatrix)
+
+	void GlModel::pushPerspectiveMatrix()
+	{
+		////glUseProgram(m_programId);
+		////GLint perspectiveMatrixLocation = glGetUniformLocation(m_programId, "perspective");
+		////glUniformMatrix4fv(perspectiveMatrixLocation, 1, GL_FALSE, (float*)m_cameraPtr->getPerspectiveProjection());
+		////glUseProgram(0);
+	}
+
+	void GlModel::pushModelViewPerspectiveMatrix()
 	{
 		glUseProgram(m_programId);
-		GLint perspectiveMatrixLocation = glGetUniformLocation(m_programId, "perspective");
-		glUniformMatrix4fv(perspectiveMatrixLocation, 1, GL_FALSE, (float*)perspectiveMatrix);
+		Mat4 modelViewPerspective = *m_cameraPtr->getPerspectiveProjection() * m_modelViewMatrix;
+		GLint modelViewPerspectiveMatrixLocation = glGetUniformLocation(m_programId, "modelViewPerspective");
+		glUniformMatrix4fv(modelViewPerspectiveMatrixLocation, 1, GL_FALSE, (float*)&(modelViewPerspective));
 		glUseProgram(0);
 	}
+
+	void GlModel::pushOrthographicMatrix()
+	{
+		////glUseProgram(m_programId);
+		////GLint orthographicMatrixLocation = glGetUniformLocation(m_programId, "orthographic");
+		////glUniformMatrix4fv(orthographicMatrixLocation, 1, GL_FALSE, (float*)m_cameraPtr->getOrthographicProjection());
+		////glUseProgram(0);
+	}
 	
-	void GlModel::pushOrthographicMatrix(const Mat4* orthographicMatrix)
+	void GlModel::pushModelViewOrthographicMatrix()
 	{
 		glUseProgram(m_programId);
-		GLint orthographicMatrixLocation = glGetUniformLocation(m_programId, "orthographic");
-		glUniformMatrix4fv(orthographicMatrixLocation, 1, GL_FALSE, (float*)orthographicMatrix);
+		Mat4 modelViewOrthographic = *m_cameraPtr->getOrthographicProjection() * m_modelViewMatrix;
+		GLint modelViewOrthographicMatrixLocation = glGetUniformLocation(m_programId, "modelViewOrthographic");
+		glUniformMatrix4fv(modelViewOrthographicMatrixLocation, 1, GL_FALSE, (float*)&(modelViewOrthographic));
 		glUseProgram(0);
 	}
 	
@@ -180,10 +198,22 @@ namespace Engine
 
 	void GlModel::updateModelViewMatrix()
 	{
-		m_modelViewMatrix = (*m_viewMatrixPtr) * m_modelMatrix;
+		m_modelViewMatrix = (*m_cameraPtr->getView()) * m_modelMatrix;
 		pushModelViewMatrix();
 
 		updateNormMatrix();
+		updateModelViewPerspectiveMatrix();
+		updateModelViewOrthographicMatrix();
+	}
+
+	void GlModel::updateModelViewPerspectiveMatrix()
+	{
+		pushModelViewPerspectiveMatrix();
+	}
+
+	void GlModel::updateModelViewOrthographicMatrix()
+	{
+		pushModelViewOrthographicMatrix();
 	}
 
 	void GlModel::updateNormMatrix()

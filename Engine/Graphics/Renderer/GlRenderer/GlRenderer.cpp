@@ -83,7 +83,7 @@ namespace Engine
 
 				for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
 				{
-					g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
+					g_glModels.push_back(new GlModel(g_programId, &m_camera,
 													 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 													 Utils::singleton()->findBasePath(modelNames[modelIndex])));
 				}
@@ -108,13 +108,13 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 9;
+				int modelIndex = 0;
 				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
 					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
 											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/Bayonetta/generic_item.mesh",
 											 "mesh/present-box/generic_item.mesh", "mesh/lollipop/generic_item.mesh" };
-				g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
+				g_glModels.push_back(new GlModel(g_programId, &m_camera,
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
 
@@ -172,13 +172,6 @@ namespace Engine
 
 			default:
 				break;
-		}
-
-		for (vector<Engine::GlModel*>::iterator it = g_glModels.begin(); it != g_glModels.end(); ++it)
-		{
-			(*it)->updateViewMatrix();
-			(*it)->pushPerspectiveMatrix(m_camera.getPerspectiveProjection());
-			(*it)->pushOrthographicMatrix(m_camera.getOrthographicProjection());
 		}
 
 		glEnable(GL_DEPTH_TEST);
