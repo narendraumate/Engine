@@ -108,11 +108,12 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 11;
+				int modelIndex = 9;
 				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
 					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
-											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/person-a/Bayonetta.mesh" };
+											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/Bayonetta/generic_item.mesh",
+											 "mesh/present-box/generic_item.mesh", "mesh/lollipop/generic_item.mesh" };
 				g_glModels.push_back(new GlModel(g_programId, m_camera.getView(),
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
@@ -144,11 +145,11 @@ namespace Engine
 				else if (modelIndex == 9)//person-b
 				{
 #if defined (WHOLE)
-					g_glModels[0]->setPosition(Vec3(0, -10, 0));
-					g_glModels[0]->setScale(Vec3(0.20f, 0.20f, 0.20f));
-#else
 					g_glModels[0]->setPosition(Vec3(0, -0.5, 0));
 					g_glModels[0]->setScale(Vec3(0.06f, 0.06f, 0.06f));
+#else
+					g_glModels[0]->setPosition(Vec3(0, -10, 0));
+					g_glModels[0]->setScale(Vec3(0.20f, 0.20f, 0.20f));
 #endif //defined(WHOLE)
 				}
 				else if (modelIndex == 10)//person-c
@@ -160,6 +161,11 @@ namespace Engine
 					g_glModels[0]->setPosition(Vec3(0, -75, 0));
 					g_glModels[0]->setScale(Vec3(0.5f, 0.5f, 0.5f));
 #endif //defined(WHOLE)
+				}
+				else if (modelIndex == 11 || modelIndex == 12 || modelIndex == 13)
+				{
+					g_glModels[0]->setPosition(Vec3(0, -4.0, 0));
+					g_glModels[0]->setScale(Vec3(3.5f, 3.5f, 3.5f));
 				}
 			}
 				break;
