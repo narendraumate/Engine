@@ -12,6 +12,7 @@
 #if defined(__linux__)
 #include <cstddef>
 #include <cstring>
+#include <stdint.h>
 #else
 #include <string>
 #endif // (__linux__)
@@ -19,7 +20,6 @@
 #include <assert.h>
 #include <fstream>
 #include <iostream>
-#include <stdint.h>
 #include "../../Mathematics/Vector.h"
 #include "tiny_mesh_loader.h"
 #include "tiny_obj_loader.h"
