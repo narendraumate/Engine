@@ -14,18 +14,23 @@ uniform mat3 norm;
 uniform mat4 perspective;
 uniform mat4 orthographic;
 
+uniform sampler2D normalTextureSampler;
+
 out vec3 vPosition;
 out vec3 vNormal;
 out vec2 vTexcoord;
-out mat3 vTangentToWorld;
 
 void main()
 {
 	gl_Position = perspective * modelView * vec4(position, 1.0);
 	vPosition = gl_Position.xyz;
 	vTexcoord = texcoord;
+#define USE_NORMALS
+#if defined (USE_NORMALS)
 	vNormal = normalize(norm * normal);
-	vec3 vTangent = normalize(norm * tangent);
-	vec3 vBitangent = normalize(norm * bitangent);
-	vTangentToWorld = mat3(vTangent, vBitangent, vNormal);
+#else
+	mat3 vTangentToWorld = mat3(normalize(norm * tangent), normalize(norm * bitangent), normalize(norm * normal));
+	vNormal = normalize(vTangentToWorld * ((texture(normalTextureSampler, texcoord)).rgb * 2.0 - 1.0));
+#endif defined // (USE_NORMALS)
+
 }
