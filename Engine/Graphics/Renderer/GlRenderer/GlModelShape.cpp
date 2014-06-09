@@ -123,7 +123,7 @@ namespace Engine
 
 	void GlModelShape::pushMaterial(const tinyobj::material_t& material)
 	{
-		// Ambient TODO
+		// Ambient
 		if (!material.ambient_texname.empty())
 		{
 			//cout << "ambient_texname " << material.ambient_texname << endl;
@@ -137,14 +137,14 @@ namespace Engine
 			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
 		}
 
-		// Specular TODO
+		// Specular
 		if (!material.specular_texname.empty())
 		{
 			//cout << "specular_texname " << material.specular_texname << endl;
 			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
-		// Normal TODO
+		// Normal
 		if (!material.normal_texname.empty())
 		{
 			//cout << "normal_texname " << material.normal_texname << endl;

@@ -148,12 +148,12 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
-	///*
+
 	void GlModelData::pushMaterial(const tinyobj::material_t& material)
 	{
 		textureCollections.push_back(GlTextureCollection());
 
-		// Ambient TODO
+		// Ambient
 		if (!material.ambient_texname.empty())
 		{
 			//cout << "ambient_texname " << material.ambient_texname << endl;
@@ -167,14 +167,14 @@ namespace Engine
 			textureCollections.back().m_textures[TextureDiffuse] = loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
 		}
 
-		// Specular TODO
+		// Specular
 		if (!material.specular_texname.empty())
 		{
 			//cout << "specular_texname " << material.specular_texname << endl;
 			textureCollections.back().m_textures[TextureSpecular] = loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
-		// Normal TODO
+		// Normal
 		if (!material.normal_texname.empty())
 		{
 			//cout << "normal_texname " << material.normal_texname << endl;
