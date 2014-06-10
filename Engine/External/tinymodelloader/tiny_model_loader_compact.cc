@@ -299,7 +299,9 @@ namespace tinyobj {
 		{
 			std::vector<shape_t> shapes;
 
-			if (strstr(filename, ".obj"))
+			if (strcmp(filename, "") == 0)
+				returnString = "Model file not found";
+			else if (strstr(filename, ".obj"))
 				returnString = LoadObj(shapes, filename, model_basepath);
 			else if (strstr(filename, ".mesh"))
 				returnString = LoadMesh(shapes, filename);
@@ -313,10 +315,6 @@ namespace tinyobj {
 				write(ofs, shapes_c);
 				//printInfo(shapes_c, compactFilename + ".w");
 				ofs.close();
-			}
-			else
-			{
-				std::cout << returnString << std::endl;
 			}
 		}
 
