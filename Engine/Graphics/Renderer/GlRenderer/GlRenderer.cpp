@@ -74,6 +74,11 @@ namespace Engine
 				break;
 		}
 
+		// TODO Update eye position when camera moves
+		Vec3 eyePosition = m_camera.getPosition();
+		GLint eyePositionLocation = glGetUniformLocation(g_programId, "eyePosition");
+		glUniform3fv(eyePositionLocation, 1, (float*)&eyePosition);
+
 		int modelArrayIndex = 1;
 
 		switch (modelArrayIndex) {

@@ -11,6 +11,7 @@ in vec2 vTexcoord;
 
 out vec4 fColor;
 
+uniform vec3 eyePosition;
 uniform vec3 ambient;
 uniform vec3 diffuse;
 uniform vec3 specular;
@@ -24,8 +25,6 @@ uniform sampler2D specularTextureSampler;
 
 void main()
 {
-	vec3 eyePosition = vec3(0.0, 0.0, 30.0);
-
 	vec3 P = vPosition.xyz;
 
 	vec3 N = normalize(vNormal);

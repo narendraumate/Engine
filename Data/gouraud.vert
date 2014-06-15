@@ -17,6 +17,7 @@ uniform mat4 modelViewPerspective;
 
 out vec4 vColor;
 
+uniform vec3 eyePosition;
 uniform vec3 ambient;
 uniform vec3 diffuse;
 uniform vec3 specular;
@@ -31,8 +32,6 @@ uniform sampler2D normalTextureSampler;
 
 void main()
 {
-	vec3 eyePosition = vec3(0.0, 0.0, 30.0);
-
 	vec4 vPosition = modelViewPerspective * vec4(position, 1.0);
 	gl_Position = vPosition;
 

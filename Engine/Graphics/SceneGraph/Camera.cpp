@@ -16,7 +16,12 @@ namespace Engine
 	
 	Camera::~Camera()
 	{ }
-	
+
+	Vec3 Camera::getPosition()
+	{
+		return m_position;
+	}
+
 	void Camera::setPosition(const Vec3& position)
 	{
 		m_position = position;

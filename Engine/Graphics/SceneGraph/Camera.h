@@ -23,6 +23,7 @@ namespace Engine
 		Camera(const int& screenWidth, const int& screenHeight);
 		~Camera();
 
+		Vec3 getPosition();
 		void setPosition(const Vec3& position);
 		void setAxes(const Vec3& look, const Vec3& right, const Vec3& up);
 		void setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up);
