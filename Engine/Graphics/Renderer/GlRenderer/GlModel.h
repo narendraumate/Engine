@@ -14,8 +14,8 @@
 #include "GlShader.h"
 #include "GlModelData.h"
 #include "GlModelShape.h"
-#include "../../SceneGraph/Camera.h"
 #include "../Common/TextureManager.h"
+#include "../../SceneGraph/Camera.h"
 #include "../../../Mathematics/Matrix.h"
 #include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
 

@@ -113,7 +113,7 @@ namespace Engine
 					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
 											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/Bayonetta/generic_item.mesh",
-											 "mesh/present-box/generic_item.mesh", "mesh/lollipop/generic_item.mesh" };
+											 "mesh/Mass Effect/MassEffect3_Miranda/generic_item.mesh", "mesh/Lollipop Chainsaw/Lollipop_LC/generic_item.mesh" };
 				g_glModels.push_back(new GlModel(g_programId, &m_camera,
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
