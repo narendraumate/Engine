@@ -19,7 +19,7 @@
 #define ASSET_FILE_DIR "/Users/ardneran/Documents/Models/"
 #elif defined(__linux__)
 #define GLOBAL_FILE_DIR "/home/ardneran/Documents/Projects/GitHub/Engine/Data/"
-#define ASSET_FILE_DIR "/home/ardneran/Documents/Models/obj/"
+#define ASSET_FILE_DIR "/home/ardneran/Documents/Models/"
 #elif defined(_WIN32)
 #define GLOBAL_FILE_DIR "/Data/" //TODO
 #define ASSET_FILE_DIR "/obj/" //TODO

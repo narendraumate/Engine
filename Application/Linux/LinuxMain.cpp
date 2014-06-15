@@ -48,8 +48,8 @@ int main()
 	XIfEvent(dpy, &event, WaitForNotify, (char*)win);
 	/* connect the context to the window */
 	glXMakeCurrent(dpy, win, cx);
-
-#if defined(WORKING_SAMPLE)
+#define NEW_LOOP
+#if defined(NEW_LOOP)
 	/* New Loop */
 	initializeMain();
 	while(runMain());
