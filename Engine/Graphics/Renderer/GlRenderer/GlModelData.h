@@ -12,11 +12,12 @@
 #include <iostream>
 #include "GlProgram.h"
 #include "GlShader.h"
-#include "../../../Mathematics/Vector.h"
+#include "../Renderer.h"
 #include "../Common/TextureManager.h"
-#include "../../../../Application/Common/Logger.h"
+#include "../../../Mathematics/Vector.h"
 #include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
+#include "../../../../Application/Common/Logger.h"
 
 namespace Engine
 {
@@ -52,6 +53,7 @@ private:
 	void pushMaterialParameters(const tinyobj::material_t& material);
 	GLuint loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
 //----------------------------------------------------------------------------//
+	unsigned int m_indexBatchSize;
 	vector<unsigned int> shapeIndexStart;
 	vector<unsigned int> shapeIndexCount;
 

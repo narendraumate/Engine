@@ -16,7 +16,9 @@ namespace Engine
 	GlModelData::GlModelData(const GLuint& programId, TextureManager* textureManager)
 	:	m_programId(programId)
 	,	m_textureManager(textureManager)
-	{ }
+	{
+		glGetIntegerv(GL_MAX_ELEMENTS_INDICES, (GLint*)&m_indexBatchSize);
+	}
 
 	GlModelData::~GlModelData()
 	{ }
@@ -49,8 +51,7 @@ namespace Engine
 				indices.push_back(*shapeMeshIndex + shapeMeshIndexOffset);
 			}
 
-			// Multiplying by sizeof(GLuint) is critical
-			shapeIndexStart.push_back(indexCount * sizeof(GLuint));
+			shapeIndexStart.push_back(indexCount);
 			shapeIndexCount.push_back(shape->mesh.indices.size());
 			indexCount += shape->mesh.indices.size();
 
@@ -142,7 +143,21 @@ namespace Engine
 
 			pushMaterialParameters(materials[shapeIndex]);
 
-			glDrawElements(GL_TRIANGLES, shapeIndexCount[shapeIndex], GL_UNSIGNED_INT, BUFFER_OFFSET(shapeIndexStart[shapeIndex]));
+			for (unsigned int currentIndex = 0; currentIndex < shapeIndexCount[shapeIndex];)
+			{
+				if (currentIndex + m_indexBatchSize < shapeIndexCount[shapeIndex])
+				{
+					// Multiplying by sizeof(GLuint) is critical
+					glDrawElements(GL_TRIANGLES, m_indexBatchSize, GL_UNSIGNED_INT, BUFFER_OFFSET((currentIndex + shapeIndexStart[shapeIndex]) * sizeof(GLuint)));
+					currentIndex += m_indexBatchSize;
+				}
+				else
+				{
+					// Multiplying by sizeof(GLuint) is critical
+					glDrawElements(GL_TRIANGLES, shapeIndexCount[shapeIndex] - currentIndex, GL_UNSIGNED_INT, BUFFER_OFFSET((currentIndex + shapeIndexStart[shapeIndex]) * sizeof(GLuint)));
+					currentIndex = shapeIndexCount[shapeIndex];
+				}
+			}
 		}
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
