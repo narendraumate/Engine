@@ -18,6 +18,11 @@ void main()
 	vec4 diffuse = texture(diffuseTextureSampler, vTexcoord);
 	vec4 specular = texture(specularTextureSampler, vTexcoord);
 
+	//fColor = ambient;
+	//fColor = diffuse;
+	//fColor = specular;
+	//fColor = vec4(vNormal, 1.0);
+	//fColor = vec4(vPosition, 1.0);
+
 	fColor = (ambient + diffuse + specular);
-	fColor = vec4(vNormal, 1.0);
 }
