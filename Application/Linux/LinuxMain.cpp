@@ -3,8 +3,6 @@
 #include <GL/gl.h>
 #include <GL/glx.h>
 
-#include <unistd.h> // TODO Remove
-
 static int attributeList[] = { GLX_RGBA, None };
 
 static Bool WaitForNotify(Display *d, XEvent *e, char *arg) {
