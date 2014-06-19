@@ -1,66 +1,249 @@
+// Pez was developed by Philip Rideout and released under the MIT License.
+
+#include <sys/time.h>
+#include <GL/glew.h>	// sudo apt-get install libglew-dev libglew1.10
+#include <GL/glxew.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <signal.h>
+
 #include "../Main.h"
+#include "LinuxMain.h"
 
-#include <GL/gl.h>
-#include <GL/glx.h>
+typedef struct PlatformContextRec
+{
+	Display* MainDisplay;
+	Window MainWindow;
+} PlatformContext;
 
-static int attributeList[] = { GLX_RGBA, None };
+/*unsigned int GetMilliseconds()
+{
+	struct timeval tp;
+	gettimeofday(&tp, NULL);
+	return tp.tv_sec * 1000 + tp.tv_usec / 1000;
+}*/
 
-static Bool WaitForNotify(Display *d, XEvent *e, char *arg) {
-	return (e->type == MapNotify) && (e->xmap.window == (Window)arg);
-}
-
-int main()
+int main(int argc, const char * argv[])
 {
 	char applicationName[] = "Renderer";
 	int applicationWidth = 1280;
 	int applicationHeight = 720;
-
+	getSettings()->setTitle(applicationName);
 	getSettings()->setWidth(applicationWidth);
 	getSettings()->setHeight(applicationHeight);
-	getSettings()->setTitle(applicationName);
 
-	Display *dpy;
-	XVisualInfo *vi;
-	Colormap cmap;
-	XSetWindowAttributes swa;
-	Window win;
-	GLXContext cx;
-	XEvent event;
-	/* get a connection */
-	dpy = XOpenDisplay(0);
-	/* get an appropriate visual */
-	vi = glXChooseVisual(dpy, DefaultScreen(dpy), attributeList);
-	/* create a GLX context */
-	cx = glXCreateContext(dpy, vi, 0, GL_FALSE);
-	/* create a color map */
-	cmap = XCreateColormap(dpy, RootWindow(dpy, vi->screen),
-	 vi->visual, AllocNone);
-	/* create a window */
-	swa.colormap = cmap;
-	swa.border_pixel = 0;
-	swa.event_mask = StructureNotifyMask;
-	win = XCreateWindow(dpy, RootWindow(dpy, vi->screen), 0, 0, applicationWidth, applicationHeight,
-						0, vi->depth, InputOutput, vi->visual,
-						CWBorderPixel|CWColormap|CWEventMask, &swa);
-	XMapWindow(dpy, win);
-	XIfEvent(dpy, &event, WaitForNotify, (char*)win);
-	/* connect the context to the window */
-	glXMakeCurrent(dpy, win, cx);
-#define NEW_LOOP
-#if defined(NEW_LOOP)
-	/* New Loop */
-	initializeMain();
-	while(runMain());
-	deinitializeMain();
-#else
-	/* Original Loop */
-	while (1)
-	{
-		glClearColor(0.5,0.5,0.5,1);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glFlush();
+	int attrib[] = {
+		GLX_RENDER_TYPE, GLX_RGBA_BIT,
+		GLX_DRAWABLE_TYPE, GLX_WINDOW_BIT,
+		GLX_DOUBLEBUFFER, True,
+		GLX_RED_SIZE, 1,
+		GLX_GREEN_SIZE, 1,
+		GLX_BLUE_SIZE, 1,
+#if PEZ_ENABLE_MULTISAMPLING
+		GLX_SAMPLE_BUFFERS, 1,
+		GLX_SAMPLES, 4,
+#endif
+		None
+	};
+	
+	PlatformContext context;
+
+	context.MainDisplay = XOpenDisplay(NULL);
+	int screen = DefaultScreen(context.MainDisplay);
+	Window root = RootWindow(context.MainDisplay, screen);
+
+	int fbcount;
+	PFNGLXCHOOSEFBCONFIGPROC glXChooseFBConfig = (PFNGLXCHOOSEFBCONFIGPROC)glXGetProcAddress((GLubyte*)"glXChooseFBConfig");
+	GLXFBConfig *fbc = glXChooseFBConfig(context.MainDisplay, screen, attrib, &fbcount);
+	if (!fbc)
+		PezFatalError("Failed to retrieve a framebuffer config\n");;
+
+	PFNGLXGETVISUALFROMFBCONFIGPROC glXGetVisualFromFBConfig = (PFNGLXGETVISUALFROMFBCONFIGPROC)glXGetProcAddress((GLubyte*)"glXGetVisualFromFBConfig");
+	XVisualInfo *visinfo = glXGetVisualFromFBConfig(context.MainDisplay, fbc[0]);
+	if (!visinfo)
+		PezFatalError("Error: couldn't create OpenGL window with this pixel format.\n");
+
+	XSetWindowAttributes attr;
+	attr.background_pixel = 0;
+	attr.border_pixel = 0;
+	attr.colormap = XCreateColormap(context.MainDisplay, root, visinfo->visual, AllocNone);
+	attr.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask | KeyReleaseMask |
+					PointerMotionMask | ButtonPressMask | ButtonReleaseMask;
+
+	context.MainWindow = XCreateWindow(
+		context.MainDisplay,
+		root,
+		0, 0,
+		applicationWidth, applicationHeight, 0,
+		visinfo->depth,
+		InputOutput,
+		visinfo->visual,
+		CWBackPixel | CWBorderPixel | CWColormap | CWEventMask,
+		&attr
+	);
+	XMapWindow(context.MainDisplay, context.MainWindow);
+
+	GLXContext glcontext;
+	if (PEZ_FORWARD_COMPATIBLE_GL) {
+		GLXContext tempContext = glXCreateContext(context.MainDisplay, visinfo, NULL, True);
+		PFNGLXCREATECONTEXTATTRIBSARBPROC glXCreateContextAttribs = (PFNGLXCREATECONTEXTATTRIBSARBPROC)glXGetProcAddress((GLubyte*)"glXCreateContextAttribsARB");
+		if (!glXCreateContextAttribs) {
+			PezFatalError("Your platform does not support OpenGL 3.0.\n"
+					"Try changing PEZ_FORWARD_COMPATIBLE_GL to 0.\n");
+		}
+		int fbcount = 0;
+		GLXFBConfig *framebufferConfig = glXChooseFBConfig(context.MainDisplay, screen, 0, &fbcount);
+		if (!framebufferConfig) {
+			PezFatalError("Can't create a framebuffer for OpenGL 3.0.\n");
+		} else {
+			int attribs[] = {
+				GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+				GLX_CONTEXT_MINOR_VERSION_ARB, 0,
+				GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+				0
+			}; 
+			glcontext = glXCreateContextAttribs(context.MainDisplay, framebufferConfig[0], NULL, True, attribs);
+			glXMakeCurrent(context.MainDisplay, 0, 0);
+			glXDestroyContext(context.MainDisplay, tempContext);
+		} 
+	} else {
+		glcontext = glXCreateContext(context.MainDisplay, visinfo, NULL, True);
 	}
-#endif // (WORKING_SAMPLE)
 
+	glXMakeCurrent(context.MainDisplay, context.MainWindow, glcontext);
+	
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+		PezFatalError("GLEW Error: %s\n", glewGetErrorString(err));
+		
+	// Reset OpenGL error state:
+	glGetError();
+
+	PezDebugString("OpenGL Version: %s\n", glGetString(GL_VERSION));
+	
+	//const char* applicationName = PezInitialize(PEZ_VIEWPORT_WIDTH, PEZ_VIEWPORT_HEIGHT);
+	
+	XStoreName(context.MainDisplay, context.MainWindow, applicationName);
+	
+	// -------------------
+	// Start the Game Loop
+	// -------------------
+
+	/////////////////
+	initializeMain();
+	/////////////////
+	
+	////unsigned int previousTime = GetMilliseconds();
+	int done = 0;
+	while (!done) {
+		
+		////if (glGetError() != GL_NO_ERROR)
+		////	PezFatalError("OpenGL error.\n");
+
+		if (XPending(context.MainDisplay)) {
+			XEvent event;
+	
+			XNextEvent(context.MainDisplay, &event);
+			switch (event.type)
+			{
+				case Expose:
+					//redraw(display, event.xany.window);
+					break;
+				
+				case ConfigureNotify:
+					//resize(event.xconfigure.width, event.xconfigure.height);
+					break;
+				
+				case ButtonPress:
+					////PezHandleMouse(event.xbutton.x, event.xbutton.y, PEZ_DOWN);
+					break;
+
+				case ButtonRelease:
+					////PezHandleMouse(event.xbutton.x, event.xbutton.y, PEZ_UP);
+					break;
+
+				case MotionNotify:
+					////PezHandleMouse(event.xmotion.x, event.xmotion.y, PEZ_MOVE);
+					break;
+
+				case KeyRelease:
+				case KeyPress: {
+					XComposeStatus composeStatus;
+					char asciiCode[32];
+					KeySym keySym;
+					int len;
+					
+					len = XLookupString(&event.xkey, asciiCode, sizeof(asciiCode), &keySym, &composeStatus);
+					switch (asciiCode[0]) {
+						case 'x': case 'X': case 'q': case 'Q':
+						case 0x1b:
+							done = 1;
+							break;
+					}
+				}
+			}
+		}
+
+		/*unsigned int currentTime = GetMilliseconds();
+		unsigned int deltaTime = currentTime - previousTime;
+		previousTime = currentTime;*/
+		
+		////PezUpdate(deltaTime);
+		////PezRender();
+		
+		//////////
+		runMain();
+		//////////
+
+		glXSwapBuffers(context.MainDisplay, context.MainWindow);
+	}
+	///////////////////
+	deinitializeMain();
+	///////////////////
 	return 0;
+}
+
+/*void PezDebugStringW(const wchar_t* pStr, ...)
+{
+	va_list a;
+	va_start(a, pStr);
+
+	wchar_t msg[1024] = {0};
+	vswprintf(msg, countof(msg), pStr, a);
+	fputws(msg, stderr);
+}*/
+
+void PezDebugString(const char* pStr, ...)
+{
+	va_list a;
+	va_start(a, pStr);
+
+	char msg[1024] = {0};
+	vsnprintf(msg, countof(msg), pStr, a);
+	fputs(msg, stderr);
+}
+
+/*void PezFatalErrorW(const wchar_t* pStr, ...)
+{
+	fwide(stderr, 1);
+
+	va_list a;
+	va_start(a, pStr);
+
+	wchar_t msg[1024] = {0};
+	vswprintf(msg, countof(msg), pStr, a);
+	fputws(msg, stderr);
+	exit(1);
+}*/
+
+void PezFatalError(const char* pStr, ...)
+{
+	va_list a;
+	va_start(a, pStr);
+
+	char msg[1024] = {0};
+	vsnprintf(msg, countof(msg), pStr, a);
+	fputs(msg, stderr);
+	exit(1);
 }

@@ -46,6 +46,6 @@ solution "Application"
 			excludes { "**/Windows/**", "**/Linux/**" }
 
 		configuration "linux"
-			linkoptions { "-lGL", "-lGLU", "-lX11", "-L/usr/lib/nvidia-331/" } -- hack for ubuntu 14.04 with nvidia-331
+			linkoptions { "-lGL", "-lGLU", "-lGLEW", "-lX11", "-L/usr/lib/nvidia-331/" } -- hack for ubuntu 14.04 with nvidia-331
 			files { }
 			excludes { "**/Windows/**", "**/MacOS/**" }
