@@ -35,6 +35,11 @@ namespace Engine
 		indices = shape_c.mesh.indices;
 		m_indexCount = shape_c.mesh.indices.size();
 
+		m_material = material;
+		pushMaterial(material);
+
+		pushTextureSamplers(); // doesn't need to be done for every shape
+
 		unsigned int sizeOfPositions = sizeof(positions[0]) * positions.size();
 		unsigned int sizeOfNormals = sizeof(normals[0]) * normals.size();
 		unsigned int sizeOfTexcoords = sizeof(texcoords[0]) * texcoords.size();
@@ -66,9 +71,6 @@ namespace Engine
 		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
 		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
 
-		glGenTextures(TextureCount, m_textures);
-		pushMaterial(material);
-		
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
 		glEnableVertexAttribArray(AttributeTexcoord);
@@ -95,7 +97,11 @@ namespace Engine
 		glDisableVertexAttribArray(AttributeTangent);
 		glDisableVertexAttribArray(AttributeBitangent);
 
-		glDeleteTextures(TextureCount, m_textures);
+		glDeleteTextures(1, &textureCollection.m_textures[TextureAmbient]);
+		glDeleteTextures(1, &textureCollection.m_textures[TextureDiffuse]);
+		glDeleteTextures(1, &textureCollection.m_textures[TextureSpecular]);
+		glDeleteTextures(1, &textureCollection.m_textures[TextureNormal]);
+
 		glDeleteVertexArrays(VaoCount, m_vaos);
 		glDeleteBuffers(VboCount, m_vbos);
 		glDeleteBuffers(EboCount, m_ebos);
@@ -107,14 +113,16 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureAmbient]);
+		glBindTexture(GL_TEXTURE_2D, textureCollection.m_textures[TextureAmbient]);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureDiffuse]);
+		glBindTexture(GL_TEXTURE_2D, textureCollection.m_textures[TextureDiffuse]);
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureSpecular]);
+		glBindTexture(GL_TEXTURE_2D, textureCollection.m_textures[TextureSpecular]);
 		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
+		glBindTexture(GL_TEXTURE_2D, textureCollection.m_textures[TextureNormal]);
 		glActiveTexture(0);
+
+		pushMaterialParameters(m_material);
 
 		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -128,32 +136,29 @@ namespace Engine
 		if (!material.ambient_texname.empty())
 		{
 			//cout << "ambient_texname " << material.ambient_texname << endl;
-			loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
+			textureCollection.m_textures[TextureAmbient] = loadTexture(GL_TEXTURE0, material.ambient_texname, TextureAmbient);
 		}
 
 		// Diffuse
 		if (!material.diffuse_texname.empty())
 		{
 			//cout << "diffuse_texname " << material.diffuse_texname << endl;
-			loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
+			textureCollection.m_textures[TextureDiffuse] = loadTexture(GL_TEXTURE1, material.diffuse_texname, TextureDiffuse);
 		}
 
 		// Specular
 		if (!material.specular_texname.empty())
 		{
 			//cout << "specular_texname " << material.specular_texname << endl;
-			loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
+			textureCollection.m_textures[TextureSpecular] = loadTexture(GL_TEXTURE2, material.specular_texname, TextureSpecular);
 		}
 
 		// Normal
 		if (!material.normal_texname.empty())
 		{
 			//cout << "normal_texname " << material.normal_texname << endl;
-			loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
+			textureCollection.m_textures[TextureNormal] = loadTexture(GL_TEXTURE3, material.normal_texname, TextureNormal);
 		}
-
-		pushTextureSamplers();
-		pushMaterialParameters(material);
 	}
 
 	void GlModelShape::pushTextureSamplers()
@@ -195,16 +200,19 @@ namespace Engine
 		//Logger::singleton()->print3("ior", &material.ior, 1);
 	}
 
-	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType)
+	// TODO Is textureIndex and textureType necessary?
+	GLuint GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType)
 	{
 		m_textureManager->loadTexture(textureName);
 
-		glActiveTexture(textureIndex);
-		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
+		GLuint texture = 0;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glActiveTexture(0);
+
+		return texture;
 	}
 
 }

@@ -43,14 +43,20 @@ namespace Engine
 		GLuint m_vaos[VaoCount];
 		GLuint m_vbos[VboCount];
 
-		GLuint m_textures[TextureCount];
-
 		GLuint m_indexCount;
 
 		void pushMaterial(const tinyobj::material_t& material);
 		void pushTextureSamplers();
 		void pushMaterialParameters(const tinyobj::material_t& material);
-		void loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
+		GLuint loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType);
+
+		struct GlTextureCollection
+		{
+			GLuint m_textures[TextureCount];
+		};
+		GlTextureCollection textureCollection;
+
+		tinyobj::material_t m_material;
 	};
 
 }
