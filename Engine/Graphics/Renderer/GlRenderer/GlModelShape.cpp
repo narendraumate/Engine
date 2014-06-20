@@ -75,7 +75,6 @@ namespace Engine
 		glEnableVertexAttribArray(AttributeTangent);
 		glEnableVertexAttribArray(AttributeBitangent);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -83,6 +82,8 @@ namespace Engine
 		positions.clear();
 		normals.clear();
 		texcoords.clear();
+		tangents.clear();
+		bitangents.clear();
 		indices.clear();
 	}
 
@@ -115,7 +116,7 @@ namespace Engine
 		glBindTexture(GL_TEXTURE_2D, m_textures[TextureNormal]);
 		glActiveTexture(0);
 
-		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, BUFFER_OFFSET(0));
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -157,20 +158,14 @@ namespace Engine
 
 	void GlModelShape::pushTextureSamplers()
 	{
-		glUseProgram(m_programId);
-
 		glUniform1i(glGetUniformLocation(m_programId, "ambientTextureSampler"), 0);
 		glUniform1i(glGetUniformLocation(m_programId, "diffuseTextureSampler"), 1);
 		glUniform1i(glGetUniformLocation(m_programId, "specularTextureSampler"), 2);
 		glUniform1i(glGetUniformLocation(m_programId, "normalTextureSampler"), 3);
-
-		glUseProgram(0);
 	}
 
 	void GlModelShape::pushMaterialParameters(const tinyobj::material_t& material)
 	{
-		glUseProgram(m_programId);
-
 		GLint ambientLocation = glGetUniformLocation(m_programId, "ambient");
 		glUniform3fv(ambientLocation, 1, material.ambient);
 		//Logger::singleton()->print3("ambient", material.ambient, 3);
@@ -198,8 +193,6 @@ namespace Engine
 		GLint iorLocation = glGetUniformLocation(m_programId, "ior");
 		glUniform1f(iorLocation, material.ior);
 		//Logger::singleton()->print3("ior", &material.ior, 1);
-
-		glUseProgram(0);
 	}
 
 	void GlModelShape::loadTexture(const GLenum& textureIndex, const std::string& textureName, const TextureType& textureType)
@@ -207,11 +200,8 @@ namespace Engine
 		m_textureManager->loadTexture(textureName);
 
 		glActiveTexture(textureIndex);
-
 		glBindTexture(GL_TEXTURE_2D, m_textures[textureType]);
-
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_textureManager->getSizeX(textureName), m_textureManager->getSizeY(textureName), 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureManager->getPixels(textureName));
-
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(0);
