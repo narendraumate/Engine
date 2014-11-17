@@ -10,7 +10,7 @@
 #define __Camaleao__Color__
 
 #include <iostream>
-#include "Vector.h"
+#include "../Mathematics/Vector.h"
 
 #if defined(__linux__) || defined(_WIN32)
 #include <stdint.h>

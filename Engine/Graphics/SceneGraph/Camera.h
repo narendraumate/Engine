@@ -1,7 +1,7 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
-#include "Actor.h"
+#include "../../Core/Actor.h"
 
 #if defined(__APPLE__) || defined(__linux__)
 #include "../../Mathematics/Matrix.h"

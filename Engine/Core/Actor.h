@@ -9,8 +9,8 @@
 #ifndef __Application__Actor__
 #define __Application__Actor__
 
-#include "Vector.h"
-#include "Quaternion.h"
+#include "../Mathematics/Vector.h"
+#include "../Mathematics/Quaternion.h"
 
 namespace Engine
 {

@@ -13,7 +13,7 @@
 #include <string.h>
 
 #include "../../Graphics/SceneGraph/Camera.h"
-#include "../../Mathematics/Color.h"
+#include "../../Core/Color.h"
 #include "../../Mathematics/Matrix.h"
 
 #if defined(__APPLE__)
