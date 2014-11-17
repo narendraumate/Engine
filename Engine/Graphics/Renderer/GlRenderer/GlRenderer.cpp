@@ -75,7 +75,8 @@ namespace Engine
 		}
 
 		// TODO Update eye position when camera moves
-		Vec3 eyePosition = m_camera.getPosition();
+		Vec3 eyePosition;
+		m_camera.getPosition(eyePosition);
 		GLint eyePositionLocation = glGetUniformLocation(g_programId, "eyePosition");
 		glUniform3fv(eyePositionLocation, 1, (float*)&eyePosition);
 

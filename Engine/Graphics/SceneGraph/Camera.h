@@ -1,6 +1,8 @@
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
+#include "Actor.h"
+
 #if defined(__APPLE__) || defined(__linux__)
 #include "../../Mathematics/Matrix.h"
 #include "../../Mathematics/Vector.h"
@@ -17,16 +19,16 @@
 namespace Engine
 {
 	
-	class Camera
+	class Camera : public Actor
 	{
 	public:
 		Camera(const int& screenWidth, const int& screenHeight);
 		~Camera();
 
-		Vec3 getPosition();
-		void setPosition(const Vec3& position);
-		void setAxes(const Vec3& look, const Vec3& right, const Vec3& up);
-		void setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up);
+		virtual void setPosition(const Vec3& position);
+		virtual void setAxes(const Vec3& look, const Vec3& right, const Vec3& up);
+		virtual void setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up);
+
 		void setPerspectiveProjection(const float& fieldOfViewX, const float& screenAspect, const float& screenNear, const float& screenFar);
 		void setOrthographicProjection(const int& screenWidth, const int& screenHeight, const float& screenNear, const float& screenFar);
 		const Mat4* getView() const;
@@ -37,10 +39,6 @@ namespace Engine
 		void updateOrthographicProjection();
 		
 	private:
-		Vec3 m_position;
-		Vec3 m_look;
-		Vec3 m_right;
-		Vec3 m_up;
 		Mat4 m_viewMatrix;
 		
 		float m_fieldOfViewX;

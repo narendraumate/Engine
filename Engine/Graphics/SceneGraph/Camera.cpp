@@ -17,31 +17,21 @@ namespace Engine
 	Camera::~Camera()
 	{ }
 
-	Vec3 Camera::getPosition()
-	{
-		return m_position;
-	}
-
 	void Camera::setPosition(const Vec3& position)
 	{
-		m_position = position;
+		Actor::setPosition(position);
 		updateViewMatrix();
 	}
 	
 	void Camera::setAxes(const Vec3& look, const Vec3& right, const Vec3& up)
 	{
-		m_look = look.normal();
-		m_right = right.normal();
-		m_up = up.normal();
+		Actor::setAxes(look, right, up);
 		updateViewMatrix();
 	}
 	
 	void Camera::setView(const Vec3& position, const Vec3& look, const Vec3& right, const Vec3& up)
 	{
-		m_position = position;
-		m_look = look.normal();
-		m_right = right.normal();
-		m_up = up.normal();		
+		Actor::setView(position, look, right, up);
 		updateViewMatrix();
 	}
 	
