@@ -13,8 +13,8 @@
 namespace Engine
 {
 
-	DxRenderer::DxRenderer(const int& width, const int& height, const char* applicationName)
-	:	Renderer(width, height, applicationName)
+	DxRenderer::DxRenderer(const int& width, const int& height)
+	:	Renderer(width, height)
 	{
 
 	}

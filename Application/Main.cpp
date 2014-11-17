@@ -20,9 +20,9 @@ void initializeMain()
 
 	// Create the renderer object
 #if defined(__APPLE__) || defined(__linux__)
-    g_renderer = new Engine::GlRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getTitle());
+    g_renderer = new Engine::GlRenderer(g_settings->getWidth(), g_settings->getHeight());
 #elif _WIN32
-    g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight(), g_settings->getTitle());
+    g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight());
 #endif //_WIN32
 
 	// Initialize and run the renderer object

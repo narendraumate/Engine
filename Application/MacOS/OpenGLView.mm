@@ -3,25 +3,20 @@
 
 @implementation OpenGLView
 
-- (void)drawRect:(NSRect)bounds
-{
-	[self render];
-}
-
 - (void)awakeFromNib
 {
 	NSOpenGLPixelFormatAttribute attrs[] = {
 		NSOpenGLPFADoubleBuffer,
 		NSOpenGLPFADepthSize, 24,
 		NSOpenGLPFAOpenGLProfile,
-		NSOpenGLProfileVersion3_2Core,
+		NSOpenGLProfileVersion4_1Core,
 		NSOpenGLPFASupersample,
 		NSOpenGLPFASampleBuffers, 1,
 		NSOpenGLPFASamples, 32,
 		0
 	};
 
-	NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+	NSOpenGLPixelFormat* pixelFormat = [[[NSOpenGLPixelFormat alloc] initWithAttributes:attrs] autorelease];
 
 	if (!pixelFormat)
 	{
@@ -29,17 +24,21 @@
 		[NSApp terminate:self];
 	}
 
-	NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
+	NSOpenGLContext* context = [[[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil] autorelease];
+
+	CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
 
 	[self setPixelFormat:pixelFormat];
+
 	[self setOpenGLContext:context];
 
-	[pixelFormat release];
-	[context release];
+	[self setWantsBestResolutionOpenGLSurface:YES];
 }
 
 - (void)prepareOpenGL
 {
+	[super prepareOpenGL];
+
 	GLint vsync = 1;
 	CGLContextObj cglContext = (CGLContextObj)[[self openGLContext] CGLContextObj];
 	CGLPixelFormatObj cglPixelFormat = (CGLPixelFormatObj)[[self pixelFormat] CGLPixelFormatObj];
@@ -47,8 +46,7 @@
 	[[self openGLContext] setValues:&vsync forParameter:NSOpenGLCPSwapInterval];
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 	CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
-	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext,
-													  cglPixelFormat);
+	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
 
 	getSettings()->setWidth(applicationWidth);
 	getSettings()->setHeight(applicationHeight);
@@ -63,17 +61,23 @@
 
 - (void)update
 {
-	CGLContextObj cglContext = [self willStartDrawing];
 	[super update];
+
+	CGLContextObj cglContext = [self willStartDrawing];
+
 	[self didFinishDrawing:cglContext];
 }
 
 - (void)reshape
 {
-	CGLContextObj cglContext = [self willStartDrawing];
 	[super reshape];
 
-	getRenderer()->resize([self bounds].size.width, [self bounds].size.height);
+	CGLContextObj cglContext = [self willStartDrawing];
+
+	if (getRenderer())
+	{
+		getRenderer()->resize([self bounds].size.width, [self bounds].size.height);
+	}
 
 	[self didFinishDrawing:cglContext];
 }
@@ -94,7 +98,17 @@
 	runMain();
 
 	[self didFinishDrawing:cglContext];
+
 	return kCVReturnSuccess;
+}
+
+- (void)drawRect:(NSRect)bounds
+{
+	// Called during resize operations
+
+	// Avoid flickering during resize by drawiing
+
+	[self render];
 }
 
 - (CGLContextObj)willStartDrawing

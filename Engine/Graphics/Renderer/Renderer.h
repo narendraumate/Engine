@@ -36,7 +36,7 @@ namespace Engine
 
 	public:
 
-		Renderer(const int& width, const int& height, const char* applicationName);
+		Renderer(const int& width, const int& height);
 		virtual ~Renderer() = 0;
 
 		void setContextObj(const ContextObj& contextObj);
@@ -90,7 +90,6 @@ namespace Engine
 		ContextObj m_contextObj;
 		int m_width;
 		int m_height;
-		char* m_applicationName;
 
 		Camera m_camera;
 

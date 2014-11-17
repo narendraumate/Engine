@@ -59,10 +59,11 @@
 	return YES;
 }
 
-- (void)applicationWillTerminate:(NSApplication *)application
+- (void)dealloc
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-	[view dealloc];
+	// don’t forget to release allocated objects!
+	[view release];
+	[window release];
 	[super dealloc];
 }
 

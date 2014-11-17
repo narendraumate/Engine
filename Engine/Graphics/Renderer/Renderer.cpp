@@ -11,11 +11,10 @@
 namespace Engine
 {
 
-	Renderer::Renderer(const int& width, const int& height, const char* applicationName)
+	Renderer::Renderer(const int& width, const int& height)
 	:	m_contextObj(0)
 	,	m_width(width)
 	,	m_height(height)
-	,	m_applicationName(strdup(applicationName))
 	,	m_camera(width, height)
 	,	m_clearColor(Color4f(0.5f, 0.5f, 0.5f, 1.0f))
 	,	m_clearDepth(10)
@@ -26,7 +25,6 @@ namespace Engine
 	{
 		m_width = 0;
 		m_height = 0;
-		delete [] m_applicationName;
 	}
 
 	void Renderer::setContextObj(const ContextObj& contextObj)
@@ -47,11 +45,6 @@ namespace Engine
 	int Renderer::getHeight() const
 	{
 		return m_height;
-	}
-
-	const char* Renderer::getApplicationName() const
-	{
-		return m_applicationName;
 	}
 
 	void Renderer::setCamera(Camera* camera)

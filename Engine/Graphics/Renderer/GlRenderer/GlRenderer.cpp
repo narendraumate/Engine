@@ -18,8 +18,8 @@ vector<Engine::GlModel*> g_glModels;
 
 namespace Engine
 {
-	GlRenderer::GlRenderer(const int& width, const int& height, const char* applicationName)
-	:	Renderer(width, height, applicationName)
+	GlRenderer::GlRenderer(const int& width, const int& height)
+	:	Renderer(width, height)
 	{
 //----------------------------------------------------------------------------//
 #if defined(__linux__)

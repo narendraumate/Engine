@@ -21,7 +21,7 @@ namespace Engine
 
 	public:
 
-		DxRenderer(const int& width, const int& height, const char* applicationName);
+		DxRenderer(const int& width, const int& height);
 		~DxRenderer();
 
 		bool initialize();

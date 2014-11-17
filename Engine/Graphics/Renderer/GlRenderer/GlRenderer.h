@@ -21,7 +21,7 @@ namespace Engine
 
 	public:
 
-		GlRenderer(const int& width, const int& height, const char* applicationName);
+		GlRenderer(const int& width, const int& height);
 		~GlRenderer();
 
 		bool initialize();

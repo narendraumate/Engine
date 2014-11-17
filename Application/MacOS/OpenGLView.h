@@ -9,8 +9,8 @@
 	NSString* applicationTitle;
 }
 
-- (void)drawRect:(NSRect)bounds;
 - (CVReturn)render;
+- (void)drawRect:(NSRect)bounds;
 - (CGLContextObj)willStartDrawing;
 - (void)didFinishDrawing:(CGLContextObj) cglContext;
 - (void)setWidth:(int) width;
