@@ -8,15 +8,21 @@
 
 #include "Main.h"
 
-Engine::Logger* g_logger = Engine::Logger::singleton();
-Engine::Settings* g_settings = Engine::Settings::singleton();
-Engine::Utils* g_utils = Engine::Utils::singleton();
-
+Engine::Logger* g_logger = NULL;
+Engine::Settings* g_settings = NULL;
+Engine::Utils* g_utils = NULL;
+Engine::Camera* g_camera = NULL;
 Engine::Renderer* g_renderer = NULL;
 
 void initializeMain()
 {
 	Engine::Logger::singleton()->print0();
+
+	// Create the camera object
+	g_camera = new Engine::Camera(g_settings->getWidth(), g_settings->getHeight());
+
+	// TODO OpenGL -Z inside and DirectX +Z inside. X is right and Y is up.
+	g_camera->setView(Engine::Vec3(0, 0, 10), Engine::Vec3(0, 0, 1), Engine::Vec3(1, 0, 0), Engine::Vec3(0, 1, 0));
 
 	// Create the renderer object
 #if defined(__APPLE__) || defined(__linux__)
@@ -24,6 +30,9 @@ void initializeMain()
 #elif _WIN32
     g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight());
 #endif //_WIN32
+
+	// Set the camera pointer of renderer object
+	g_renderer->setCamera(g_camera);
 
 	// Initialize and run the renderer object
 	g_renderer->initialize();

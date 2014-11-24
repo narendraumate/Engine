@@ -16,6 +16,8 @@
 #include "../Engine/External/MemTrack/MemTrack.h"
 #include "../Engine/Graphics/Renderer/DxRenderer/DxRenderer.h"
 #include "../Engine/Graphics/Renderer/GlRenderer/GlRenderer.h"
+#include "../Engine/Graphics/SceneGraph/Camera.h"
+#include "../Engine/Mathematics/Vector.h"
 
 void initializeMain();
 bool runMain();
@@ -24,7 +26,7 @@ void deinitializeMain();
 Engine::Logger* getLogger();
 Engine::Settings* getSettings();
 Engine::Utils* getUtils();
-
 Engine::Renderer* getRenderer();
+Engine::Camera* getCamera();
 
 #endif

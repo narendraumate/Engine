@@ -4,18 +4,21 @@ namespace Engine
 {
 	Camera::Camera(const int& screenWidth, const int& screenHeight)
 	{
-		// TODO OpenGL -Z inside and DirectX +Z inside. X is right and Y is up.
-		setView(Vec3(0, 0, 10), Vec3(0, 0, 1), Vec3(1, 0, 0), Vec3(0, 1, 0));
-		
-		// TODO screenNear and screenDepth to be fed from Renderer or Settings.
-		setPerspectiveProjection(M_PI_4, (float)screenWidth / (float)screenHeight, 1.0f, 100.0f);
-		
-		//TODO Fix this so transition between projections is seamless.
-		setOrthographicProjection(screenWidth, screenHeight, 1.0f, 100.0f);
+		// Calling function from construction might be unsafe.
+		resize(screenWidth, screenHeight);
 	}
 	
 	Camera::~Camera()
 	{ }
+
+	void Camera::resize(const int& screenWidth, const int& screenHeight)
+	{
+		// TODO screenNear and screenDepth to be fed from Renderer or Settings.
+		setPerspectiveProjection(M_PI_4, (float)screenWidth / (float)screenHeight, 1.0f, 100.0f);
+
+		//TODO Fix this so transition between projections is seamless.
+		setOrthographicProjection(screenWidth, screenHeight, 1.0f, 100.0f);
+	}
 
 	Vec3 Camera::getPosition()
 	{

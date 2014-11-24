@@ -91,7 +91,7 @@ namespace Engine
 		int m_width;
 		int m_height;
 
-		Camera m_camera;
+		Camera* m_camera;
 
 		Color4f m_clearColor;
 		float m_clearDepth;

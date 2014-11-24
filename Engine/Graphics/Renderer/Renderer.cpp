@@ -15,7 +15,7 @@ namespace Engine
 	:	m_contextObj(0)
 	,	m_width(width)
 	,	m_height(height)
-	,	m_camera(width, height)
+	,	m_camera(NULL)
 	,	m_clearColor(Color4f(0.5f, 0.5f, 0.5f, 1.0f))
 	,	m_clearDepth(10)
 	,	m_clearStencil(10)
@@ -49,27 +49,27 @@ namespace Engine
 
 	void Renderer::setCamera(Camera* camera)
 	{
-		m_camera = *camera;
+		m_camera = camera;
 	}
 
 	const Camera* Renderer::getCamera() const
 	{
-		return &m_camera;
+		return m_camera;
 	}
 
 	const Mat4* Renderer::getViewMatrix() const
 	{
-		return m_camera.getView();
+		return m_camera->getView();
 	}
 
 	const Mat4* Renderer::getPerspectiveProjectionMatrix() const
 	{
-		return m_camera.getPerspectiveProjection();
+		return m_camera->getPerspectiveProjection();
 	}
 
 	const Mat4* Renderer::getOrthographicProjectionMatrix() const
 	{
-		return m_camera.getOrthographicProjection();
+		return m_camera->getOrthographicProjection();
 	}
 
 	void Renderer::setClearColor(const Color4f& clearColor)

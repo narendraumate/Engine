@@ -75,7 +75,7 @@ namespace Engine
 		}
 
 		// TODO Update eye position when camera moves
-		Vec3 eyePosition = m_camera.getPosition();
+		Vec3 eyePosition = m_camera->getPosition();
 		GLint eyePositionLocation = glGetUniformLocation(g_programId, "eyePosition");
 		glUniform3fv(eyePositionLocation, 1, (float*)&eyePosition);
 
@@ -88,7 +88,7 @@ namespace Engine
 
 				for (int modelIndex = 0; modelIndex < sizeof(modelNames) / sizeof(modelNames[0]); ++modelIndex)
 				{
-					g_glModels.push_back(new GlModel(g_programId, &m_camera,
+					g_glModels.push_back(new GlModel(g_programId, m_camera,
 													 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 													 Utils::singleton()->findBasePath(modelNames[modelIndex])));
 				}
@@ -119,7 +119,7 @@ namespace Engine
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
 											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/Bayonetta/generic_item.mesh",
 											 "mesh/Mass Effect/MassEffect3_Miranda/generic_item.mesh", "mesh/Lollipop Chainsaw/Lollipop_LC/generic_item.mesh" };
-				g_glModels.push_back(new GlModel(g_programId, &m_camera,
+				g_glModels.push_back(new GlModel(g_programId, m_camera,
 												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
 												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
 
@@ -244,6 +244,7 @@ namespace Engine
 	{
 		m_width = width;
 		m_height = height;
+		m_camera->resize(width, height);
 
 		int params[4];
 		glGetIntegerv(GL_VIEWPORT, params);
