@@ -1,5 +1,5 @@
 -- A solution contains projects, and defines the available configurations
-solution "Application"
+solution "Engine"
 	configurations { "debug", "release" }
 	-- defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
 	
@@ -15,7 +15,7 @@ solution "Application"
 					"Engine/External/DevIL/DevIL/include"	}
 
 	-- A project defines one build target
-	project "Application"
+	project "Engine"
 		kind "WindowedApp"
 		language "C++"
 		files { "**.h", "**.hh", "**.hpp", "**.c", "**.cc", "**.cpp" }
@@ -26,14 +26,14 @@ solution "Application"
 			flags { "Symbols" }
 			targetdir ( "bin/debug" )
 			objdir ( "obj/debug" )
-			-- targetname ( "Application" )
+			-- targetname ( "Engine" )
 
 		configuration "release"
 			defines { "NDEBUG" }
 			flags { "Optimize" }
 			targetdir ( "bin/release" )
 			objdir ( "obj/release" )
-			-- targetname ( "Application" )
+			-- targetname ( "Engine" )
 
 		configuration "windows"
 			linkoptions { }
