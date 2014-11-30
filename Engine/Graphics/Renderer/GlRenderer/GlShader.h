@@ -21,8 +21,7 @@
 #include <sstream>
 #include <vector>
 
-#include "../../../External/glsw/glsw.h"
-#include "../../../../Application/Common/Utils.h"
+#include "../../../Application/Common/Utils.h"
 
 namespace Engine
 {
