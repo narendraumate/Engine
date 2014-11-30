@@ -13,7 +13,7 @@
 #include "GlProgram.h"
 #include "GlShader.h"
 #include "../Common/TextureManager.h"
-#include "../../../../Application/Common/Logger.h"
+#include "../../../Application/Common/Logger.h"
 #include "../../../External/stbi/StbImage.h"
 #include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
 
