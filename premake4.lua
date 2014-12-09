@@ -1,15 +1,17 @@
 -- A solution contains projects, and defines the available configurations
 solution "Engine"
 	configurations { "debug", "release" }
-	-- defines { "ASSIMP_BUILD_BOOST_WORKAROUND" }
+
+	-- Additional defines
+	-- defines { "ASSIMP_BUILD_BOOST_WORKAROUND" } -- disable assimp boost
 	
-	-- Disable assimp, DevIL, glsw
-	excludes { "**/assimp/**", "**/DevIL/**", "**/glsw/**" }
+	-- Disable assimp, callback, DevIL, glsw
+	excludes { "**/assimp/**", "**/callback/**", "**/DevIL/**", "**/glsw/**" }
 	
 	excludes {	"**/src-IL/**", 
 				"**/src-ILU/**", 
 				"**/src-ILUT/**", 
-				"Engine/External/assimp/revision.h" }
+				"Engine/External/assimp/revision.h"	}
 	includedirs {	"Engine/External/assimp/code/BoostWorkaround", 
 					"Engine/External/assimp/contrib/cppunit-1.12.1/include", 
 					"Engine/External/DevIL/DevIL/include"	}
