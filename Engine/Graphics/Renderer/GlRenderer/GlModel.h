@@ -17,7 +17,7 @@
 #include "../Common/TextureManager.h"
 #include "../../SceneGraph/Camera.h"
 #include "../../../Mathematics/Matrix.h"
-#include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
+#include "../../../External/tiny_model_loader_compact/tiny_model_loader_compact.h"
 
 namespace Engine
 {

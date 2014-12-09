@@ -47,6 +47,8 @@ namespace Engine
 		bool preDraw();
 		void postDraw();
 
+	private:
+
 		void getVideoCardInfo(char* cardName);
 		void getGlVersion(int *major, int *minor);
 		void getGlslVersion(int *major, int *minor);

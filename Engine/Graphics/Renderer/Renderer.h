@@ -42,36 +42,38 @@ namespace Engine
 		void setContextObj(const ContextObj& contextObj);
 		ContextObj getContextObj();
 
-		int getWidth() const;
-		int getHeight() const;
-		const char* getApplicationName() const;
-
 		void setCamera(Camera* camera);
 		const Camera* getCamera() const;
+
+		void setWidth(const int& width);
+		int getWidth();
+
+		void setHeight(const int& height);
+		int getHeight();
+
+		void setClearColor(const Color4f& clearColor);
+		Color4f getClearColor() const;
+
+		void setClearDepth(const float& clearDepth);
+		float getClearDepth() const;
+
+		void setClearStencil(unsigned int& clearStencil);
+		unsigned int getClearStencil() const;
 
 		const Mat4* getViewMatrix() const;
 		const Mat4* getPerspectiveProjectionMatrix() const;
 		const Mat4* getOrthographicProjectionMatrix() const;
 
-		void setClearColor(const Color4f& clearColor);
-		Color4f getClearColor() const;
-		void setClearDepth(const float& clearDepth);
-		float getClearDepth() const;
-		void setClearStencil(unsigned int& clearStencil);
-		unsigned int getClearStencil() const;
-
 		virtual bool initialize() = 0;
 		virtual void run() = 0;
 		virtual void shutdown() = 0;
 
-		// Support for viewport, depth range, resize.
 		virtual void setViewport(const int& xPos, const int& yPos, const int& w, const int& h) = 0;
 		virtual void getViewport(int& xPos, int& yPos, int& w, int& h) const = 0;
 		virtual void setDepthRange(const float& zMin, const float& zMax) = 0;
 		virtual void getDepthRange(float& zMin, float& zMax) const = 0;
 		virtual void resize(const int& width, const int& height) = 0;
 
-		// Support for clearing the color, depth, and stencil buffers.
 		virtual void clearColorBuffer() = 0;
 		virtual void clearDepthBuffer() = 0;
 		virtual void clearStencilBuffer() = 0;
@@ -90,13 +92,11 @@ namespace Engine
 		ContextObj m_contextObj;
 		int m_width;
 		int m_height;
-
 		Camera* m_camera;
 
 		Color4f m_clearColor;
 		float m_clearDepth;
 		unsigned int m_clearStencil;
-
 	};
 	
 }

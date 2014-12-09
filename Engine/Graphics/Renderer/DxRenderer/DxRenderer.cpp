@@ -119,21 +119,6 @@ namespace Engine
 
 	}
 
-	void DxRenderer::draw(const unsigned char* screenBuffer, const bool& reflectY)
-	{
-
-	}
-
-	void DxRenderer::draw(const int& x, const int& y, const Color4f& color, const std::string& message)
-	{
-
-	}
-
-	void DxRenderer::drawPrimitive()
-	{
-
-	}
-
 }
 
 #endif //_WIN32

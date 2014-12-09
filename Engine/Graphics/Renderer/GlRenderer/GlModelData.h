@@ -16,7 +16,7 @@
 #include "../Common/TextureManager.h"
 #include "../../../Mathematics/Vector.h"
 #include "../../../External/stbi/StbImage.h"
-#include "../../../External/tinymodelloader/tiny_model_loader_compact.h"
+#include "../../../External/tiny_model_loader_compact/tiny_model_loader_compact.h"
 #include "../../../Application/Common/Logger.h"
 
 namespace Engine

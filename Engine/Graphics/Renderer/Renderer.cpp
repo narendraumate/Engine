@@ -37,16 +37,6 @@ namespace Engine
 		return m_contextObj;
 	}
 
-	int Renderer::getWidth() const
-	{
-		return m_width;
-	}
-
-	int Renderer::getHeight() const
-	{
-		return m_height;
-	}
-
 	void Renderer::setCamera(Camera* camera)
 	{
 		m_camera = camera;
@@ -57,19 +47,24 @@ namespace Engine
 		return m_camera;
 	}
 
-	const Mat4* Renderer::getViewMatrix() const
+	void Renderer::setWidth(const int& width)
 	{
-		return m_camera->getView();
+		m_width = width;
 	}
 
-	const Mat4* Renderer::getPerspectiveProjectionMatrix() const
+	int Renderer::getWidth()
 	{
-		return m_camera->getPerspectiveProjection();
+		return m_width;
 	}
 
-	const Mat4* Renderer::getOrthographicProjectionMatrix() const
+	void Renderer::setHeight(const int& height)
 	{
-		return m_camera->getOrthographicProjection();
+		m_height = height;
+	}
+
+	int Renderer::getHeight()
+	{
+		return m_height;
 	}
 
 	void Renderer::setClearColor(const Color4f& clearColor)
@@ -100,6 +95,21 @@ namespace Engine
 	unsigned int Renderer::getClearStencil() const
 	{
 		return m_clearStencil;
+	}
+
+	const Mat4* Renderer::getViewMatrix() const
+	{
+		return m_camera->getView();
+	}
+
+	const Mat4* Renderer::getPerspectiveProjectionMatrix() const
+	{
+		return m_camera->getPerspectiveProjection();
+	}
+
+	const Mat4* Renderer::getOrthographicProjectionMatrix() const
+	{
+		return m_camera->getOrthographicProjection();
 	}
 	
 }
