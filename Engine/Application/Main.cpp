@@ -95,6 +95,11 @@ Engine::Utils* getUtils()
 	return g_utils;
 }
 
+Engine::Camera* getCamera()
+{
+	return g_camera;
+}
+
 Engine::Renderer* getRenderer()
 {
 	return g_renderer;

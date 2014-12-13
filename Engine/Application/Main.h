@@ -26,7 +26,7 @@ void deinitializeMain();
 Engine::Logger* getLogger();
 Engine::Settings* getSettings();
 Engine::Utils* getUtils();
-Engine::Renderer* getRenderer();
 Engine::Camera* getCamera();
+Engine::Renderer* getRenderer();
 
 #endif
