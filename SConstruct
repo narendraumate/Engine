@@ -6,7 +6,7 @@ platform = sys.platform
 
 # base
 base_env = Environment()
-base_env.Append(CPPDEFINES=['ASSIMP_BUILD_BOOST_WORKAROUND', 'ASSIMP_BUILD_NO_OWN_ZLIB', 'IL_NO_EXR', 'IL_NO_JP2', 'IL_NO_JPG', 'IL_NO_LCMS', 'IL_NO_MNG', 'IL_NO_PNG', 'IL_NO_TIF', 'IL_NO_UTX'])
+base_env.Append(CPPDEFINES=['ASSIMP_BUILD_BOOST_WORKAROUND', 'ASSIMP_BUILD_NO_OWN_ZLIB'])
 
 # platform specific
 if platform == 'win32':

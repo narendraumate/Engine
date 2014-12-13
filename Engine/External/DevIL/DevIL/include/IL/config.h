@@ -14,7 +14,7 @@
 // #define IL_NO_DDS
 // #define IL_NO_DICOM
 // #define IL_NO_DOOM
-// #define IL_NO_EXR
+#define IL_NO_EXR
 // #define IL_NO_FITS
 // #define IL_NO_FTX
 // #define IL_NO_GIF
@@ -22,17 +22,17 @@
 // #define IL_NO_ICO
 // #define IL_NO_ICNS
 // #define IL_NO_IWI
-// #define IL_NO_JP2
-// #define IL_NO_JPG
-// #define IL_NO_LCMS
+#define IL_NO_JP2
+#define IL_NO_JPG
+#define IL_NO_LCMS
 // #define IL_NO_LIF
 // #define IL_NO_MDL
-// #define IL_NO_MNG
+#define IL_NO_MNG
 // #define IL_NO_PCD
 // #define IL_NO_PCX
 // #define IL_NO_PIC
 // #define IL_NO_PIX
-// #define IL_NO_PNG
+#define IL_NO_PNG
 // #define IL_NO_PNM
 // #define IL_NO_PSD
 // #define IL_NO_PSP
@@ -42,9 +42,9 @@
 // #define IL_NO_SGI
 // #define IL_NO_SUN
 // #define IL_NO_TGA
-// #define IL_NO_TIF
+#define IL_NO_TIF
 // #define IL_NO_TPL
-// #define IL_NO_UTX
+#define IL_NO_UTX
 // #define IL_NO_WAL
 // #define IL_NO_WDP
 // #define IL_NO_XPM
