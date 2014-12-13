@@ -379,11 +379,11 @@ GLuint ILAPIENTRY ilutGLBindMipmaps()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-
-	if (!ilutGLBuildMipmaps()) {
+	glGenerateMipmap(GL_TEXTURE_2D);
+	/*if (!ilutGLBuildMipmaps()) {
 		glDeleteTextures(1, &TexID);
 		return 0;
-	}
+	}*/
 
 //	glPopAttrib();
 
@@ -391,7 +391,7 @@ GLuint ILAPIENTRY ilutGLBindMipmaps()
 }
 
 
-ILboolean ILAPIENTRY ilutGLBuildMipmaps()
+/*ILboolean ILAPIENTRY ilutGLBuildMipmaps()
 {
 	ILimage	*Image;
 
@@ -412,7 +412,7 @@ ILboolean ILAPIENTRY ilutGLBuildMipmaps()
 		ilCloseImage(Image);
 	
 	return IL_TRUE;
-}
+}*/
 
 
 ILboolean ILAPIENTRY ilutGLSubTex(GLuint TexID, ILuint XOff, ILuint YOff)
