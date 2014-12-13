@@ -3,7 +3,6 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-#include <unistd.h>
 #include "gzguts.h"
 
 /* Local functions */
@@ -13,7 +12,7 @@ local int gz_look OF((gz_statep));
 local int gz_decomp OF((gz_statep));
 local int gz_fetch OF((gz_statep));
 local int gz_skip OF((gz_statep, z_off64_t));
-
+extern ssize_t	 read(int, void *, size_t);
 /* Use read() to load a buffer -- return -1 on error, otherwise 0.  Read from
    state->fd, and update state->eof, state->err, and state->msg as appropriate.
    This function needs to loop on read(), since read() is not guaranteed to
@@ -563,7 +562,7 @@ int ZEXPORT gzdirect(file)
     /* return 1 if transparent, 0 if processing a gzip stream */
     return state->direct;
 }
-
+extern int	 close(int);
 /* -- see zlib.h -- */
 int ZEXPORT gzclose_r(file)
     gzFile file;

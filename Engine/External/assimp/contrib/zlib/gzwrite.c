@@ -3,7 +3,6 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-#include <unistd.h>
 #include "gzguts.h"
 
 /* Local functions */
@@ -61,7 +60,7 @@ local int gz_init(state)
     }
     return 0;
 }
-
+extern ssize_t	 write(int, const void *, size_t);
 /* Compress whatever is at avail_in and next_in and write to the output file.
    Return -1 if there is an error writing to the output file, otherwise 0.
    flush is assumed to be a valid deflate() flush value.  If flush is Z_FINISH,
@@ -535,7 +534,7 @@ int ZEXPORT gzsetparams(file, level, strategy)
     state->strategy = strategy;
     return Z_OK;
 }
-
+extern int	 close(int);
 /* -- see zlib.h -- */
 int ZEXPORT gzclose_w(file)
     gzFile file;

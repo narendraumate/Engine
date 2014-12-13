@@ -3,17 +3,24 @@ solution "Engine"
 	configurations { "debug", "release" }
 
 	-- Additional defines
-	-- defines { "ASSIMP_BUILD_BOOST_WORKAROUND" } -- disable assimp boost
-	
-	-- Disable assimp, callback, DevIL, glsw
-	excludes { "**/assimp/**", "**/callback/**", "**/DevIL/**", "**/glsw/**" }
-	
-	excludes {	"**/src-IL/**", 
-				"**/src-ILU/**", 
-				"**/src-ILUT/**", 
-				"Engine/External/assimp/revision.h"	}
-	includedirs {	"Engine/External/assimp/code/BoostWorkaround", 
-					"Engine/External/assimp/contrib/cppunit-1.12.1/include", 
+	-- disable assimp boost, assimp zlib
+	-- disable devil image formats
+	defines {	"ASSIMP_BUILD_BOOST_WORKAROUND",
+				"ASSIMP_BUILD_NO_OWN_ZLIB",
+				"IL_NO_EXR",
+				"IL_NO_JP2",
+				"IL_NO_JPG",
+				"IL_NO_LCMS",
+				"IL_NO_MNG",
+				"IL_NO_PNG",
+				"IL_NO_TIF",
+				"IL_NO_UTX"	}
+
+	excludes { "**/callback/**", "**/glsw/**", "**/src-ILU/ilur/**" }
+
+	includedirs {	"Engine/External/assimp/code/BoostWorkaround",
+					"Engine/External/assimp/contrib/cppunit-1.12.1/include",
+					"Engine/External/assimp/include",
 					"Engine/External/DevIL/DevIL/include"	}
 
 	-- A project defines one build target
@@ -43,6 +50,7 @@ solution "Engine"
 			excludes { "**/MacOS/**", "**/Linux/**" }
 
 		configuration "macosx"
+			buildoptions { "-fgnu89-inline" } -- hack for DevIL
 			linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
 			files { "**.m", "**.mm" }
 			excludes { "**/Windows/**", "**/Linux/**" }

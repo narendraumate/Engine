@@ -14,6 +14,8 @@
 #  else
 #    include <cppunit/config/config-msvc6.h>
 #  endif
+#elif defined (__APPLE__)
+#  include <cppunit/config/config-mac.h>
 #else
 #    include <cppunit/config-auto.h>
 #endif

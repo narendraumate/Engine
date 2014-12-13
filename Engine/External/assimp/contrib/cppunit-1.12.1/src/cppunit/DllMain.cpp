@@ -1,5 +1,6 @@
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN 
+#if defined(_WIN32)
+
+#define WIN32_LEAN_AND_MEAN
 #define NOGDI
 #define NOUSER
 #define NOKERNEL
@@ -15,4 +16,4 @@ DllMain( HANDLE hModule,
 {
   return TRUE;
 }
-#endif //_WIN32
+#endif

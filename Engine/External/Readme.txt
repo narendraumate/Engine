@@ -1,7 +1,8 @@
-assimp
+assimp - Modified
 https://github.com/assimp/assimp/tree/master/code
 https://github.com/assimp/assimp/tree/master/contrib
 https://github.com/assimp/assimp/tree/master/include
+https://github.com/assimp/assimp/tree/master/LICENSE
 https://github.com/assimp/assimp/tree/master/revision.h
 
 callback - Modified

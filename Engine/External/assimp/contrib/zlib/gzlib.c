@@ -3,7 +3,6 @@
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
-#include <unistd.h>
 #include "gzguts.h"
 
 #if defined(_WIN32) && !defined(__BORLANDC__)
@@ -15,7 +14,7 @@
 #  define LSEEK lseek
 #endif
 #endif
-
+extern off_t lseek(int, off_t, int);
 /* Local functions */
 local void gz_reset OF((gz_statep));
 local gzFile gz_open OF((const void *, int, const char *));

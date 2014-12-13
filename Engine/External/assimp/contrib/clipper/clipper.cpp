@@ -2123,8 +2123,7 @@ void Clipper::AddOutPt(TEdge *e, const IntPoint &pt)
     if ((e->side | outRec->sides) != outRec->sides)
     {
       //check for 'rounding' artefacts ...
-      if (outRec->sides == esNeither && pt.Y == op->pt.Y)
-	  {
+      if (outRec->sides == esNeither && pt.Y == op->pt.Y){
         if (ToFront)
         {
           if (pt.X == op->pt.X +1) return;    //ie wrong side of bottomPt
