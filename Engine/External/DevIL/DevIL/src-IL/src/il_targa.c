@@ -839,8 +839,8 @@ ILuint iTargaSize(void)
 	ILuint	Size, Bpp;
 	ILubyte	IDLen = 0;
 	const char	*ID = iGetString(IL_TGA_ID_STRING);
-	const char	*AuthName = iGetString(IL_TGA_AUTHNAME_STRING);
-	const char	*AuthComment = iGetString(IL_TGA_AUTHCOMMENT_STRING);
+	//const char	*AuthName = iGetString(IL_TGA_AUTHNAME_STRING);
+	//const char	*AuthComment = iGetString(IL_TGA_AUTHCOMMENT_STRING);
 
 	//@TODO: Support color indexed images.
 	if (iGetInt(IL_TGA_RLE) == IL_TRUE || iCurImage->Format == IL_COLOUR_INDEX) {

@@ -220,7 +220,7 @@ typedef struct
 
 static int isLBM()
 {
-    SDL_RWops* src = 0;
+    //SDL_RWops* src = 0;
     int start;
     int   is_LBM;
     Uint8 magic[4+4+4];
@@ -242,7 +242,7 @@ static int isLBM()
 
 static ILboolean load_ilbm(void)
 {
-    SDL_RWops* src = 0;
+    //SDL_RWops* src = 0;
     struct { Uint8 r; Uint8 g; Uint8 b; } scratch_pal[MAXCOLORS];
     ILenum      format; /* IL_RGB (ham or 24bit) or IL_COLOUR_INDEX */
 

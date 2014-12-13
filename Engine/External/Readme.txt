@@ -7,7 +7,7 @@ https://github.com/assimp/assimp/tree/master/revision.h
 
 callback - Modified
 
-DevIL
+DevIL - Modified
 https://github.com/svn2github/DevIL/tree/master/DevIL/include
 https://github.com/svn2github/DevIL/tree/master/DevIL/src-IL
 https://github.com/svn2github/DevIL/tree/master/DevIL/src-ILU

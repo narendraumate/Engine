@@ -233,7 +233,7 @@ ILboolean GetImages(ILpal *GlobalPal, GIFHEAD *GifHead)
 	IMAGEDESC	ImageDesc, OldImageDesc;
 	GFXCONTROL	Gfx;
 	ILboolean	BaseImage = IL_TRUE;
-	ILimage		*Image = iCurImage, *TempImage = NULL, *PrevImage = NULL;
+	ILimage		*Image = iCurImage, *PrevImage = NULL;//, *TempImage = NULL;
 	ILuint		NumImages = 0, i;
 	ILint		input;
 	ILuint		PalOffset;
