@@ -6,20 +6,20 @@
 
 // Supported images formats (IL)
 
-// #define IL_NO_BLP
+#define IL_NO_BLP
 // #define IL_NO_BMP
 // #define IL_NO_CUT
 // #define IL_NO_CHEAD
 // #define IL_NO_DCX
 // #define IL_NO_DDS
-// #define IL_NO_DICOM
+#define IL_NO_DICOM
 // #define IL_NO_DOOM
 #define IL_NO_EXR
-// #define IL_NO_FITS
+#define IL_NO_FITS
 // #define IL_NO_FTX
 // #define IL_NO_GIF
-// #define IL_NO_HDR
-// #define IL_NO_ICO
+#define IL_NO_HDR
+#define IL_NO_ICO
 // #define IL_NO_ICNS
 // #define IL_NO_IWI
 #define IL_NO_JP2
@@ -35,10 +35,10 @@
 #define IL_NO_PNG
 // #define IL_NO_PNM
 // #define IL_NO_PSD
-// #define IL_NO_PSP
+#define IL_NO_PSP
 // #define IL_NO_PXR
 // #define IL_NO_RAW
-// #define IL_NO_ROT
+#define IL_NO_ROT
 // #define IL_NO_SGI
 // #define IL_NO_SUN
 // #define IL_NO_TGA
@@ -47,7 +47,7 @@
 #define IL_NO_UTX
 // #define IL_NO_WAL
 // #define IL_NO_WDP
-// #define IL_NO_XPM
+#define IL_NO_XPM
 
 #define IL_USE_JPEGLIB_UNMODIFIED 1
 //#define IL_USE_DXTC_NVIDIA
