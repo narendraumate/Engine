@@ -56,6 +56,9 @@ void deinitializeMain()
 {
 	Engine::Logger::singleton()->print0();
 
+	// Release the camera object
+	delete g_camera;
+
 	// Shutdown and release the renderer object
 	g_renderer->shutdown();
 	delete g_renderer;

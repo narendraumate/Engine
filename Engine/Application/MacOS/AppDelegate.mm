@@ -59,11 +59,16 @@
 	return YES;
 }
 
+- (void)applicationWillTerminate:(NSNotification *)notification
+{
+	[self dealloc];
+}
+
 - (void)dealloc
 {
 	// don’t forget to release allocated objects!
 	[view release];
-	[window release];
+////[window release];
 	[super dealloc];
 }
 
