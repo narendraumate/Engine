@@ -55,7 +55,7 @@ namespace Engine
 		phongShaders.push_back(GlShader::loadShader("phong.vert", GL_VERTEX_SHADER));
 		phongShaders.push_back(GlShader::loadShader("phong.frag", GL_FRAGMENT_SHADER));
 
-		int programIndex = 2;
+		int programIndex = 2; // phong is expensive
 
 		switch (programIndex) {
 			case 0:
@@ -113,7 +113,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 0;
+				int modelIndex = 9; // 0, 9, 10 can be shown as small models and 6 is horribly slow to the point that it can not be demoed
 				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
 					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
