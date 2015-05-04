@@ -48,13 +48,15 @@
 	CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
 
-	getSettings()->setWidth(applicationWidth);
-	getSettings()->setHeight(applicationHeight);
-	getSettings()->setTitle([applicationTitle UTF8String]);
+	// Implement this.
+	//getSettings()->setWidth(applicationWidth);
+	//getSettings()->setHeight(applicationHeight);
+	//getSettings()->setTitle([applicationTitle UTF8String]);
 
 	initializeMain();
 
-	getRenderer()->setContextObj(cglContext);
+	// Implement this.
+	//getRenderer()->setContextObj(cglContext);
 
 	CVDisplayLinkStart(displayLink);
 }
@@ -74,10 +76,11 @@
 
 	CGLContextObj cglContext = [self willStartDrawing];
 
-	if (getRenderer())
-	{
-		getRenderer()->resize([self bounds].size.width, [self bounds].size.height);
-	}
+	// Implement this.
+	//if (getRenderer())
+	//{
+	//	getRenderer()->resize([self bounds].size.width, [self bounds].size.height);
+	//}
 
 	[self didFinishDrawing:cglContext];
 }

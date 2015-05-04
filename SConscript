@@ -27,11 +27,6 @@ srcextensions = ('.c', '.cc', '.cpp', '.m', '.mm')
 objextensions = ('.o', '.obj')
 excludedirs = set()
 
-# HARDCODING BEGINS
-excludedirs |= set(['assimp', 'DevIL', 'glsw'])
-excludedirs |= set(['src-IL', 'src-ILU', 'src-ILUT'])
-# HARDCODING ENDS
-
 # platform specific
 if platform == 'win32':
     excludedirs |= set(['MacOS', 'Linux'])
