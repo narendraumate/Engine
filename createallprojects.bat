@@ -1,1 +1,1 @@
-Tools\Windows\premake4\premake4 --file=premake4.lua --os=windows --platform=x64 vs2012
+Tools\Windows\premake5\premake5 --file=premake5.lua --os=windows vs2013
