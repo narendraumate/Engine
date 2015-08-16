@@ -1,14 +1,14 @@
 //
-//  AppDelegate.m
+//  OpenGLAppDelegate.m
 //  Application
 //
 //  Created by Narendra Umate on 10/8/13.
 //
 //
 
-#import "AppDelegate.h"
+#import "OpenGLAppDelegate.h"
 
-@implementation AppDelegate
+@implementation OpenGLAppDelegate
 
 - (id)initWithTitle:(NSString*)applicationTitle width:(int)applicationWidth height:(int)applicationHeight
 {
@@ -22,17 +22,17 @@
         NSRect contentSize = NSMakeRect(0.0f, 0.0f, width, height);
 
         // allocate window
-        window = [[OpenGLWindow alloc] initWithContentRect:contentSize
+        window = [[[MacWindow alloc] initWithContentRect:contentSize
 											 styleMask:NSTitledWindowMask
 											   backing:NSBackingStoreBuffered
-												 defer:YES];
+												 defer:YES] autorelease];
 
         // allocate view
-        view = [[OpenGLView alloc] initWithFrame:contentSize];
+        view = [[[OpenGLView alloc] initWithFrame:contentSize] autorelease];
     }
     return self;
 }
-
+/*----------------------------------------------------------------------------*/
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
 	// change window settings
@@ -50,6 +50,16 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+	// Implement this.
+	//getSettings()->setWidth(applicationWidth);
+	//getSettings()->setHeight(applicationHeight);
+	//getSettings()->setTitle([applicationTitle UTF8String]);
+
+	initializeMain();
+
+	// Implement this.
+	//getRenderer()->setContextObj(cglContext);
+
     // make the window visible.
     [window makeKeyAndOrderFront:self];
 }
@@ -61,15 +71,7 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
-	[self dealloc];
-}
-
-- (void)dealloc
-{
-	// don’t forget to release allocated objects!
-	[view release];
-////[window release];
-	[super dealloc];
+	deinitializeMain();
 }
 
 @end

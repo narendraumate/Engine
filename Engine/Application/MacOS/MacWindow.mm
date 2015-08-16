@@ -1,4 +1,12 @@
-#import "OpenGLWindow.h"
+//
+//  MacWindow.mm
+//  Application
+//
+//  Created by Narendra Umate on 10/8/13.
+//
+//
+
+#import "MacWindow.h"
 
 #define _HIDDEN_PRESENTATION	NSApplicationPresentationHideDock|\
 NSApplicationPresentationHideMenuBar
@@ -8,7 +16,7 @@ NSApplicationPresentationHideMenuBar
 #define _DEFAULT_MASK		NSTitledWindowMask|NSClosableWindowMask|\
 NSMiniaturizableWindowMask|NSResizableWindowMask
 
-@implementation OpenGLWindow
+@implementation MacWindow
 
 @synthesize fullscreen	= _fullscreen;
 @synthesize windowedFrame = _windowed_frame;

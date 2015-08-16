@@ -9,6 +9,8 @@
 #ifndef Application_Main_h
 #define Application_Main_h
 
+#include <stdio.h>
+
 void initializeMain();
 bool runMain();
 void deinitializeMain();

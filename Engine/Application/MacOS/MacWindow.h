@@ -1,6 +1,14 @@
+//
+//  MacWindow.h
+//  Application
+//
+//  Created by Narendra Umate on 10/8/13.
+//
+//
+
 #import <Cocoa/Cocoa.h>
 
-@interface OpenGLWindow : NSWindow
+@interface MacWindow : NSWindow
 @property (nonatomic, assign, getter=isFullscreen) BOOL fullscreen;
 @property (nonatomic, assign) NSRect windowedFrame;
 @property (nonatomic, retain) NSString* windowedTitle;

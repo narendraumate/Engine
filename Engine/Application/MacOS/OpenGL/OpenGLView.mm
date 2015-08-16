@@ -1,8 +1,31 @@
+//
+//  OpenGLView.mm
+//  Application
+//
+//  Created by Narendra Umate on 10/8/13.
+//
+//
+
 #include "MacMain.h"
 #include "OpenGLView.h"
 
 @implementation OpenGLView
+/*----------------------------------------------------------------------------*/
+- (void)setWidth:(int) width
+{
+	applicationWidth = width;
+}
 
+- (void)setHeight:(int) height
+{
+	applicationHeight = height;
+}
+
+- (void)setTitle:(NSString*) title
+{
+	applicationTitle = title;
+}
+/*----------------------------------------------------------------------------*/
 - (void)awakeFromNib
 {
 	NSOpenGLPixelFormatAttribute attrs[] = {
@@ -47,17 +70,6 @@
 	CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
 	CVDisplayLinkSetOutputCallback(displayLink, &displayLinkCallback, self);
 	CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
-
-	// Implement this.
-	//getSettings()->setWidth(applicationWidth);
-	//getSettings()->setHeight(applicationHeight);
-	//getSettings()->setTitle([applicationTitle UTF8String]);
-
-	initializeMain();
-
-	// Implement this.
-	//getRenderer()->setContextObj(cglContext);
-
 	CVDisplayLinkStart(displayLink);
 }
 
@@ -87,9 +99,12 @@
 
 - (void)dealloc
 {
-	CVDisplayLinkRelease(displayLink);
+	// Stop the display link BEFORE releasing anything in the view
+	// otherwise the display link thread may call into the view and crash
+	// when it encounters something that has been release
+	CVDisplayLinkStop(displayLink);
 
-	deinitializeMain();
+	CVDisplayLinkRelease(displayLink);
 
 	[super dealloc];
 }
@@ -127,21 +142,6 @@
 	CGLUnlockContext(cglContext);
 }
 
-- (void)setWidth:(int) width
-{
-	applicationWidth = width;
-}
-
-- (void)setHeight:(int) height
-{
-	applicationHeight = height;
-}
-
-- (void)setTitle:(NSString*) title
-{
-	applicationTitle = title;
-}
-/*----------------------------------------------------------------------------*/
 static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
 									const CVTimeStamp* now,
 									const CVTimeStamp* outputTime,

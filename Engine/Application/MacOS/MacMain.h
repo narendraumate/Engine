@@ -6,7 +6,11 @@
 //
 //
 
-#import "AppDelegate.h"
+#import "MetalAppDelegate.h"
+#import "OpenGLAppDelegate.h"
+
+#define EnableOpenGL 1
+#define EnableMetal 0
 
 @interface MacMain : NSObject
 

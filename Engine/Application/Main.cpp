@@ -9,7 +9,9 @@
 #include "Main.h"
 
 void initializeMain()
-{ }
+{
+	printf("initializeMain\n");
+}
 
 bool runMain()
 {
@@ -17,4 +19,6 @@ bool runMain()
 }
 
 void deinitializeMain()
-{ }
+{
+	printf("deinitializeMain\n");
+}

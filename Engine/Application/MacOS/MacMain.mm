@@ -13,7 +13,7 @@
 int main(int argc, char *argv[])
 {
 	// initialize settings
-	char applicationName[] = "Renderer";
+	char applicationName[] = "Engine";
 	int applicationWidth = 1280;
 	int applicationHeight = 720;
 
@@ -35,12 +35,21 @@ int main(int argc, char *argv[])
 										   keyEquivalent:@"q"] autorelease];
 	[appMenu addItem:quitMenuItem];
 	[appMenuItem setSubmenu:appMenu];
-	[NSApp setMainMenu:menubar];
+	[application setMainMenu:menubar];
 
 	// instantiate our application delegate
-	id applicationDelegate = [[[AppDelegate alloc] initWithTitle:nsApplicationName
-														   width:applicationWidth
-														  height:applicationHeight] autorelease];
+#if EnableOpenGL
+	id applicationDelegate = [[[OpenGLAppDelegate alloc] initWithTitle:nsApplicationName
+																 width:applicationWidth
+																height:applicationHeight] autorelease];
+#endif
+
+#if EnableMetal
+	id applicationDelegate = [[[MetalAppDelegate alloc] initWithTitle:nsApplicationName
+																width:applicationWidth
+															   height:applicationHeight] autorelease];
+#endif
+
 	// assign our delegate to the NSApplication
 	[application setDelegate:applicationDelegate];
 

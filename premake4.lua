@@ -29,7 +29,7 @@ solution "Engine"
 			excludes { "**/MacOS/**", "**/Linux/**" }
 
 		configuration "macosx"
-			linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
+			linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore", "-framework Metal", "-framework MetalKit" }
 			files { "**.m", "**.mm" }
 			excludes { "**/Windows/**", "**/Linux/**" }
 
