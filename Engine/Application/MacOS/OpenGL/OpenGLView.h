@@ -21,16 +21,4 @@
 - (void)setHeight:(int) height;
 - (void)setTitle:(NSString*) title;
 
-- (CVReturn)render;
-- (void)drawRect:(NSRect)bounds;
-- (CGLContextObj)willStartDrawing;
-- (void)didFinishDrawing:(CGLContextObj) cglContext;
-
-static CVReturn displayLinkCallback(CVDisplayLinkRef displayLink,
-									const CVTimeStamp* now,
-									const CVTimeStamp* outputTime,
-									CVOptionFlags flagsIn,
-									CVOptionFlags* flagsOut,
-									void* displayLinkContext);
-
 @end

@@ -62,6 +62,13 @@
 {
 	[super prepareOpenGL];
 
+	// The reshape function may have changed the thread to which our OpenGL
+	// context is attached before prepareOpenGL and initGL are called.  So call
+	// makeCurrentContext to ensure that our OpenGL context current to this
+	// thread (i.e. makeCurrentContext directs all OpenGL calls on this thread
+	// to [self openGLContext])
+	[[self openGLContext] makeCurrentContext];
+
 	GLint vsync = 1;
 	CGLContextObj cglContext = (CGLContextObj)[[self openGLContext] CGLContextObj];
 	CGLPixelFormatObj cglPixelFormat = (CGLPixelFormatObj)[[self pixelFormat] CGLPixelFormatObj];
