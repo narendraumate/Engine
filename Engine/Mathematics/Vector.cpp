@@ -43,7 +43,7 @@ namespace Engine
 
 	float Vec1::norm(void) const
 	{
-		return fabs(x);//return x > 0.0f ? x : -x;//return sqrtf(dot(*this, *this));
+		return fabsf(x);//return x > 0.0f ? x : -x;//return sqrtf(dot(*this, *this));
 	}
 
 	Vec1 Vec1::normal(void) const
