@@ -27,10 +27,10 @@ void main()
 	gl_Position = vPosition;
 
 //#if defined (USE_NORMALS)
-//	vNormal = normalize(norm * normal);
+	vNormal = normalize(norm * normal);
 //#else
-	mat3 vTangentToWorld = mat3(normalize(norm * tangent), normalize(norm * bitangent), normalize(norm * normal));
-	vNormal = normalize(vTangentToWorld * ((texture(normalTextureSampler, texcoord)).rgb * 2.0 - 1.0));
+//	mat3 vTangentToWorld = mat3(normalize(norm * tangent), normalize(norm * bitangent), normalize(norm * normal));
+//	vNormal = normalize(vTangentToWorld * ((texture(normalTextureSampler, texcoord)).rgb * 2.0 - 1.0));
 //#endif defined // (USE_NORMALS)
 
 	vTexcoord = texcoord;
