@@ -92,7 +92,7 @@ namespace Engine
 		glUseProgram(0);
 //----------------------------------------------------------------------------//
 	}
-	
+
 	void GlModel::pushModelMatrix()
 	{
 		////glUseProgram(m_programId);
@@ -149,7 +149,7 @@ namespace Engine
 		////glUniformMatrix4fv(orthographicMatrixLocation, 1, GL_FALSE, (float*)m_cameraPtr->getOrthographicProjection());
 		////glUseProgram(0);
 	}
-	
+
 	void GlModel::pushModelViewOrthographicMatrix()
 	{
 		glUseProgram(m_programId);
@@ -158,25 +158,25 @@ namespace Engine
 		glUniformMatrix4fv(modelViewOrthographicMatrixLocation, 1, GL_FALSE, (float*)&(modelViewOrthographic));
 		glUseProgram(0);
 	}
-	
+
 	void GlModel::setPosition(const Vec3& position)
 	{
 		m_position = position;
 		updateModelMatrix();
 	}
-	
+
 	void GlModel::setRotation(const Vec3& rotation)
 	{
 		m_rotation = rotation;
 		updateModelMatrix();
 	}
-	
+
 	void GlModel::setScale(const Vec3& scale)
 	{
 		m_scale = scale;
 		updateModelMatrix();
 	}
-	
+
 	void GlModel::updateModelMatrix()
 	{
 		// TODO verify the multiplication order.
@@ -218,18 +218,17 @@ namespace Engine
 
 	void GlModel::updateNormMatrix()
 	{
-		// TODO Verify this
-		// Normal Matrix is supposedly Top Left 3x3 of ModelView Matrix
-		m_normMatrix.d00 = m_modelViewMatrix.d00;
-		m_normMatrix.d01 = m_modelViewMatrix.d01;
-		m_normMatrix.d02 = m_modelViewMatrix.d02;
-		m_normMatrix.d10 = m_modelViewMatrix.d10;
-		m_normMatrix.d11 = m_modelViewMatrix.d11;
-		m_normMatrix.d12 = m_modelViewMatrix.d12;
-		m_normMatrix.d20 = m_modelViewMatrix.d20;
-		m_normMatrix.d21 = m_modelViewMatrix.d21;
-		m_normMatrix.d22 = m_modelViewMatrix.d22;
-
+		// TODO verify this
+		Mat4 normalMatrix = m_modelViewMatrix.inverse().transpose();
+	    m_normMatrix.d00 = normalMatrix.d00;
+	    m_normMatrix.d01 = normalMatrix.d01;
+	    m_normMatrix.d02 = normalMatrix.d02;
+	    m_normMatrix.d10 = normalMatrix.d10;
+	    m_normMatrix.d11 = normalMatrix.d11;
+	    m_normMatrix.d12 = normalMatrix.d12;
+	    m_normMatrix.d20 = normalMatrix.d20;
+	    m_normMatrix.d21 = normalMatrix.d21;
+	    m_normMatrix.d22 = normalMatrix.d22;
 		pushNormMatrix();
 	}
 
