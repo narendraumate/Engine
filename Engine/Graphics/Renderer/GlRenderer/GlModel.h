@@ -58,8 +58,8 @@ namespace Engine
 		Vec3 m_rotation;
 		Vec3 m_scale;
 
-		Mat4 m_modelMatrix;
 		const Camera* m_cameraPtr;
+		Mat4 m_modelMatrix;
 		Mat4 m_modelViewMatrix;
 		Mat3 m_normMatrix;
 
