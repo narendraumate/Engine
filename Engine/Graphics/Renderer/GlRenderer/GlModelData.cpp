@@ -72,14 +72,15 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeOfIndices, &indices[0], GL_STATIC_DRAW);
 		//No Vertex Attrib Pointer for Index buffer
-
-		glGenVertexArrays(VaoCount, m_vaos);
-		glBindVertexArray(m_vaos[VaoTriangles]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glGenBuffers(VboCount, m_vbos);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
-		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents + sizeOfBitangents, NULL, GL_STATIC_DRAW);
+		glGenVertexArrays(VaoCount, m_vaos);
 
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
+		glBindVertexArray(m_vaos[VaoTriangles]);
+
+		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents + sizeOfBitangents, NULL, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfPositions, &positions[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions, sizeOfNormals, &normals[0]);
 		glBufferSubData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals, sizeOfTexcoords, &texcoords[0]);
@@ -91,16 +92,14 @@ namespace Engine
 		glVertexAttribPointer(AttributeTexcoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals));
 		glVertexAttribPointer(AttributeTangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords));
 		glVertexAttribPointer(AttributeBitangent, 3, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents));
-
 		glEnableVertexAttribArray(AttributePosition);
 		glEnableVertexAttribArray(AttributeNormal);
 		glEnableVertexAttribArray(AttributeTexcoord);
 		glEnableVertexAttribArray(AttributeTangent);
 		glEnableVertexAttribArray(AttributeBitangent);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		positions.clear();
 		normals.clear();
