@@ -74,11 +74,11 @@ namespace Engine
 		//No Vertex Attrib Pointer for Index buffer
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		glGenBuffers(VboCount, m_vbos);
 		glGenVertexArrays(VaoCount, m_vaos);
+		glGenBuffers(VboCount, m_vbos);
 
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
 		glBindVertexArray(m_vaos[VaoTriangles]);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbos[VboTriangles]);
 
 		glBufferData(GL_ARRAY_BUFFER, sizeOfPositions + sizeOfNormals + sizeOfTexcoords + sizeOfTangents + sizeOfBitangents, NULL, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeOfPositions, &positions[0]);
@@ -98,8 +98,8 @@ namespace Engine
 		glEnableVertexAttribArray(AttributeTangent);
 		glEnableVertexAttribArray(AttributeBitangent);
 
-		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 
 		positions.clear();
 		normals.clear();
@@ -125,8 +125,8 @@ namespace Engine
 			glDeleteTextures(1, &textureCollection->m_textures[TextureNormal]);
 		}
 
-		glDeleteVertexArrays(VaoCount, m_vaos);
 		glDeleteBuffers(VboCount, m_vbos);
+		glDeleteVertexArrays(VaoCount, m_vaos);
 		glDeleteBuffers(EboCount, m_ebos);
 	}
 

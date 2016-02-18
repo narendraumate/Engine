@@ -51,6 +51,7 @@ namespace Engine
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebos[EboTriangles]);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeOfIndices, &indices[0], GL_STATIC_DRAW);
 		//No Vertex Attrib Pointer for Index buffer
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glGenVertexArrays(VaoCount, m_vaos);
 		glBindVertexArray(m_vaos[VaoTriangles]);
@@ -77,7 +78,6 @@ namespace Engine
 		glEnableVertexAttribArray(AttributeTangent);
 		glEnableVertexAttribArray(AttributeBitangent);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
