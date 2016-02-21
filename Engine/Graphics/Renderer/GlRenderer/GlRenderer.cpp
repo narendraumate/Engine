@@ -113,7 +113,7 @@ namespace Engine
 
 			case 1:
 			{
-				int modelIndex = 9; // 0, 9, 10 can be shown as small models and 6 is horribly slow to the point that it can not be demoed
+				int modelIndex = 0; // 0, 9, 10 can be shown as small models and 6 is horribly slow to the point that it can not be demoed
 				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
 					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
 					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
@@ -130,7 +130,7 @@ namespace Engine
 
 				if (modelIndex == 0)//house
 				{
-					g_glModels[0]->setPosition(Vec3(0, -1, 0));
+					g_glModels[0]->setPosition(Vec3(0, -1.25, 0));
 					g_glModels[0]->setScale(Vec3(0.09f, 0.09f, 0.09f));
 				}
 				else if (modelIndex == 6)//rungholt
