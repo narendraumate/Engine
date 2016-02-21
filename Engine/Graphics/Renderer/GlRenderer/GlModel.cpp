@@ -175,8 +175,8 @@ namespace Engine
 	{
 		// TODO verify the multiplication order.
 		m_modelMatrix = Mat4::identity();
-		m_modelMatrix = m_modelMatrix * Mat4::rotateX(m_rotation.x) * Mat4::rotateY(m_rotation.y) * Mat4::rotateZ(m_rotation.z);
 		m_modelMatrix = m_modelMatrix * Mat4::translate(m_position);
+		m_modelMatrix = m_modelMatrix * Mat4::rotateX(m_rotation.x) * Mat4::rotateY(m_rotation.y) * Mat4::rotateZ(m_rotation.z);
 		m_modelMatrix = m_modelMatrix * Mat4::scale(m_scale);
 		pushModelMatrix();
 
