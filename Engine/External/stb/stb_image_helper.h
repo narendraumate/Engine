@@ -20,7 +20,6 @@ public:
 	void flipY();
 	
 private:
-	//vector<unsigned char> m_pixels;
 	unsigned char* m_pixels;
 	int m_sizeX;
 	int m_sizeY;
