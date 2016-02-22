@@ -11,7 +11,7 @@
 
 #include <map>
 #include <string>
-#include "stb_image_helper.h"
+#include "../../../External/stb/stb_image_helper.h"
 
 class TextureManager {
 public:

@@ -1,29 +1,21 @@
 Features
 
 Build
-- Automated build system using Travis. Submission will compile code on Linux and send email on failure.
-- Automated project file generation using premake by analysing directories.
+- Automated build system using Travis.
 - Scons as the build tool for compiling cross platform.
+- Automated project file generation using premake by analysing directories.
 
 External libraries
-- Played around with assimp, callback, DevIL, glsw as I wanted to.
+- Played around with callback, DevIL, glsw.
 - stbi for image loading. tiny_obj_loader for obj parsing. MemTrack for leak checks.
 - tiny_obj_loader was wrapped so it converts the data into faster binary readable data on first run.
 
 Renderer
-- Works on Linux and Mac OS using OpenGL. DirectX not implemented.
-- Design based on WildMagic5 which is an opensource engine.
+- Works on Linux and Mac OS using OpenGL.
 - Really rough cut and a bit hacky in places.
-- Focus was not optimization but instead learning the whole pipeline and problems.
+- Focus was not optimization but learning pipeline and problems.
 
 Performance improvements
-- Frustum culling would be obvious
-- OctTree based scenegraph or external SceneGraphs
-- Rendering proxies and material management systems
-
-Other Projects
-- Sequential which is this comic reading tool for Mac OS.
-
-Minor bug fixes for
-- tiny_obj_loader trim new line bugs in obj parser fixes
-- Valve Source Engine Mac build issues
+- Frustum culling would be obvious.
+- Octree based scenegraph or external SceneGraphs.
+- Rendering proxies and material management systems.

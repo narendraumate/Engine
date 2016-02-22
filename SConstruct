@@ -6,13 +6,12 @@ platform = sys.platform
 
 # base
 base_env = Environment()
-base_env.Append(CPPDEFINES=['ASSIMP_BUILD_BOOST_WORKAROUND', 'ASSIMP_BUILD_NO_OWN_ZLIB'])
+base_env.Append(CPPDEFINES=[])
 
 # platform specific
 if platform == 'win32':
 	pass
 elif platform == 'darwin':
-	base_env.Append(CCFLAGS = ['-fgnu89-inline']) # hack for DevIL
 	base_env.Append(FRAMEWORKS = ['Cocoa', 'OpenGL', 'QuartzCore'])
 elif platform == 'linux2':
 	base_env.Append(LINKFLAGS = ['-L/usr/lib/nvidia-331/']) # hack for ubuntu 14.04 with nvidia-331

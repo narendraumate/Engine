@@ -27,8 +27,6 @@ void initializeMain()
 	// Create the renderer object
 #if defined(__APPLE__) || defined(__linux__)
     g_renderer = new Engine::GlRenderer(g_settings->getWidth(), g_settings->getHeight());
-#elif _WIN32
-    g_renderer = new Engine::DxRenderer(g_settings->getWidth(), g_settings->getHeight());
 #endif //_WIN32
 
 	// Set the camera pointer of renderer object

@@ -3,16 +3,11 @@ solution "Engine"
 	configurations { "debug", "release" }
 
 	-- Additional defines
-	-- disable assimp boost, assimp zlib
-	defines {	"ASSIMP_BUILD_BOOST_WORKAROUND",
-				"ASSIMP_BUILD_NO_OWN_ZLIB"	}
+	defines { }
 
 	excludes { "**/callback/**", "**/glsw/**", "**/src-ILU/ilur/**" }
 
-	includedirs {	"Engine/External/assimp/code/BoostWorkaround",
-					"Engine/External/assimp/contrib/cppunit-1.12.1/include",
-					"Engine/External/assimp/include",
-					"Engine/External/DevIL/DevIL/include"	}
+	includedirs {	"Engine/External/DevIL/DevIL/include"	}
 
 	-- A project defines one build target
 	project "Engine"
@@ -41,7 +36,6 @@ solution "Engine"
 			excludes { "**/MacOS/**", "**/Linux/**" }
 
 		configuration "macosx"
-			buildoptions { "-fgnu89-inline" } -- hack for DevIL
 			linkoptions { "-framework Cocoa", "-framework OpenGL", "-framework QuartzCore" }
 			files { "**.m", "**.mm" }
 			excludes { "**/Windows/**", "**/Linux/**" }

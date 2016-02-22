@@ -79,7 +79,7 @@ namespace Engine
 		GLint eyePositionLocation = glGetUniformLocation(g_programId, "eyePosition");
 		glUniform3fv(eyePositionLocation, 1, (float*)&eyePosition);
 
-		int modelArrayIndex = 1;
+		int modelArrayIndex = 0;
 
 		switch (modelArrayIndex) {
 			case 0:
@@ -109,73 +109,6 @@ namespace Engine
 				g_glModels[3]->setPosition(Vec3(10.0f, -5.0f, 0.0f));
 				g_glModels[3]->setScale(Vec3(4.0f, 4.0f, 4.0f));
 			}
-				break;
-
-			case 1:
-			{
-				int modelIndex = 0; // 0, 9, 10 can be shown as small models and 6 is horribly slow to the point that it can not be demoed
-				std::string modelNames[] = { "obj/rungholt/house.obj", "obj/lost-empire/lost_empire.obj", "obj/buddha/buddha.obj",
-					                         "obj/crytek-sponza/sponza.obj", "obj/hairball/hairball.obj", "obj/head/head.obj",
-					                         "obj/rungholt/rungholt.obj", "obj/san-miguel/san-miguel.obj", "obj/person-a/Lara-Croft.obj",
-											 "obj/person-b/Lightning.obj", "obj/person-c/Juliet.obj", "mesh/Bayonetta/generic_item.mesh",
-											 "mesh/Mass Effect/MassEffect3_Miranda/generic_item.mesh", "mesh/Lollipop Chainsaw/Lollipop_LC/generic_item.mesh" };
-				g_glModels.push_back(new GlModel(g_programId, m_camera,
-												 Utils::singleton()->findFilePath(modelNames[modelIndex]),
-												 Utils::singleton()->findBasePath(modelNames[modelIndex])));
-
-				g_glModels[0]->setPosition(Vec3(0.0f, 0.0f, 0.0f));
-				g_glModels[0]->setRotation(Vec3(30.0f, 0.0f, 0.0f));
-
-				//#define WHOLE
-
-				if (modelIndex == 0)//house
-				{
-					g_glModels[0]->setPosition(Vec3(0, -1.25, 0));
-					g_glModels[0]->setScale(Vec3(0.09f, 0.09f, 0.09f));
-				}
-				else if (modelIndex == 6)//rungholt
-				{
-					g_glModels[0]->setScale(Vec3(0.0145f, 0.0145f, 0.0145f));
-				}
-				else if (modelIndex == 8)//person-a
-				{
-#if defined (WHOLE)
-					g_glModels[0]->setPosition(Vec3(0, -4.5, 0));
-					g_glModels[0]->setScale(Vec3(1.6f, 1.6f, 1.6f));
-#else
-					g_glModels[0]->setPosition(Vec3(0, -30, 0));
-					g_glModels[0]->setScale(Vec3(6.5f, 6.5f, 6.5f));
-#endif //defined(WHOLE)
-				}
-				else if (modelIndex == 9)//person-b
-				{
-#if defined (WHOLE)
-					g_glModels[0]->setPosition(Vec3(0, -0.5, 0));
-					g_glModels[0]->setScale(Vec3(0.06f, 0.06f, 0.06f));
-#else
-					g_glModels[0]->setPosition(Vec3(0, -10, 0));
-					g_glModels[0]->setScale(Vec3(0.20f, 0.20f, 0.20f));
-#endif //defined(WHOLE)
-				}
-				else if (modelIndex == 10)//person-c
-				{
-#if defined(WHOLE)
-					g_glModels[0]->setPosition(Vec3(0, -5, 0));
-					g_glModels[0]->setScale(Vec3(0.05f, 0.05f, 0.05f));
-#else
-					g_glModels[0]->setPosition(Vec3(0, -75, 0));
-					g_glModels[0]->setScale(Vec3(0.5f, 0.5f, 0.5f));
-#endif //defined(WHOLE)
-				}
-				else if (modelIndex == 11 || modelIndex == 12 || modelIndex == 13)
-				{
-					g_glModels[0]->setPosition(Vec3(0, -4.0, 0));
-					g_glModels[0]->setScale(Vec3(3.5f, 3.5f, 3.5f));
-				}
-			}
-				break;
-
-			default:
 				break;
 		}
 

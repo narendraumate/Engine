@@ -28,8 +28,7 @@ objextensions = ('.o', '.obj')
 excludedirs = set()
 
 # HARDCODING BEGINS
-excludedirs |= set(['assimp', 'DevIL', 'glsw'])
-excludedirs |= set(['src-IL', 'src-ILU', 'src-ILUT'])
+excludedirs |= set(['DevIL', 'glsw'])
 # HARDCODING ENDS
 
 # platform specific
@@ -37,7 +36,7 @@ if platform == 'win32':
     excludedirs |= set(['MacOS', 'Linux'])
 elif platform == 'darwin':
     excludedirs |= set(['Windows', 'Linux'])
-elif platform == 'linux2':
+elif platform == 'linux':
     excludedirs |= set(['Windows', 'MacOS'])
 ###############################################################################
 
