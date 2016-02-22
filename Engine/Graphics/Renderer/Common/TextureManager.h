@@ -11,10 +11,9 @@
 
 #include <map>
 #include <string>
-#include "../../../External/stbi/StbImage.h"
+#include "stb_image_helper.h"
 
-class TextureManager
-{
+class TextureManager {
 public:
 	TextureManager(const std::string& basePath);
 	~TextureManager();
@@ -26,7 +25,7 @@ public:
 
 private:
 	std::string m_basePath;
-	std::map<std::string, StbImage*> m_stbImageMap;
+	std::map<std::string, Image*> m_nameImageMap;
 };
 
 #endif /* defined(__Application__TextureManager__) */

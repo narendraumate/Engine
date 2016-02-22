@@ -7,21 +7,25 @@ using namespace std;
 
 #include "stb_image.h"
 
-class StbImage
+class Image
 {
 public:
-	StbImage(const string& name);
+	Image(const string& name);
+	virtual ~Image();
 	
-	inline vector<unsigned char> getPixels() { return m_pixels; } const
+	inline unsigned char* getPixels() { return m_pixels; } const
 	inline int getSizeX() const { return m_sizeX; }
 	inline int getSizeY() const { return m_sizeY; }	
+
 	void flipY();
 	
 private:
-	vector<unsigned char> m_pixels;
+	//vector<unsigned char> m_pixels;
+	unsigned char* m_pixels;
 	int m_sizeX;
 	int m_sizeY;
 	int m_channels;
+	int m_count;
 };
 
 #endif // STBIMAGE

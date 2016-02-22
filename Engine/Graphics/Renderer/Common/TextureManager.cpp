@@ -9,38 +9,33 @@
 #include "TextureManager.h"
 
 TextureManager::TextureManager(const std::string& basePath)
-:	m_basePath(basePath)
-{ }
+:	m_basePath(basePath) {
+}
 
-TextureManager::~TextureManager()
-{
-	for (std::map<std::string, StbImage*>::iterator it = m_stbImageMap.begin(); it != m_stbImageMap.end(); ++it)
+TextureManager::~TextureManager() {
+	for (std::map<std::string, Image*>::iterator it = m_nameImageMap.begin(); it != m_nameImageMap.end(); ++it)
 	{
 		delete it->second;
 		it->second = NULL;
 	}
 }
 
-void TextureManager::loadTexture(const std::string& textureName)
-{
-	if (m_stbImageMap[textureName] == NULL)
+void TextureManager::loadTexture(const std::string& textureName) {
+	if (m_nameImageMap[textureName] == NULL)
 	{
-		m_stbImageMap[textureName] = new StbImage(m_basePath + textureName);
-		m_stbImageMap[textureName]->flipY();
+		m_nameImageMap[textureName] = new Image(m_basePath + textureName);
+		m_nameImageMap[textureName]->flipY();
 	}
 }
 
-int TextureManager::getSizeX(const std::string& textureName)
-{
-	return m_stbImageMap[textureName]->getSizeX();
+int TextureManager::getSizeX(const std::string& textureName) {
+	return m_nameImageMap[textureName]->getSizeX();
 }
 
-int TextureManager::getSizeY(const std::string& textureName)
-{
-	return m_stbImageMap[textureName]->getSizeY();
+int TextureManager::getSizeY(const std::string& textureName) {
+	return m_nameImageMap[textureName]->getSizeY();
 }
 
-void* TextureManager::getPixels(const std::string& textureName)
-{
-	return &(m_stbImageMap[textureName]->getPixels()[0]);
+void* TextureManager::getPixels(const std::string& textureName) {
+	return (m_nameImageMap[textureName]->getPixels());
 }
